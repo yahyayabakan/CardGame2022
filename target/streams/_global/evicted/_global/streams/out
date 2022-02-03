@@ -1,0 +1,65 @@
+[0m[[0m[0mdebug[0m] [0m[0m"not up to date. inChanged = true, force = true[0m
+[0m[[0m[0mdebug[0m] [0m[0mUpdating ...[0m
+[0m[[0m[0mdebug[0m] [0m[0mDone updating [0m
+[0m[[0m[33mwarn[0m] [0m[0mFound version conflict(s) in library dependencies; some are suspected to be binary incompatible:[0m
+[0m[[0m[33mwarn[0m] [0m[0m	* com.google.guava:guava:28.1-jre is selected over 25.1-android[0m
+[0m[[0m[33mwarn[0m] [0m[0m	    +- com.typesafe.play:play_2.13:2.8.1                  (depends on 28.1-jre)[0m
+[0m[[0m[33mwarn[0m] [0m[0m	    +- com.google.inject:guice:4.2.2                      (depends on 25.1-android)[0m
+[0m[[0m[0minfo[0m] [0m[0mHere are other dependency conflicts that were resolved:[0m
+[0m[[0m[0minfo[0m] [0m[0m	* com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.10.2 is selected over {2.10.1, 2.10.1}[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.typesafe.akka:akka-serialization-jackson_2.13:2.6.3 (depends on 2.10.2)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.typesafe.play:play_2.13:2.8.1                  (depends on 2.10.1)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.typesafe.play:play-json_2.13:2.8.1             (depends on 2.10.1)[0m
+[0m[[0m[0minfo[0m] [0m[0m	* com.fasterxml.jackson.core:jackson-annotations:2.10.3 is selected over {2.10.2, 2.10.2, 2.10.2, 2.10.1, 2.10.1}[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.fasterxml.jackson.core:jackson-databind:2.10.3 (depends on 2.10.3)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.typesafe.play:play_2.13:2.8.1                  (depends on 2.10.1)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.typesafe.play:play-json_2.13:2.8.1             (depends on 2.10.1)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.typesafe.akka:akka-serialization-jackson_2.13:2.6.3 (depends on 2.10.2)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.fasterxml.jackson.module:jackson-module-scala_2.13:2.10.2 (depends on 2.10.2)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.10.2 (depends on 2.10.2)[0m
+[0m[[0m[0minfo[0m] [0m[0m	* com.fasterxml.jackson.core:jackson-core:2.10.3 is selected over {2.10.2, 2.10.2, 2.10.2, 2.10.2, 2.10.2, 2.10.2, 2.10.1, 2.10.1, 2.10.0}[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.10.3 (depends on 2.10.3)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.fasterxml.jackson.core:jackson-databind:2.10.3 (depends on 2.10.3)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- org.webjars:webjars-locator-core:0.43              (depends on 2.10.0)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.typesafe.play:play_2.13:2.8.1                  (depends on 2.10.1)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.typesafe.play:play-json_2.13:2.8.1             (depends on 2.10.1)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.typesafe.akka:akka-serialization-jackson_2.13:2.6.3 (depends on 2.10.2)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.fasterxml.jackson.module:jackson-module-scala_2.13:2.10.2 (depends on 2.10.2)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.fasterxml.jackson.module:jackson-module-parameter-names:2.10.2 (depends on 2.10.2)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.10.2 (depends on 2.10.2)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.10.2 (depends on 2.10.2)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.10.2 (depends on 2.10.2)[0m
+[0m[[0m[0minfo[0m] [0m[0m	* org.apache.commons:commons-lang3:3.9 is selected over 3.8.1[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- org.webjars:webjars-locator:0.38                   (depends on 3.8.1)[0m
+[0m[[0m[0minfo[0m] [0m[0m	* com.fasterxml.jackson.core:jackson-databind:2.10.3 is selected over {2.10.2, 2.10.2, 2.10.2, 2.10.2, 2.10.2, 2.10.2, 2.10.1, 2.10.1, 2.9.6, 2.9.10.1}[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- itsd-card-game:itsd-card-game_2.13:1.0             (depends on 2.10.3)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- org.webjars:webjars-locator:0.38                   (depends on 2.9.10.1)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- io.jsonwebtoken:jjwt:0.9.1                         (depends on 2.9.6)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.typesafe.play:play_2.13:2.8.1                  (depends on 2.10.1)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.typesafe.play:play-json_2.13:2.8.1             (depends on 2.10.1)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.typesafe.akka:akka-serialization-jackson_2.13:2.6.3 (depends on 2.10.2)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.fasterxml.jackson.module:jackson-module-scala_2.13:2.10.2 (depends on 2.10.2)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.fasterxml.jackson.module:jackson-module-paranamer:2.10.2 (depends on 2.10.2)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.fasterxml.jackson.module:jackson-module-parameter-names:2.10.2 (depends on 2.10.2)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.10.2 (depends on 2.10.2)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.10.2 (depends on 2.10.2)[0m
+[0m[[0m[0minfo[0m] [0m[0m	* com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.10.2 is selected over {2.10.1, 2.10.1}[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.typesafe.akka:akka-serialization-jackson_2.13:2.6.3 (depends on 2.10.2)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.typesafe.play:play_2.13:2.8.1                  (depends on 2.10.1)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.typesafe.play:play-json_2.13:2.8.1             (depends on 2.10.1)[0m
+[0m[[0m[0minfo[0m] [0m[0m	* org.webjars:jquery:1.11.1 is selected over 1.9.0[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- org.webjars:flot:0.8.3                             (depends on 1.11.1)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- org.webjars:bootstrap:2.3.2                        (depends on 1.9.0)[0m
+[0m[[0m[0minfo[0m] [0m[0m	* com.typesafe.akka:akka-stream_2.13:2.6.3 is selected over 2.6.1[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.typesafe.play:play-streams_2.13:2.8.1          (depends on 2.6.3)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.typesafe.play:play-ws-standalone_2.13:2.1.2    (depends on 2.6.1)[0m
+[0m[[0m[0minfo[0m] [0m[0m	* org.slf4j:slf4j-api:1.7.30 is selected over {1.7.25, 1.7.29, 1.7.29, 1.7.29, 1.7.29, 1.7.29, 1.7.29}[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.typesafe.akka:akka-actor-typed_2.13:2.6.3      (depends on 1.7.30)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.typesafe.akka:akka-slf4j_2.13:2.6.3            (depends on 1.7.30)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- org.webjars:webjars-locator-core:0.43              (depends on 1.7.29)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- org.slf4j:jul-to-slf4j:1.7.29                      (depends on 1.7.29)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- org.slf4j:jcl-over-slf4j:1.7.29                    (depends on 1.7.29)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.typesafe.play:play_2.13:2.8.1                  (depends on 1.7.29)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.typesafe.play:play-ahc-ws-standalone_2.13:2.1.2 (depends on 1.7.29)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- com.typesafe.play:cachecontrol_2.13:2.0.0          (depends on 1.7.29)[0m
+[0m[[0m[0minfo[0m] [0m[0m	    +- ch.qos.logback:logback-classic:1.2.3               (depends on 1.7.25)[0m

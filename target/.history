@@ -1,0 +1,50 @@
+test
+ls
+help
+reload
+help
+run
+help
+projects
+help run
+help compile
+compile
+help --all
+help !
+!
+help java+
+help reboot
+compile
+recompile
+previousCompile
+completions
+help completions
+run
+sbt clean run
+clean run
+sbt clean
+clean
+compile
+run
+clean
+compile
+evicted
+dependencyOverrides += "com.google.guava" % "guava" % "25.1-android"
+dependencyOverrides += "com.google.guava" % "guava" % "25.1-android";
+clean
+reload
+compile
+evicted
+run
+reload
+compile
+clean
+compile
+reload
+compile
+evicted
+run
+help eclipse
+help intellij
+intelij
+exit

@@ -13,7 +13,5 @@ public class GameState {
 	public boolean gameInitalised = false;
 	
 	public boolean something = false;
-
-	//testing my new branch
 	
 }

@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
-// @SOURCE:D:/UNIVERSITY OF GLASGOW/TEAM PROJECT/ITSD-DT2022-Template/conf/routes
-// @DATE:Thu Feb 03 13:13:59 GMT 2022
+// @SOURCE:C:/Users/Karthik/Downloads/ITSD-DT2022-Template/conf/routes
+// @DATE:Fri Feb 04 17:51:30 GMT 2022
 
 import play.api.routing.JavaScriptReverseRoute
 

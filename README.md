@@ -1,3 +1,2 @@
 # ITSD TeamProject#
-Karthik 
 

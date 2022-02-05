@@ -27,6 +27,9 @@ public class Tile {
 	int height;
 	int tilex;
 	int tiley;
+
+	//Tile has a default Unit null that is used to store unit on this tile.
+	Unit unit = null;
 	
 	public Tile() {}
 	
@@ -113,7 +116,20 @@ public class Tile {
 		return null;
 		
 	}
-	
-	
+
+	//Add a unit to the tile.
+	public void addUnit(Unit unit){
+		this.unit = unit;
+	}
+
+	//Remove the Unit reference from tile.
+	public void removeUnit(){
+		unit = null;
+	}
+
+	//Get the reference of the unit on this tile.
+	public Unit getUnit(){
+		return unit;
+	}
 	
 }

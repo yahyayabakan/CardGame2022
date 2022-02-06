@@ -2,7 +2,6 @@ package structures.basic;
 
 import utils.BasicObjectBuilders;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,7 +29,7 @@ public class Board {
     }
 
     /**
-     * Helper function that the constructor uses to generate all the tiles required.
+     * Helper method that the constructor uses to generate all the tiles required.
      * @return List of Tile object.
      */
     private Tile[][] constructTiles(){
@@ -52,5 +51,13 @@ public class Board {
      */
     public Tile getTile(int x, int y){
         return tiles[x][y];
+    }
+
+    public int getHeight(){
+        return HEIGHT;
+    }
+
+    public int getWidth(){
+        return WIDTH;
     }
 }

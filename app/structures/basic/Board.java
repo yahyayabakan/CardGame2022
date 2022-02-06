@@ -59,4 +59,21 @@ public class Board {
     public int getY(){
         return Y_AXIS;
     }
+
+    public void addUnitToPlayer1List(Unit unit){
+        player1Units.add(unit);
+    }
+
+    public void removeUnitFromPlayer1List(Unit unit){
+        player1Units.remove(unit);
+    }
+
+    public void addUnitToPlayer2List(Unit unit){
+        player2Units.add(unit);
+    }
+
+    public void removeUnitFromPlayer2List(Unit unit){
+        player2Units.remove(unit);
+    }
+
 }

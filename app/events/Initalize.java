@@ -26,24 +26,9 @@ public class Initalize implements EventProcessor{
 		// User 1 makes a change
 		//CommandDemo.executeDemo(out); // this executes the command demo, comment out this when implementing your solution
 		//CheckMoveLogic.executeDemo(out);
-		createTileGrid(out, gameState);
-	}
 
-	/**
-	 * Helper method used to print all the Tiles to the front-end grid.
-	 * @param gameState - Holds information on the game state.
-	 * @param out - Reference to the event.
-	 */
-	private void createTileGrid(ActorRef out, GameState gameState){
-		int X = gameState.getBoard().getX();
-		int Y = gameState.getBoard().getY();
-		for(int x = 0; x < X; x++){
-			for(int y = 0; y < Y; y++){
-				BasicCommands.drawTile(out,
-						gameState.getBoard().getTile(x,y),
-						0);
-			}
-		}
+		//Generate the default grid tiles.
+		gameState.drawDefaultTilesGrid(out);
 	}
 }
 

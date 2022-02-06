@@ -11,3 +11,4 @@ sbt-dist/*
 ITSD Card Game 2022.iml
 logs/*
 target/*
+bin/*

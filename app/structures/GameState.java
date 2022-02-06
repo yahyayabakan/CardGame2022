@@ -12,8 +12,8 @@ import structures.basic.Board;
 public class GameState {
 	private Board board;
 
-	/*public boolean gameInitalised = false;
-	public boolean something = false;*/
+	public boolean gameInitalised = false;
+	public boolean something = false;
 
 	public GameState(){
 		board = new Board();

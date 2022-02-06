@@ -13,8 +13,8 @@ import java.util.List;
  */
 public class Board {
     //the grid size values
-    private static final int HEIGHT = 5;
-    private static final int WIDTH = 9;
+    private static final int X_AXIS = 9;
+    private static final int Y_AXIS = 5;
 
     private Tile[][] tiles;
     private List<Unit> player1Units;
@@ -33,9 +33,9 @@ public class Board {
      * @return List of Tile object.
      */
     private Tile[][] constructTiles(){
-        Tile[][] tiles = new Tile[HEIGHT][WIDTH];
-        for(int x = 0; x < HEIGHT; x++){
-            for(int y = 0; y < WIDTH; y++){
+        Tile[][] tiles = new Tile[X_AXIS][Y_AXIS];
+        for(int x = 0; x < X_AXIS; x++){
+            for(int y = 0; y < Y_AXIS; y++){
                 Tile tile = BasicObjectBuilders.loadTile(x,y);
                 tiles[x][y] = tile;
             }
@@ -52,11 +52,11 @@ public class Board {
     public Tile getTile(int x, int y){
         return tiles[x][y];
     }
-    public int getHeight(){
-        return HEIGHT;
+    public int getX(){
+        return X_AXIS;
     }
 
-    public int getWidth(){
-        return WIDTH;
+    public int getY(){
+        return Y_AXIS;
     }
 }

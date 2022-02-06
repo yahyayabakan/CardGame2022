@@ -1,2 +1,10 @@
 .idea/
 .vs/
+logs/
+null/
+project/
+.settings/
+.project
+.classpath
+build.sbt
+sbt-dist/

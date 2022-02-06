@@ -1,11 +1,13 @@
-.idea/
-.vs/
-logs/
-null/
-project/
-.settings/
+.idea/*
+.vs/*
+logs/*
+null/*
+project/*
+.settings/*
 .project
 .classpath
 build.sbt
-sbt-dist/
+sbt-dist/*
 ITSD Card Game 2022.iml
+logs/*
+target/*

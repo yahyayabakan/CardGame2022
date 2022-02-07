@@ -9,7 +9,7 @@ import java.util.Deque;
  * @author The Team.
  */
 public class Deck {
-    Deque<Card> cards;
+    private Deque<Card> cards;
 
     public Deck(int deckType){
         if(deckType == 1){

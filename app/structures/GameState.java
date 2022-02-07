@@ -3,6 +3,7 @@ package structures;
 import commands.BasicCommands;
 import structures.basic.Board;
 import akka.actor.ActorRef;
+import structures.basic.Deck;
 
 /**
  * This class can be used to hold information about the on-going game.
@@ -13,12 +14,16 @@ import akka.actor.ActorRef;
  */
 public class GameState {
 	private Board board;
+	private Deck playerOneDeck;
+	private Deck playerTwoDeck;
 
 	public boolean gameInitalised = false;
 	public boolean something = false;
 
 	public GameState(){
 		board = new Board();
+		playerOneDeck = new Deck(1);
+		playerTwoDeck = new Deck(2);
 	}
 
 	public Board getBoard() {

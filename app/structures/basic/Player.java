@@ -14,7 +14,7 @@ public class Player {
 
 	int health;
 	int mana;
-	Deque<Card> deck;
+	Deck deck;
 	LinkedList<Card> hand;
 	
 	public Player() {
@@ -33,7 +33,7 @@ public class Player {
 	}
 
 	//New constructor.
-	public Player(int health, int mana, Deque<Card> deck){
+	public Player(int health, int mana, Deck deck){
 		this.health = health;
 		this.mana = mana;
 		this.deck = deck;

@@ -4,6 +4,7 @@ import commands.BasicCommands;
 import structures.basic.Board;
 import akka.actor.ActorRef;
 import structures.basic.Deck;
+import structures.basic.Player;
 
 /**
  * This class can be used to hold information about the on-going game.
@@ -13,23 +14,44 @@ import structures.basic.Deck;
  * Extended by the team.
  */
 public class GameState {
+	private int turn;
 	private Board board;
 	private Deck playerOneDeck;
 	private Deck playerTwoDeck;
+	private Player playerOne;
+	private Player playerTwo;
+
 
 	public boolean gameInitalised = false;
 	public boolean something = false;
 
 	public GameState(){
+		turn = 0;
 		board = new Board();
 		playerOneDeck = new Deck(1);
 		playerTwoDeck = new Deck(2);
+		playerOne = new Player(20, 0, playerOneDeck);
+		playerTwo = new Player(20, 0, playerTwoDeck);
 	}
 
 	public Board getBoard() {
 		return board;
 	}
 
+	public Player getPlayerOne(){
+		return playerOne;
+	}
+
+	public Player getPlayerTwo(){
+		return playerTwo;
+	}
+
+	/**
+	 * Method should be called before the next turn.
+	 */
+	public void incrementTurn(){
+		turn++;
+	}
 	/**
 	 * The default grid visual representation of the tiles on the front end.
 	 * This creates the full grid with the base colour tiles.
@@ -49,5 +71,14 @@ public class GameState {
 						0);
 			}
 		}
+	}
+
+	/**
+	 * Method increments the player's mana to turns plus one.
+	 * This should be used after each turn change on both players.
+	 * @param player - Player to set mana.
+	 */
+	public void incrementPlayerMana(Player player){
+		player.setMana(turn+1);
 	}
 }

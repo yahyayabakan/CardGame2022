@@ -46,7 +46,7 @@ public class Deck {
      */
     public Card draw() {
         if (!cards.isEmpty()) {
-            return cards.getLast();
+            return cards.removeLast();
         }
         return null;
     }

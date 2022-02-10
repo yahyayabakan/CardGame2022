@@ -82,3 +82,5 @@ public class GameState {
 		player.setMana(turn+1);
 	}
 }
+
+// a test comment

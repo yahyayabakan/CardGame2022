@@ -19,6 +19,7 @@ public class Player {
 	int mana;
 	Deck deck;
 	LinkedList<Card> hand;
+	static final int HandMax = 6;
 	
 	public Player() {
 		super();
@@ -57,7 +58,7 @@ public class Player {
 	}
 
 	public void draw(ActorRef out){
-		if(hand.size()<6)
+		if(hand.size()<HandMax)
 			hand.add(deck.draw());
 		else{
 			deck.draw();

@@ -23,6 +23,7 @@ public class Initalize implements EventProcessor{
 	@Override
 	public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
 		gameState.gameInitalised = true;
+		final int STARTING_HAND = 3;
 		Player playerOne = gameState.getPlayerOne();
 		Player playerTwo = gameState.getPlayerTwo();
 		
@@ -42,6 +43,16 @@ public class Initalize implements EventProcessor{
 		BasicCommands.setPlayer2Health(out, playerTwo);
 		BasicCommands.setPlayer1Mana(out, playerOne);
 		BasicCommands.setPlayer2Mana(out, playerTwo);
+
+		//draw the initial 3 cards for both players.
+		for(int i = 0; i < STARTING_HAND; i++){
+			playerOne.draw(out);
+			playerTwo.draw(out);
+		}
+
+		//show the hand to player one on the front end.
+		gameState.displayCurrentHandCards(out, playerOne);
+
 	}
 }
 

@@ -1,5 +1,8 @@
 package structures.basic;
 
+import utils.OrderedCardLoader;
+
+import java.util.ArrayDeque;
 import java.util.Deque;
 
 /**
@@ -25,9 +28,8 @@ public class Deck {
      * The method that creates deck one.
      * @return Deck of cards.
      */
-    private Deque<Card> createDeckOne(){
-        //TODO
-        return null;
+    private ArrayDeque<Card> createDeckOne(){
+        return new ArrayDeque<>(OrderedCardLoader.getPlayer1Cards());
     }
 
     /**
@@ -35,8 +37,7 @@ public class Deck {
      * @return Deck of cards.
      */
     private Deque<Card> createDeckTwo(){
-        //TODO
-        return null;
+        return new ArrayDeque<>(OrderedCardLoader.getPlayer2Cards());
     }
 
     /**

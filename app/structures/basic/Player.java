@@ -57,6 +57,10 @@ public class Player {
 		this.mana = mana;
 	}
 
+	public LinkedList<Card> getHand() {
+		return hand;
+	}
+
 	public void draw(ActorRef out){
 		if(hand.size()<HandMax)
 			hand.add(deck.draw());

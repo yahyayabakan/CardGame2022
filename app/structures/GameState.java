@@ -3,9 +3,11 @@ package structures;
 import commands.BasicCommands;
 import structures.basic.Board;
 import akka.actor.ActorRef;
+import structures.basic.Card;
 import structures.basic.Deck;
 import structures.basic.Player;
 
+import java.util.LinkedList;
 import java.util.stream.IntStream;
 
 /**
@@ -94,9 +96,10 @@ public class GameState {
 	 * @param out actor reference.
 	 */
 	public void displayCurrentHandCards(ActorRef out, Player player) {
-		IntStream.range(0, player.getHand().size())
+		LinkedList<Card> hand = player.getHand();
+		IntStream.range(0, hand.size())
 				.forEach(index ->{
-					BasicCommands.drawCard(out, player.getHand().get(index),index+1, 0);
+					BasicCommands.drawCard(out, hand.get(index),index+1, 0);
 				});
 	}
 }

@@ -76,4 +76,11 @@ public class Board {
         player2Units.remove(unit);
     }
 
+    public List<Unit> getPlayer1Units() {
+        return player1Units;
+    }
+
+    public List<Unit> getPlayer2Units() {
+        return player2Units;
+    }
 }

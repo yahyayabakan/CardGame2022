@@ -3,6 +3,9 @@ package structures.basic;
 import java.util.Deque;
 import java.util.LinkedList;
 
+import akka.actor.ActorRef;
+import commands.BasicCommands;
+
 /**
  * A basic representation of of the Player. A player
  * has health and mana.
@@ -52,7 +55,15 @@ public class Player {
 	public void setMana(int mana) {
 		this.mana = mana;
 	}
-	
+
+	public void draw(ActorRef out){
+		if(hand.size()<=6)
+			hand.add(deck.draw());
+		else{
+			deck.draw();
+			BasicCommands.addPlayer1Notification(out, "Hand Full, Card Lost", 5);
+		}
+	}
 	
 	
 }

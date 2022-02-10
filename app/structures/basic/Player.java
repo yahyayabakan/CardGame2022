@@ -15,11 +15,11 @@ import commands.BasicCommands;
  */
 public class Player {
 
-	int health;
-	int mana;
-	Deck deck;
-	LinkedList<Card> hand;
-	static final int HandMax = 6;
+	private int health;
+	private int mana;
+	private Deck deck;
+	private LinkedList<Card> hand;
+	private static final int HandMax = 6;
 	
 	public Player() {
 		super();

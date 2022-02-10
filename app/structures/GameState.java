@@ -1,11 +1,8 @@
 package structures;
 
 import commands.BasicCommands;
-import structures.basic.Board;
+import structures.basic.*;
 import akka.actor.ActorRef;
-import structures.basic.Card;
-import structures.basic.Deck;
-import structures.basic.Player;
 
 import java.util.LinkedList;
 import java.util.stream.IntStream;
@@ -24,6 +21,7 @@ public class GameState {
 	private Deck playerTwoDeck;
 	private Player playerOne;
 	private Player playerTwo;
+	private int unitIdCounter = 0;
 
 
 	public boolean gameInitalised = false;
@@ -102,4 +100,11 @@ public class GameState {
 					BasicCommands.drawCard(out, hand.get(index),index+1, 0);
 				});
 	}
+
+	// Generate next unit ID
+	public int getNewUnitID(){
+		return ++unitIdCounter;
+	}
+
+
 }

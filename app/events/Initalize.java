@@ -6,6 +6,10 @@ import akka.actor.ActorRef;
 import commands.BasicCommands;
 import structures.GameState;
 import structures.basic.Player;
+import structures.basic.Tile;
+import structures.basic.Unit;
+import structures.units.Avatar;
+import utils.BasicObjectBuilders;
 
 /**
  * Indicates that both the core game loop in the browser is starting, meaning
@@ -52,6 +56,26 @@ public class Initalize implements EventProcessor{
 
 		//show the hand to player one on the front end.
 		gameState.displayCurrentHandCards(out, playerOne);
+
+		//create avatars for both players and add them to tiles
+		Unit avatarOne = BasicObjectBuilders.loadUnit(
+				"conf/gameconfs/avatars/avatar1.json",
+				gameState.getNewUnitID(),
+				Avatar.class);
+		Unit avatarTwo = BasicObjectBuilders.loadUnit(
+				"conf/gameconfs/avatars/avatar2.json",
+				gameState.getNewUnitID(),
+				Avatar.class);
+		gameState.getBoard().addUnitToPlayer1List(avatarOne);
+		gameState.getBoard().addUnitToPlayer2List(avatarTwo);
+		gameState.getBoard().getTile(1,2).addUnit(avatarOne);
+		gameState.getBoard().getTile(7,2).addUnit(avatarTwo);
+
+		//display the avatars to frontend
+		avatarOne.setPositionByTile(gameState.getBoard().getTile(1,2));
+		avatarTwo.setPositionByTile(gameState.getBoard().getTile(7,2));
+		BasicCommands.drawUnit(out, avatarOne, gameState.getBoard().getTile(1,2));
+		BasicCommands.drawUnit(out, avatarTwo, gameState.getBoard().getTile(7,2));
 
 	}
 }

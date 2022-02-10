@@ -57,7 +57,7 @@ public class Player {
 	}
 
 	public void draw(ActorRef out){
-		if(hand.size()<=6)
+		if(hand.size()<6)
 			hand.add(deck.draw());
 		else{
 			deck.draw();

@@ -88,7 +88,9 @@ public class GameState {
 	 * @param player - Player to set mana.
 	 */
 	public void incrementPlayerMana(Player player) {
-		player.setMana(turn + 1);
+		if(player.getMana() != 9){
+			player.setMana(turn + 1);
+		}
 	}
 
 	/**

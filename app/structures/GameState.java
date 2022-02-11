@@ -66,6 +66,10 @@ public class GameState {
 		int Y = getBoard().getY();
 		for(int x = 0; x < X; x++){
 			for(int y = 0; y < Y; y++){
+				try {
+					Thread.sleep(10);
+				} catch (Exception e) {}
+
 				BasicCommands.drawTile(out,
 						getBoard().getTile(x,y),
 						0);

@@ -2,6 +2,10 @@ package structures.basic;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import akka.actor.ActorRef;
+import commands.BasicCommands;
+import structures.GameState;
+import utils.BasicObjectBuilders;
 
 /**
  * This is a representation of a Unit on the game board.
@@ -20,11 +24,14 @@ public class Unit {
 	@JsonIgnore
 	protected static ObjectMapper mapper = new ObjectMapper(); // Jackson Java Object Serializer, is used to read java objects from a file
 	
-	int id;
-	UnitAnimationType animation;
-	Position position;
-	UnitAnimationSet animations;
-	ImageCorrection correction;
+	private int id;
+	private UnitAnimationType animation;
+	private Position position;
+	private UnitAnimationSet animations;
+	private ImageCorrection correction;
+	private final int BASE_MOVEMENT = 2;
+	private boolean hasMoved = false;
+	private boolean hasAttacked = false;
 	
 	public Unit() {}
 	
@@ -106,6 +113,66 @@ public class Unit {
 	public void setPositionByTile(Tile tile) {
 		position = new Position(tile.getXpos(),tile.getYpos(),tile.getTilex(),tile.getTiley());
 	}
-	
-	
+
+	/**
+	 * Reset the has attacked boolean to default false.
+	 * Can be used after the end of each turn.
+	 */
+	public void resetAttack(){
+		hasAttacked = false;
+	}
+
+	/**
+	 * Reset the has moved variable to default false.
+	 * Can be used after the end of each turn.
+	 */
+	public void resetMovement(){
+		hasMoved = false;
+	}
+
+	// FIXME: 10/02/2022 Need to draw diamond shape.
+	// TODO
+	//Responsible for displaying the movement tiles. Uses helper function to check validity.
+	public void displayMovementTiles(ActorRef out, int X, int Y, GameState gameState){
+		Board board = gameState.getBoard();
+		//if a unit has attacked, then it forfeits it's ability to move.
+		if(hasAttacked) hasMoved = true;
+		//movement base logic
+		if(!hasMoved){
+			for(int x = X - (BASE_MOVEMENT - 1); x < X+BASE_MOVEMENT; x++){
+				for(int y = Y - (BASE_MOVEMENT - 1); y < Y+BASE_MOVEMENT; y++){
+					drawValidTilesForMovement(x, X, y, Y, board, out);
+				}
+			}
+			//additional tiles to cover.
+			int[][] extraTiles = {{X+BASE_MOVEMENT, Y},{X-BASE_MOVEMENT, Y}, {X, Y+BASE_MOVEMENT},{X, Y-BASE_MOVEMENT}};
+			for(int[] extraTile : extraTiles){
+				drawValidTilesForMovement(extraTile[0], X, extraTile[1], Y, board, out);
+			}
+		}
+	}
+
+	//Handles the main drawing of the tiles according to validation rules.
+	private void drawValidTilesForMovement(int x, int X, int y, int Y, Board board, ActorRef out){
+		if(!(x == X && y == Y) &&
+				x < board.getX() &&
+				y < board.getY()
+				&& x >= 0 && y >= 0){
+			if(board.getTile(x,y).unit != null){
+				Unit unit = board.getTile(x,y).getUnit();
+				if(board.getPlayer1Units().contains(unit)){
+					//leave default colour.
+				}
+				else if(board.getPlayer2Units().contains(unit)){
+					if(!hasAttacked){
+						BasicCommands.drawTile(out, BasicObjectBuilders.loadTile(x,y), 2);
+					}
+					//else leave default colour.
+				}
+			}
+			else { //if no unit is present then draw the move tile.
+				BasicCommands.drawTile(out, BasicObjectBuilders.loadTile(x, y), 1);
+			}
+		}
+	}
 }

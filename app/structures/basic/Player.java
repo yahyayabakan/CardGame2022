@@ -3,6 +3,9 @@ package structures.basic;
 import java.util.Deque;
 import java.util.LinkedList;
 
+import akka.actor.ActorRef;
+import commands.BasicCommands;
+
 /**
  * A basic representation of of the Player. A player
  * has health and mana.
@@ -12,10 +15,11 @@ import java.util.LinkedList;
  */
 public class Player {
 
-	int health;
-	int mana;
-	Deck deck;
-	LinkedList<Card> hand;
+	private int health;
+	private int mana;
+	private Deck deck;
+	private LinkedList<Card> hand;
+	private static final int HandMax = 6;
 	
 	public Player() {
 		super();
@@ -52,7 +56,19 @@ public class Player {
 	public void setMana(int mana) {
 		this.mana = mana;
 	}
-	
+
+	public LinkedList<Card> getHand() {
+		return hand;
+	}
+
+	public void draw(ActorRef out){
+		if(hand.size()<HandMax)
+			hand.add(deck.draw());
+		else{
+			deck.draw();
+			BasicCommands.addPlayer1Notification(out, "Hand Full, Card Lost", 5);
+		}
+	}
 	
 	
 }

@@ -5,6 +5,7 @@ import structures.basic.*;
 import akka.actor.ActorRef;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.stream.IntStream;
 
 /**
@@ -22,7 +23,7 @@ public class GameState {
 	private Player playerOne;
 	private Player playerTwo;
 	private int unitIdCounter = 0;
-
+	private List<Tile> highlightedTiles;
 
 	public boolean gameInitalised = false;
 	public boolean something = false;
@@ -32,6 +33,7 @@ public class GameState {
 		board = new Board();
 		playerOneDeck = new Deck(1);
 		playerTwoDeck = new Deck(2);
+		highlightedTiles = new LinkedList<>();
 		playerOne = new Player(20, 0, playerOneDeck);
 		playerTwo = new Player(20, 0, playerTwoDeck);
 	}
@@ -107,6 +109,21 @@ public class GameState {
 				});
 	}
 
+	/**
+	 * Get the currently highlighted tiles.
+	 * @return highlightedTiles list.
+	 */
+	public List<Tile> getHighlightedTiles() {
+		return highlightedTiles;
+	}
+
+	/**
+	 * Clears the highlighted tiles list. Should be used whenever an action has been taken that should clear the
+	 * currently highlighted tiles list.
+	 */
+	public void clearHighlightedTiles(){
+		highlightedTiles.clear();
+	}
 	// Generate next unit ID
 	public int getNewUnitID(){
 		return ++unitIdCounter;

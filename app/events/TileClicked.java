@@ -4,8 +4,12 @@ package events;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import akka.actor.ActorRef;
+import commands.BasicCommands;
 import structures.GameState;
 import structures.basic.Tile;
+import structures.basic.Unit;
+import utils.BasicObjectBuilders;
+import utils.StaticConfFiles;
 
 /**
  * Indicates that the user has clicked an object on the game canvas, in this case a tile.
@@ -29,6 +33,7 @@ public class TileClicked implements EventProcessor{
 		int tilex = message.get("tilex").asInt();
 		int tiley = message.get("tiley").asInt();
 
+		//reference to the clicked tile.
 		Tile clickedTile = gameState.getBoard().getTile(tilex, tiley);
 
 		if (gameState.something == true) {
@@ -37,15 +42,18 @@ public class TileClicked implements EventProcessor{
 
 		/**
 		 * If a friendly unit is clicked, then display the potential movement tiles.
+		 * It first runs the drawDefaultTilesGrid() to refresh the board tiles.
 		 * This doesn't allow the unit to move to that tile. It simply display available tiles.
-		 * @TODO Remember that displayMovementTiles is a prototype, thus not working fully.
+		 * It clears the highlighted tiles each time it is called. This is to avoid bugs where previous tiles are
+		 * still highlighted in the list.
+		 * @see GameState check the drawDefaultTilesGrid()
 		 */
 		if(clickedTile.getUnit() != null &&
 				gameState.getBoard().getPlayer1Units()
 						.contains(clickedTile.getUnit())){
-			clickedTile.getUnit().displayMovementTiles(out, tilex, tiley, gameState);
+			gameState.getBoard().clearHighlightedTiles();
+			gameState.drawDefaultTilesGrid(out);
+			clickedTile.getUnit().displayMovementTiles(out, clickedTile, gameState.getBoard());
 		}
-
 	}
-
 }

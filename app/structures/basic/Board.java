@@ -19,12 +19,14 @@ public class Board {
     private Tile[][] tiles;
     private List<Unit> player1Units;
     private List<Unit> player2Units;
+    private List<Tile> highlightedTiles;
 
     //Constructor
     public Board() {
         tiles = constructTiles();
         player1Units = new LinkedList<>();
         player2Units = new LinkedList<>();
+        highlightedTiles = new LinkedList<>();
     }
 
     /**
@@ -82,5 +84,21 @@ public class Board {
 
     public List<Unit> getPlayer2Units() {
         return player2Units;
+    }
+
+    /**
+     * Get the currently highlighted tiles.
+     * @return highlightedTiles list.
+     */
+    public List<Tile> getHighlightedTiles() {
+        return highlightedTiles;
+    }
+
+    /**
+     * Clears the highlighted tiles list. Should be used whenever an action has been taken that should clear the
+     * currently highlighted tiles list.
+     */
+    public void clearHighlightedTiles(){
+        highlightedTiles.clear();
     }
 }

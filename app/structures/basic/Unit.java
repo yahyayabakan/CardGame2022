@@ -7,6 +7,9 @@ import commands.BasicCommands;
 import structures.GameState;
 import utils.BasicObjectBuilders;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * This is a representation of a Unit on the game board.
  * A unit has a unique id (this is used by the front-end.
@@ -124,35 +127,32 @@ public class Unit {
 	}
 
 	/**
-	 * Whenever this method is called, it first calls the drawDefaultTilesGrid. This will clear the previously
-	 * highlighted tiles.
 	 * Afterwards, it will check whether this unit has attacked. If not, it will start the search.
 	 * It searches through a square of size BASE_ATTACK_RANGE which defines how far it can reach.
 	 * If it finds enemy units on any of those tiles, it will highlight them in red. Then, it will add this tile
 	 * to the GameState highlighted tiles list.
 	 * @param out game actor reference.
 	 * @param tile the tile that was clicked.
-	 * @param gameState the current state of the game.
-	 * @see GameState
+	 * @param board the current state of the board.
+	 * @see Board
 	 */
-	public void displayInRangeAttackTiles(ActorRef out, Tile tile, GameState gameState) {
-		gameState.drawDefaultTilesGrid(out);
+	public void displayInRangeAttackTiles(ActorRef out, Tile tile, Board board) {
 		int X = tile.getTilex();
 		int Y = tile.getTiley();
-		Board board = gameState.getBoard();
 		if (!hasAttacked) {
 			for (int x = X - (BASE_ATTACK_RANGE - 1); x < X + BASE_ATTACK_RANGE; x++) {
 				for (int y = Y - (BASE_ATTACK_RANGE - 1); y < Y + BASE_ATTACK_RANGE; y++) {
-					if (!(x == X && y == Y) &&
-							x < board.getX() &&
+					if (x < board.getX() &&
 							y < board.getY()
 							&& x >= 0 && y >= 0) {
 							Unit unit = board.getTile(x,y).getUnit();
 							if(unit != null){
 								if(board.getPlayer2Units().contains(unit)){
-									Tile highlightedTile = BasicObjectBuilders.loadTile(x,y);
-									BasicCommands.drawTile(out, highlightedTile, 2);
-									gameState.getHighlightedTiles().add(highlightedTile);
+									try{
+										Tile highlightedTile = board.getTile(x,y);
+										BasicCommands.drawTile(out, highlightedTile, 2);
+										board.getHighlightedTiles().add(highlightedTile);
+									}catch (IndexOutOfBoundsException ignored){}
 								}
 							}
 					}
@@ -169,49 +169,74 @@ public class Unit {
 		hasMoved = false;
 	}
 
-	// FIXME: 10/02/2022 Need to draw diamond shape.
-	// TODO
-	//Responsible for displaying the movement tiles. Uses helper function to check validity.
-	public void displayMovementTiles(ActorRef out, int X, int Y, GameState gameState){
-		Board board = gameState.getBoard();
+	/**
+	 * Displays a unit's movement tiles. If the unit has not yet attacked, it will display the enemy's that it can target.
+	 * @param out reference to game actor
+	 * @param tile the unit's tile.
+	 * @param board current state of the game board.
+	 */
+	public void displayMovementTiles(ActorRef out, Tile tile, Board board){
+		int X = tile.getTilex();
+		int Y = tile.getTiley();
 		//if a unit has attacked, then it forfeits it's ability to move.
 		if(hasAttacked) hasMoved = true;
 		//movement base logic
 		if(!hasMoved){
-			for(int x = X - (BASE_MOVEMENT - 1); x < X+BASE_MOVEMENT; x++){
-				for(int y = Y - (BASE_MOVEMENT - 1); y < Y+BASE_MOVEMENT; y++){
-					drawValidTilesForMovement(x, X, y, Y, board, out);
+			//Creating the default diamond shape highlight using points dinstance from center.
+			for(int x = X - BASE_MOVEMENT; x <= X+BASE_MOVEMENT; x++){
+				for(int y = Y - BASE_MOVEMENT; y <= Y+BASE_MOVEMENT; y++){
+					int a = Math.abs(x-X);
+					int b = Math.abs(y-Y);
+					if(a+b <= BASE_MOVEMENT){
+						drawValidTilesForMovement(x, y, tile, board, out);
+					}
 				}
-			}
-			//additional tiles to cover.
-			int[][] extraTiles = {{X+BASE_MOVEMENT, Y},{X-BASE_MOVEMENT, Y}, {X, Y+BASE_MOVEMENT},{X, Y-BASE_MOVEMENT}};
-			for(int[] extraTile : extraTiles){
-				drawValidTilesForMovement(extraTile[0], X, extraTile[1], Y, board, out);
 			}
 		}
 	}
 
-	//Handles the main drawing of the tiles according to validation rules.
-	private void drawValidTilesForMovement(int x, int X, int y, int Y, Board board, ActorRef out){
+	/**
+	 * Helper function for displayMovementTiles().
+	 * If there are enemy units that can be targeted, it will highlight them.
+	 * It ignores friendly units.
+	 * Then, at the end checks border cases where a unit can move, then attack.
+	 * @param x - tile to consider, coordinate x.
+	 * @param y - tile to consider, coordinate y.
+	 * @param tile - the original unit's tile.
+	 * @param board - current state of the board.
+	 * @param out - game actor reference
+	 */
+	private void drawValidTilesForMovement(int x, int y, Tile tile, Board board, ActorRef out){
+		int X = tile.getTilex();
+		int Y = tile.getTiley();
 		if(!(x == X && y == Y) &&
 				x < board.getX() &&
 				y < board.getY()
 				&& x >= 0 && y >= 0){
 			if(board.getTile(x,y).unit != null){
 				Unit unit = board.getTile(x,y).getUnit();
-				if(board.getPlayer1Units().contains(unit)){
-					//leave default colour.
-				}
-				else if(board.getPlayer2Units().contains(unit)){
+				//if there is an enemy unit and this unit can attack it, highlight it in red.
+				if(board.getPlayer2Units().contains(unit)){
 					if(!hasAttacked){
-						BasicCommands.drawTile(out, BasicObjectBuilders.loadTile(x,y), 2);
+						Tile highlightedTile = board.getTile(x,y);
+						BasicCommands.drawTile(out, highlightedTile, 2);
+						board.getHighlightedTiles().add(highlightedTile);
 					}
 					//else leave default colour.
 				}
 			}
 			else { //if no unit is present then draw the move tile.
-				BasicCommands.drawTile(out, BasicObjectBuilders.loadTile(x, y), 1);
+				Tile highlightedTile = board.getTile(x,y);
+				board.getHighlightedTiles().add(highlightedTile);
+				BasicCommands.drawTile(out, highlightedTile, 1);
 			}
 		}
+		//if a unit hasn't attacked check the border cases.
+		try {
+			if (!hasAttacked) {
+				displayInRangeAttackTiles(out, board.getTile(x, y), board);
+			}
+		}
+		catch (IndexOutOfBoundsException ignored){}
 	}
 }

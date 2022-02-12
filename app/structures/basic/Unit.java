@@ -29,7 +29,8 @@ public class Unit {
 	private Position position;
 	private UnitAnimationSet animations;
 	private ImageCorrection correction;
-	private final int BASE_MOVEMENT = 2;
+	private int BASE_MOVEMENT = 2;
+	private int BASE_ATTACK_RANGE = 2;
 	private boolean hasMoved = false;
 	private boolean hasAttacked = false;
 	
@@ -120,6 +121,44 @@ public class Unit {
 	 */
 	public void resetAttack(){
 		hasAttacked = false;
+	}
+
+	/**
+	 * Whenever this method is called, it first calls the drawDefaultTilesGrid. This will clear the previously
+	 * highlighted tiles.
+	 * Afterwards, it will check whether this unit has attacked. If not, it will start the search.
+	 * It searches through a square of size BASE_ATTACK_RANGE which defines how far it can reach.
+	 * If it finds enemy units on any of those tiles, it will highlight them in red. Then, it will add this tile
+	 * to the GameState highlighted tiles list.
+	 * @param out game actor reference.
+	 * @param tile the tile that was clicked.
+	 * @param gameState the current state of the game.
+	 * @see GameState
+	 */
+	public void displayInRangeAttackTiles(ActorRef out, Tile tile, GameState gameState) {
+		gameState.drawDefaultTilesGrid(out);
+		int X = tile.getTilex();
+		int Y = tile.getTiley();
+		Board board = gameState.getBoard();
+		if (!hasAttacked) {
+			for (int x = X - (BASE_ATTACK_RANGE - 1); x < X + BASE_ATTACK_RANGE; x++) {
+				for (int y = Y - (BASE_ATTACK_RANGE - 1); y < Y + BASE_ATTACK_RANGE; y++) {
+					if (!(x == X && y == Y) &&
+							x < board.getX() &&
+							y < board.getY()
+							&& x >= 0 && y >= 0) {
+							Unit unit = board.getTile(x,y).getUnit();
+							if(unit != null){
+								if(board.getPlayer2Units().contains(unit)){
+									Tile highlightedTile = BasicObjectBuilders.loadTile(x,y);
+									BasicCommands.drawTile(out, highlightedTile, 2);
+									gameState.getHighlightedTiles().add(highlightedTile);
+								}
+							}
+					}
+				}
+			}
+		}
 	}
 
 	/**

@@ -1,3 +1,5 @@
+package structures.basic;
+
 public abstract class Spell extends Card{
 
     /** All spell card classes implement Spell class and

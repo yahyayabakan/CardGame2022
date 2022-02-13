@@ -54,6 +54,24 @@ public class TileClicked implements EventProcessor{
 			gameState.getBoard().clearHighlightedTiles();
 			gameState.drawDefaultTilesGrid(out);
 			clickedTile.getUnit().displayMovementTiles(out, clickedTile, gameState.getBoard());
+			//Lets the board know which tile was clicked last
+			gameState.getBoard().setLastTile(clickedTile);
+		}
+
+		/**
+		 * If an empty tile is clicked right after a unit, then the unit is moved to that tile
+		 * if it is a valid tile. It then calls the drawDefaultTilesGrid method to unhighlight all the tiles
+		 */
+
+		if(clickedTile.getUnit()==null && gameState.getBoard().getLastTile().getUnit()!=null){
+			Boolean movePerformed=false;
+			movePerformed = gameState.getBoard().getLastTile().getUnit().moveUnit(clickedTile,out,gameState.getBoard());
+			// if the move was perfromed as per the validation rules, the tiles need to be updated
+			if(movePerformed){
+				clickedTile.addUnit(gameState.getBoard().getLastTile().getUnit());
+				gameState.getBoard().getLastTile().removeUnit();
+				gameState.drawDefaultTilesGrid(out);
+			}
 		}
 	}
 }

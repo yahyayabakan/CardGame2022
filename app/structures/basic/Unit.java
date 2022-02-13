@@ -239,4 +239,63 @@ public class Unit {
 		}
 		catch (IndexOutOfBoundsException ignored){}
 	}
+
+	//Handles the movement of the unit to a tile
+	public Boolean moveUnit(Tile tile, ActorRef out, Board board){
+		Boolean validMove=false;
+		Boolean attackMove=false;
+		Tile attackMoveTile = new Tile();
+		Unit unit;
+		for(Tile vt:board.getHighlightedTiles()){
+			if(tile.tilex==vt.tilex && tile.tiley==vt.tiley){
+				unit=tile.getUnit();
+				if(!board.getPlayer2Units().contains(unit))
+					validMove=true;
+				else{
+					attackMove=true;
+				}
+		}	}
+		if(validMove){ // Only moves if it is a valid move
+			BasicCommands.moveUnitToTile(out,this,tile);
+			try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
+			this.setPositionByTile(tile);
+			board.clearHighlightedTiles();
+			hasMoved=true;
+			return true;
+		}else return false;
+
+		// TODO This needs to be updated with the logic for attacking after moving
+		//if(attackMove){
+			// for(Tile vt:board.getHighlightedTiles()){
+			// 	try {
+			// 		if((tile.tilex-1==vt.tilex && tile.tiley==vt.tiley)||
+			//   		 (tile.tilex==vt.tilex && tile.tiley+1==vt.tiley)||
+			//   		 (tile.tilex+1==vt.tilex && tile.tiley==vt.tiley)||
+			// 	     (tile.tilex==vt.tilex && tile.tiley-1==vt.tiley)){
+			// 	  	 attackMoveTile=vt;
+			//    		}
+			// 	} catch (IndexOutOfBoundsException ignored ) {}
+			// }
+			// ALTERNATE
+			// Tile attacker= board.getLastTile();
+			// if(tile.tiley==attacker.tiley){
+			// 	if(attacker.tilex<tile.tilex)
+			// 		attackMoveTile=board.getTile(attacker.tilex+1,tile.tiley);
+			// 	else	
+			// 		attackMoveTile=board.getTile(attacker.tilex-1,tile.tiley);
+			// }else if(tile.tilex==attacker.tilex){
+			// 	if(attacker.tiley<tile.tiley)
+			// 		attackMoveTile=board.getTile(attacker.tilex,tile.tiley+1);
+			// 	else	
+			// 		attackMoveTile=board.getTile(attacker.tilex,tile.tiley-1);
+			// }
+			// BasicCommands.moveUnitToTile(out,this,attackMoveTile);
+			// try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
+			// this.setPositionByTile(attackMoveTile);
+			// board.clearHighlightedTiles();
+			// hasMoved=true;
+			// return true;
+		 
+	}
+
 }

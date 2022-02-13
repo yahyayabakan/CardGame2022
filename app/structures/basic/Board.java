@@ -21,6 +21,9 @@ public class Board {
     private List<Unit> player2Units;
     private List<Tile> highlightedTiles;
 
+     // Tile to store the last tile that was clicked
+     private Tile lastTile;
+
     //Constructor
     public Board() {
         tiles = constructTiles();
@@ -100,5 +103,13 @@ public class Board {
      */
     public void clearHighlightedTiles(){
         highlightedTiles.clear();
+    }
+
+    public Tile getLastTile(){
+        return lastTile;
+    }
+
+    public void setLastTile(Tile clickedTile) {
+        lastTile = clickedTile;
     }
 }

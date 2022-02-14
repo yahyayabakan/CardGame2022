@@ -22,10 +22,10 @@ public class CardClicked implements EventProcessor{
 
 	@Override
 	public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
-		
-		int handPosition = message.get("position").asInt();
-		
-		
+		if(gameState.gameInitalised && gameState.clickable) {
+			int handPosition = message.get("position").asInt();
+
+		}
 	}
 
 }

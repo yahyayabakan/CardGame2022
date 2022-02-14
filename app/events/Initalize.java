@@ -26,7 +26,6 @@ public class Initalize implements EventProcessor{
 
 	@Override
 	public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
-		gameState.gameInitalised = true;
 		final int STARTING_HAND = 3;
 		Player playerOne = gameState.getPlayerOne();
 		Player playerTwo = gameState.getPlayerTwo();
@@ -77,6 +76,9 @@ public class Initalize implements EventProcessor{
 		BasicCommands.drawUnit(out, avatarOne, gameState.getBoard().getTile(1,2));
 		BasicCommands.drawUnit(out, avatarTwo, gameState.getBoard().getTile(7,2));
 
+		//game initialised and clickable should be set to true only at the end.
+		gameState.gameInitalised = true;
+		gameState.clickable = true;
 	}
 }
 

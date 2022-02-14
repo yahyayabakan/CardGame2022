@@ -25,7 +25,7 @@ public class GameState {
 	private int unitIdCounter = 0;
 
 	public boolean gameInitalised = false;
-	public boolean something = false;
+	public boolean clickable = false;
 
 	public GameState() {
 		turn = 0;

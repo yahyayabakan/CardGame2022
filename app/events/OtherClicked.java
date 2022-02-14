@@ -20,8 +20,10 @@ public class OtherClicked implements EventProcessor{
 
 	@Override
 	public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
-		//Draw default tiles.
-		gameState.drawDefaultTilesGrid(out);
+		if(gameState.gameInitalised && gameState.clickable) {
+			//Draw default tiles.
+			gameState.drawDefaultTilesGrid(out);
+		}
 	}
 
 }

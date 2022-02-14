@@ -24,7 +24,8 @@ public class EndTurnClicked implements EventProcessor{
 	public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
 		//only allow the end turn to be pressed when both game is initialised and clickable.
 		if (gameState.gameInitalised && gameState.clickable) {
-
+			//don't allow the user to click while the end turn process performs.
+			gameState.clickable = false;
 
 			//This should be the last step of the end turn event. It gives both player one and player two their new mana.
 			Player playerOne = gameState.getPlayerOne();
@@ -35,6 +36,9 @@ public class EndTurnClicked implements EventProcessor{
 			BasicCommands.setPlayer1Mana(out, playerOne);
 			BasicCommands.setPlayer2Mana(out, playerTwo);
 			System.out.println(playerOne.getMana());
+
+			//allow the user to click once the process ends.
+			gameState.clickable = true;
 		}
 	}
 

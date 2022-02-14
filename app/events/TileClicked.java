@@ -32,7 +32,8 @@ public class TileClicked implements EventProcessor{
 
 			//reference to the clicked tile.
 			Tile clickedTile = gameState.getBoard().getTile(tilex, tiley);
-
+			//previously clicked tile.
+			Tile previouslyClicked = gameState.getBoard().getLastTile();
 			/**
 			 * If a friendly unit is clicked, then display the potential movement tiles.
 			 * It first runs the drawDefaultTilesGrid() to refresh the board tiles.
@@ -56,14 +57,17 @@ public class TileClicked implements EventProcessor{
 			 * if it is a valid tile. It then calls the drawDefaultTilesGrid method to unhighlight all the tiles
 			 */
 
-			if (clickedTile.getUnit() == null && gameState.getBoard().getLastTile().getUnit() != null) {
-				Boolean movePerformed = false;
-				movePerformed = gameState.getBoard().getLastTile().getUnit().moveUnit(clickedTile, out, gameState.getBoard());
-				// if the move was perfromed as per the validation rules, the tiles need to be updated
-				if (movePerformed) {
-					clickedTile.addUnit(gameState.getBoard().getLastTile().getUnit());
-					gameState.getBoard().getLastTile().removeUnit();
-					gameState.drawDefaultTilesGrid(out);
+			if (clickedTile.getUnit() == null &&
+					previouslyClicked != null) {
+				if(previouslyClicked.getUnit() != null) {
+					Boolean movePerformed = false;
+					movePerformed = gameState.getBoard().getLastTile().getUnit().moveUnit(clickedTile, out, gameState.getBoard());
+					// if the move was performed as per the validation rules, the tiles need to be updated
+					if (movePerformed) {
+						clickedTile.addUnit(gameState.getBoard().getLastTile().getUnit());
+						gameState.getBoard().getLastTile().removeUnit();
+						gameState.drawDefaultTilesGrid(out);
+					}
 				}
 			}
 		}

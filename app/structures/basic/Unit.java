@@ -141,6 +141,34 @@ public class Unit {
 	}
 
 	/**
+	 * Method to call whenever a unit takes damage. It decreases the health according to damage.
+	 * If the unit health reaches below 1, then the unit is destroyed and removed from the board.
+	 * Otherwise, if it survives it will update the front-end to display the new change.
+	 * @param damage amount of damage
+	 * @param gameState the current state of the game.
+	 * @param out game actor reference
+	 */
+	public void takeDamage(int damage, GameState gameState, ActorRef out){
+		health -= damage;
+		if(health < 1){
+			List<Unit> playerOneUnits = gameState.getBoard().getPlayer1Units();
+			List<Unit> playerTwoUnits = gameState.getBoard().getPlayer2Units();
+			//it will remove from either list one or two. The remove() method checks whether it contains an object, so there is no need to check manually.
+			playerOneUnits.remove(this);
+			playerTwoUnits.remove(this);
+			//remove it from tile.
+			gameState.getBoard().getTile(position.tilex, position.tiley).addUnit(null);
+			//delete the unit from the front-end.
+			BasicCommands.playUnitAnimation(out, this, UnitAnimationType.death);
+			try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
+			BasicCommands.deleteUnit(out,this);
+		}
+		else{
+			BasicCommands.setUnitHealth(out, this, health);
+		}
+	}
+
+	/**
 	 * Reset the has attacked boolean to default false.
 	 * Can be used after the end of each turn.
 	 */

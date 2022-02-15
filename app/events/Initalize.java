@@ -80,10 +80,6 @@ public class Initalize implements EventProcessor{
 		//game initialised and clickable should be set to true only at the end.
 		gameState.gameInitalised = true;
 		gameState.clickable = true;
-
-		Unit fire = CustomizedBuilders.loadSummon(StaticConfFiles.u_fire_spitter, StaticConfFiles.c_fire_spitter, gameState.getNewUnitID(), Unit.class);
-		gameState.displayUnit(out, fire, gameState.getBoard().getTile(5,4), gameState.getPlayerTwo(), gameState.getBoard());
-
 	}
 }
 

@@ -190,6 +190,28 @@ public class Unit {
 	}
 
 	/**
+	 * This method is used by the attack method. If a unit is able to counter, as per rules, then it will do so.
+	 * @param unit the unit that attacked this unit.
+	 * @param gameState the current state of the game
+	 * @param out actor reference.
+	 */
+	private void counter(Unit unit, GameState gameState, ActorRef out) {
+		if (health > 1) {
+			int X = position.tilex;
+			int Y = position.tiley;
+			for (int x = X - (BASE_ATTACK_RANGE - 1); x < X + BASE_ATTACK_RANGE; x++) {
+				for (int y = Y - (BASE_ATTACK_RANGE - 1); y < Y + BASE_ATTACK_RANGE; y++) {
+					if(gameState.getBoard().getTile(x,y).getUnit() == unit){
+						BasicCommands.playUnitAnimation(out, this, UnitAnimationType.attack);
+						try {Thread.sleep(3000);} catch (InterruptedException e) {e.printStackTrace();}
+						unit.takeDamage(attack, gameState, out);
+						break;
+					}
+				}
+			}
+		}
+	}
+	/**
 	 * Afterwards, it will check whether this unit has attacked. If not, it will start the search.
 	 * It searches through a square of size BASE_ATTACK_RANGE which defines how far it can reach.
 	 * If it finds enemy units on any of those tiles, it will highlight them in red. Then, it will add this tile

@@ -36,6 +36,7 @@ public class Unit {
 	private int BASE_ATTACK_RANGE = 2;
 	private boolean hasMoved = false;
 	private boolean hasAttacked = false;
+	private BigCard bigCard; // Map BigCard to Unit
 	
 	public Unit() {}
 	
@@ -58,9 +59,7 @@ public class Unit {
 		this.correction = correction;
 		this.animations = animations;
 	}
-	
-	
-	
+
 	public Unit(int id, UnitAnimationType animation, Position position, UnitAnimationSet animations,
 			ImageCorrection correction) {
 		super();
@@ -107,7 +106,33 @@ public class Unit {
 	public void setAnimations(UnitAnimationSet animations) {
 		this.animations = animations;
 	}
-	
+
+	public BigCard getBigCard() {
+		return bigCard;
+	}
+
+	public void setBigCard(BigCard bigCard) {
+		this.bigCard = bigCard;
+	}
+
+	// Get and set unit health from big card mapped
+	public int getHealth(){
+		return bigCard.getHealth();
+	}
+
+	public void setHealth(int health){
+		bigCard.setHealth(health);
+	}
+
+	// Get and set unit attack from big card mapped
+	public int getAttack(){
+		return bigCard.getAttack();
+	}
+
+	public void setAttack(int attack){
+		bigCard.setHealth(attack);
+	}
+
 	/**
 	 * This command sets the position of the Unit to a specified
 	 * tile.

@@ -10,6 +10,7 @@ import structures.basic.Tile;
 import structures.basic.Unit;
 import structures.units.Avatar;
 import utils.BasicObjectBuilders;
+import utils.StaticConfFiles;
 
 /**
  * Indicates that both the core game loop in the browser is starting, meaning
@@ -58,11 +59,11 @@ public class Initalize implements EventProcessor{
 
 		//create avatars for both players and add them to tiles
 		Unit avatarOne = BasicObjectBuilders.loadUnit(
-				"conf/gameconfs/avatars/avatar1.json",
+				StaticConfFiles.humanAvatar,
 				gameState.getNewUnitID(),
 				Avatar.class);
 		Unit avatarTwo = BasicObjectBuilders.loadUnit(
-				"conf/gameconfs/avatars/avatar2.json",
+				StaticConfFiles.aiAvatar,
 				gameState.getNewUnitID(),
 				Avatar.class);
 		gameState.getBoard().addUnitToPlayer1List(avatarOne);

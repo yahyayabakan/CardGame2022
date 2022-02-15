@@ -1,30 +1,21 @@
 package structures.units;
 
+import structures.basic.Player;
 import structures.basic.Unit;
 
 public class Avatar extends Unit {
-    private int health = 20;
-    private int attack = 2;
+    private Player player;
 
-    //override health & attack getters and setters as no BigCard is mapped for Avatar
-    @Override
-    public int getHealth() {
-        return health;
-    }
-
-    @Override
-    public void setHealth(int health) {
-
-        this.health = health;
-    }
-
-    @Override
-    public int getAttack() {
-        return attack;
-    }
-
-    @Override
-    public void setAttack(int attack) {
-        this.attack = attack;
+    /**
+     * Set both the attack and health of avatar using player's attack.
+     * This will also set the MAX_HEALTH to player's initial health which by default is 20.
+     * Then, it binds the player reference to this avatar class.
+     * @param player the player who this avatar represents
+     * @see Player
+     */
+    public void setupAvatar(Player player){
+        super.setHealth(player.getHealth());
+        super.setAttack(2);
+        this.player = player;
     }
 }

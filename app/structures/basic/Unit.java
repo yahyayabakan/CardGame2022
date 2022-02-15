@@ -37,6 +37,7 @@ public class Unit {
 	private boolean hasMoved = false;
 	private boolean hasAttacked = false;
 	private int health;
+	private int MAX_HEALTH;
 	private int attack;
 	
 	public Unit() {}
@@ -112,8 +113,13 @@ public class Unit {
 		return health;
 	}
 
+	/**
+	 * Should only be used the first time the unit is set. Do not use when decrementing health.
+	 * @param health card's health.
+	 */
 	public void setHealth(int health) {
 		this.health = health;
+		this.MAX_HEALTH = health;
 	}
 
 	public int getAttack() {

@@ -86,7 +86,6 @@ public class Initalize implements EventProcessor{
 		//game initialised and clickable should be set to true only at the end.
 		gameState.gameInitalised = true;
 		gameState.clickable = true;
-		
 	}
 }
 

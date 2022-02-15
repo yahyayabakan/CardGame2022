@@ -13,7 +13,9 @@ public class CustomizedBuilders {
         Unit unit = BasicObjectBuilders.loadUnit(unitConfig, unitID, unitClassType);
         Card card = BasicObjectBuilders.loadCard(cardConfig, 0, Card.class);
 
-        unit.setHealth(card.getBigCard().getHealth());
+        assert unit != null;
+        assert card != null;
+        unit.setHealthWithMax(card.getBigCard().getHealth());
         unit.setAttack(card.getBigCard().getAttack());
 
         return unit;

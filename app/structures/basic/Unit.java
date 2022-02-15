@@ -117,9 +117,13 @@ public class Unit {
 	 * Should only be used the first time the unit is set. Do not use when decrementing health.
 	 * @param health card's health.
 	 */
-	public void setHealth(int health) {
+	public void setHealthWithMax(int health) {
 		this.health = health;
 		this.MAX_HEALTH = health;
+	}
+
+	public void setHealth(int health){
+		this.health = health;
 	}
 
 	public int getAttack() {

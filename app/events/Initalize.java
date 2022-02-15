@@ -60,26 +60,33 @@ public class Initalize implements EventProcessor{
 		gameState.displayCurrentHandCards(out, playerOne);
 
 		//create avatars for both players.
-		Unit avatarOne = BasicObjectBuilders.loadUnit(
+		Avatar avatarOne = (Avatar) BasicObjectBuilders.loadUnit(
 				StaticConfFiles.humanAvatar,
 				gameState.getNewUnitID(),
 				Avatar.class);
-		Unit avatarTwo = BasicObjectBuilders.loadUnit(
+		try {Thread.sleep(250);} catch (InterruptedException e) {e.printStackTrace();}
+		assert avatarOne != null;
+		avatarOne.setupAvatar(playerOne);
+
+		Avatar avatarTwo = (Avatar) BasicObjectBuilders.loadUnit(
 				StaticConfFiles.aiAvatar,
 				gameState.getNewUnitID(),
 				Avatar.class);
+		try {Thread.sleep(250);} catch (InterruptedException e) {e.printStackTrace();}
+		assert avatarTwo != null;
+		avatarTwo.setupAvatar(playerTwo);
+		//designated tiles for each avatar.
 		Tile avatarOneTile = gameState.getBoard().getTile(1,2);
 		Tile avatarTwoTile = gameState.getBoard().getTile(7,2);
 
 		//display the avatars to frontend and add them to the tiles.
-		assert avatarOne != null;
 		gameState.displayUnit(out, avatarOne, avatarOneTile, gameState.getPlayerOne(), gameState.getBoard());
-		assert avatarTwo != null;
 		gameState.displayUnit(out, avatarTwo, avatarTwoTile, gameState.getPlayerTwo(), gameState.getBoard());
 
 		//game initialised and clickable should be set to true only at the end.
 		gameState.gameInitalised = true;
 		gameState.clickable = true;
+		
 	}
 }
 

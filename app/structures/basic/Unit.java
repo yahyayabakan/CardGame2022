@@ -145,6 +145,15 @@ public class Unit {
 	}
 
 	/**
+	 * Method to increase to health a unit. It cannot go over the MAX_HEALTH value.
+	 * This method should be called for any ability that would heal a unit.
+	 * @param amount the amount by which to increase health
+	 */
+	public void heal(int amount){
+		if(health + amount > MAX_HEALTH) health = MAX_HEALTH;
+		else health+=amount;
+	}
+	/**
 	 * Method to call whenever a unit takes damage. It decreases the health according to damage.
 	 * If the unit health reaches below 1, then the unit is destroyed and removed from the board.
 	 * Otherwise, if it survives it will update the front-end to display the new change.

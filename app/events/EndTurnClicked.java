@@ -27,6 +27,11 @@ public class EndTurnClicked implements EventProcessor{
 			//don't allow the user to click while the end turn process performs.
 			gameState.clickable = false;
 
+			//draw the new cards for both players on the backend, then display the player one's cards on front-end.
+			gameState.getPlayerOne().draw(out);
+			gameState.getPlayerTwo().draw(out);
+			gameState.displayCurrentHandCards(out, gameState.getPlayerOne());
+
 			//This should be the last step of the end turn event. It gives both player one and player two their new mana.
 			Player playerOne = gameState.getPlayerOne();
 			Player playerTwo = gameState.getPlayerTwo();
@@ -35,7 +40,6 @@ public class EndTurnClicked implements EventProcessor{
 			gameState.incrementPlayerMana(playerTwo);
 			BasicCommands.setPlayer1Mana(out, playerOne);
 			BasicCommands.setPlayer2Mana(out, playerTwo);
-			System.out.println(playerOne.getMana());
 
 			//allow the user to click once the process ends.
 			gameState.clickable = true;

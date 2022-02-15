@@ -27,7 +27,6 @@ public class Initalize implements EventProcessor{
 
 	@Override
 	public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
-		
 		final int STARTING_HAND = 3;
 		Player playerOne = gameState.getPlayerOne();
 		Player playerTwo = gameState.getPlayerTwo();

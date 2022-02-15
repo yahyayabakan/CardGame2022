@@ -76,7 +76,7 @@ public class Initalize implements EventProcessor{
 		assert avatarTwo != null;
 		avatarTwo.setupAvatar(playerTwo);
 		//designated tiles for each avatar.
-		Tile avatarOneTile = gameState.getBoard().getTile(6,2);
+		Tile avatarOneTile = gameState.getBoard().getTile(1,2);
 		Tile avatarTwoTile = gameState.getBoard().getTile(7,2);
 
 		//display the avatars to frontend and add them to the tiles.
@@ -86,7 +86,6 @@ public class Initalize implements EventProcessor{
 		//game initialised and clickable should be set to true only at the end.
 		gameState.gameInitalised = true;
 		gameState.clickable = true;
-		avatarOne.attack(avatarTwo, gameState, out);
 	}
 }
 

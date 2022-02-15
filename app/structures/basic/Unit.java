@@ -202,7 +202,7 @@ public class Unit {
 		unit.takeDamage(attack, gameState, out);
 		unit.counter(this, gameState, out);
 	}
-	
+
 	/**
 	 * This method is used by the attack method. If a unit is able to counter, as per rules, then it will do so.
 	 * @param unit the unit that attacked this unit.

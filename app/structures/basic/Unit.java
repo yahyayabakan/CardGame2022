@@ -190,6 +190,20 @@ public class Unit {
 	}
 
 	/**
+	 * The method used to attack another unit. Called on the unit that wants to attack and passing another unit as parameter.
+	 * Highlighting should be performed first.
+	 * @param unit the unit to attack.
+	 * @param gameState current state of the game.
+	 * @param out reference to the game actor.
+	 */
+	public void attack(Unit unit, GameState gameState, ActorRef out){
+		BasicCommands.playUnitAnimation(out, this, UnitAnimationType.attack);
+		try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
+		unit.takeDamage(attack, gameState, out);
+		unit.counter(this, gameState, out);
+	}
+
+	/**
 	 * This method is used by the attack method. If a unit is able to counter, as per rules, then it will do so.
 	 * @param unit the unit that attacked this unit.
 	 * @param gameState the current state of the game

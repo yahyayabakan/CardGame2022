@@ -17,6 +17,7 @@ public class Player {
 
 	private int health;
 	private int mana;
+	private int playerNumber;
 	private Deck deck;
 	private LinkedList<Card> hand;
 	private static final int HandMax = 6;
@@ -37,10 +38,11 @@ public class Player {
 	}
 
 	//New constructor.
-	public Player(int health, int mana, Deck deck){
+	public Player(int health, int mana, Deck deck, int playerNumber){
 		this.health = health;
 		this.mana = mana;
 		this.deck = deck;
+		this.playerNumber = playerNumber;
 		hand = new LinkedList<>();
 	}
 
@@ -55,6 +57,10 @@ public class Player {
 	}
 	public void setMana(int mana) {
 		this.mana = mana;
+	}
+
+	public int getPlayerNumber() {
+		return playerNumber;
 	}
 
 	public LinkedList<Card> getHand() {

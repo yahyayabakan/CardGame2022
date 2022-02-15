@@ -27,6 +27,7 @@ public class Initalize implements EventProcessor{
 
 	@Override
 	public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
+		
 		final int STARTING_HAND = 3;
 		Player playerOne = gameState.getPlayerOne();
 		Player playerTwo = gameState.getPlayerTwo();
@@ -48,6 +49,7 @@ public class Initalize implements EventProcessor{
 		BasicCommands.setPlayer1Mana(out, playerOne);
 		BasicCommands.setPlayer2Mana(out, playerTwo);
 
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 		//draw the initial 3 cards for both players.
 		for(int i = 0; i < STARTING_HAND; i++){
 			playerOne.draw(out);
@@ -57,7 +59,7 @@ public class Initalize implements EventProcessor{
 		//show the hand to player one on the front end.
 		gameState.displayCurrentHandCards(out, playerOne);
 
-		//create avatars for both players and add them to tiles
+		//create avatars for both players.
 		Unit avatarOne = BasicObjectBuilders.loadUnit(
 				StaticConfFiles.humanAvatar,
 				gameState.getNewUnitID(),
@@ -66,16 +68,14 @@ public class Initalize implements EventProcessor{
 				StaticConfFiles.aiAvatar,
 				gameState.getNewUnitID(),
 				Avatar.class);
-		gameState.getBoard().addUnitToPlayer1List(avatarOne);
-		gameState.getBoard().addUnitToPlayer2List(avatarTwo);
-		gameState.getBoard().getTile(1,2).addUnit(avatarOne);
-		gameState.getBoard().getTile(7,2).addUnit(avatarTwo);
+		Tile avatarOneTile = gameState.getBoard().getTile(1,2);
+		Tile avatarTwoTile = gameState.getBoard().getTile(7,2);
 
-		//display the avatars to frontend
-		avatarOne.setPositionByTile(gameState.getBoard().getTile(1,2));
-		avatarTwo.setPositionByTile(gameState.getBoard().getTile(7,2));
-		BasicCommands.drawUnit(out, avatarOne, gameState.getBoard().getTile(1,2));
-		BasicCommands.drawUnit(out, avatarTwo, gameState.getBoard().getTile(7,2));
+		//display the avatars to frontend and add them to the tiles.
+		assert avatarOne != null;
+		gameState.displayUnit(out, avatarOne, avatarOneTile, gameState.getPlayerOne(), gameState.getBoard());
+		assert avatarTwo != null;
+		gameState.displayUnit(out, avatarTwo, avatarTwoTile, gameState.getPlayerTwo(), gameState.getBoard());
 
 		//game initialised and clickable should be set to true only at the end.
 		gameState.gameInitalised = true;

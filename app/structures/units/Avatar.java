@@ -55,7 +55,7 @@ public class Avatar extends Unit {
                 BasicCommands.addPlayer1Notification(out, "YOU LOSE!", 10000);
             }
             else {
-                BasicCommands.setPlayer1Health(out, player);
+                BasicCommands.setPlayer2Health(out, player);
                 BasicCommands.addPlayer1Notification(out, "YOU WIN!", 10000);
             }
             //game ends and thus should no longer be clickable

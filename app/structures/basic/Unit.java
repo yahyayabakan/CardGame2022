@@ -36,7 +36,8 @@ public class Unit {
 	private int BASE_ATTACK_RANGE = 2;
 	private boolean hasMoved = false;
 	private boolean hasAttacked = false;
-	private BigCard bigCard; // Map BigCard to Unit
+	private int health;
+	private int attack;
 	
 	public Unit() {}
 	
@@ -107,30 +108,20 @@ public class Unit {
 		this.animations = animations;
 	}
 
-	public BigCard getBigCard() {
-		return bigCard;
+	public int getHealth() {
+		return health;
 	}
 
-	public void setBigCard(BigCard bigCard) {
-		this.bigCard = bigCard;
+	public void setHealth(int health) {
+		this.health = health;
 	}
 
-	// Get and set unit health from big card mapped
-	public int getHealth(){
-		return bigCard.getHealth();
+	public int getAttack() {
+		return attack;
 	}
 
-	public void setHealth(int health){
-		bigCard.setHealth(health);
-	}
-
-	// Get and set unit attack from big card mapped
-	public int getAttack(){
-		return bigCard.getAttack();
-	}
-
-	public void setAttack(int attack){
-		bigCard.setHealth(attack);
+	public void setAttack(int attack) {
+		this.attack = attack;
 	}
 
 	/**

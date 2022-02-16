@@ -26,6 +26,15 @@ public class Avatar extends Unit {
     }
 
     /**
+     * Whenever the avatar is healed, the player should be healed too.
+     * @param amount the amount by which to increase health
+     */
+    @Override
+    public void heal(int amount){
+        super.heal(amount);
+        player.setHealth(this.getHealth());
+    }
+    /**
      * The avatar's health is linked to player, thus it has to considered when it takes damage.
      * Otherwise it is the same implementation as unit.
      * @param damage amount of damage

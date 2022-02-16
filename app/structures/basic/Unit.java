@@ -34,6 +34,7 @@ public class Unit {
 	private ImageCorrection correction;
 	protected int BASE_MOVEMENT = 2;
 	protected int BASE_ATTACK_RANGE = 2;
+	protected boolean isSummoned = false;
 	private boolean hasMoved = false;
 	private boolean hasAttacked = false;
 	private int health;
@@ -180,6 +181,32 @@ public class Unit {
 		else{
 			BasicCommands.setUnitHealth(out, this, health);
 		}
+	}
+
+	/**
+	 * Summon a unit on the front end on a specific tile.
+	 * It will generate the attack and health according to unit.
+	 * It also adds the unit to the tile in the backend and to the correct unit list of player.
+	 * @param out game actor reference
+	 * @param tile the tile on which to display.
+	 * @param player the player to who the unit belongs to.
+	 * @param board current state of the board.
+	 */
+	public void summon(ActorRef out, Tile tile, Player player, Board board){
+		this.setPositionByTile(tile);
+		tile.addUnit(this);
+		if(player.getPlayerNumber() == 1){
+			board.getPlayer1Units().add(this);
+		}
+		else {
+			board.getPlayer2Units().add(this);
+		}
+		BasicCommands.drawUnit(out, this, tile);
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+		BasicCommands.setUnitAttack(out, this, attack);
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+		BasicCommands.setUnitHealth(out, this, health);
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 	}
 
 	/**

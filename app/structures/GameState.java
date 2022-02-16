@@ -3,9 +3,7 @@ package structures;
 import commands.BasicCommands;
 import structures.basic.*;
 import akka.actor.ActorRef;
-
 import java.util.LinkedList;
-import java.util.List;
 import java.util.stream.IntStream;
 
 /**
@@ -137,6 +135,4 @@ public class GameState {
 	public int getNewUnitID(){
 		return ++unitIdCounter;
 	}
-
-
 }

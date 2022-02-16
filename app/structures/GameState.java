@@ -105,32 +105,6 @@ public class GameState {
 				});
 	}
 
-	/**
-	 * Display a unit on the front end on a specific tile.
-	 * It will generate the attack and health according to unit.
-	 * It also adds the unit to the tile in the backend and to the correct unit list of player.
-	 * @param out game actor reference
-	 * @param unit the unit to display
-	 * @param tile the tile on which to display.
-	 * @param player the player to who the unit belongs to.
-	 * @param board current state of the board.
-	 */
-	public void displayUnit(ActorRef out, Unit unit, Tile tile, Player player, Board board){
-		unit.setPositionByTile(tile);
-		tile.addUnit(unit);
-		if(player.getPlayerNumber() == 1){
-			board.getPlayer1Units().add(unit);
-		}
-		else {
-			board.getPlayer2Units().add(unit);
-		}
-		BasicCommands.drawUnit(out, unit, tile);
-		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
-		BasicCommands.setUnitAttack(out, unit, unit.getAttack());
-		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
-		BasicCommands.setUnitHealth(out, unit, unit.getHealth());
-		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
-	}
 	// Generate next unit ID
 	public int getNewUnitID(){
 		return ++unitIdCounter;

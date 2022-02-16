@@ -8,6 +8,7 @@ import structures.GameState;
 import structures.basic.Player;
 import structures.basic.Tile;
 import structures.units.Avatar;
+import structures.units.AzureHerald;
 import structures.units.Windshrike;
 import utils.BasicObjectBuilders;
 import utils.CustomizedBuilders;
@@ -80,8 +81,8 @@ public class Initalize implements EventProcessor{
 		Tile avatarTwoTile = gameState.getBoard().getTile(7,2);
 
 		//display the avatars to frontend and add them to the tiles.
-		gameState.displayUnit(out, avatarOne, avatarOneTile, gameState.getPlayerOne(), gameState.getBoard());
-		gameState.displayUnit(out, avatarTwo, avatarTwoTile, gameState.getPlayerTwo(), gameState.getBoard());
+		avatarOne.summon(out, avatarOneTile, gameState.getPlayerOne(), gameState.getBoard());
+		avatarTwo.summon(out, avatarTwoTile, gameState.getPlayerTwo(), gameState.getBoard());
 
 		//game initialised and clickable should be set to true only at the end.
 		gameState.gameInitalised = true;

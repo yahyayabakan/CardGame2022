@@ -8,7 +8,6 @@ import structures.GameState;
 import structures.basic.Player;
 import structures.basic.Tile;
 import structures.units.Avatar;
-import structures.units.AzureHerald;
 import structures.units.Windshrike;
 import utils.BasicObjectBuilders;
 import utils.CustomizedBuilders;

@@ -34,7 +34,6 @@ public class Unit {
 	private ImageCorrection correction;
 	protected int BASE_MOVEMENT = 2;
 	protected int BASE_ATTACK_RANGE = 2;
-	protected boolean isSummoned = false;
 	private boolean hasMoved = false;
 	private boolean hasAttacked = false;
 	private int health;

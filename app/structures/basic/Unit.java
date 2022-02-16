@@ -32,8 +32,8 @@ public class Unit {
 	private Position position;
 	private UnitAnimationSet animations;
 	private ImageCorrection correction;
-	private int BASE_MOVEMENT = 2;
-	private int BASE_ATTACK_RANGE = 2;
+	protected int BASE_MOVEMENT = 2;
+	protected int BASE_ATTACK_RANGE = 2;
 	private boolean hasMoved = false;
 	private boolean hasAttacked = false;
 	private int health;
@@ -169,6 +169,7 @@ public class Unit {
 			//it will remove from either list one or two. The remove() method checks whether it contains an object, so there is no need to check manually.
 			playerOneUnits.remove(this);
 			playerTwoUnits.remove(this);
+			BasicCommands.setUnitHealth(out, this, 0);
 			//remove it from tile.
 			gameState.getBoard().getTile(position.tilex, position.tiley).addUnit(null);
 			//delete the unit from the front-end.

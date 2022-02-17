@@ -340,60 +340,58 @@ public class Unit {
 	}
 
 	//Handles the movement of the unit to a tile
-	public Boolean moveUnit(Tile tile, ActorRef out, Board board){
+	public void moveUnit(Tile tile, ActorRef out, Board board){
 		Boolean validMove=false;
 		Boolean attackMove=false;
-		Tile attackMoveTile = new Tile();
+		Tile attackMoveTile = null;
 		Unit unit;
 		for(Tile vt:board.getHighlightedTiles()){
 			if(tile.tilex==vt.tilex && tile.tiley==vt.tiley){
 				unit=tile.getUnit();
-				if(!board.getPlayer2Units().contains(unit))
+				if(!board.getPlayer2Units().contains(unit)){
 					validMove=true;
-				else{
+				}else{
 					attackMove=true;
 				}
-		}	}
+			}
+		}
 		if(validMove){ // Only moves if it is a valid move
 			BasicCommands.moveUnitToTile(out,this,tile);
 			try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
 			this.setPositionByTile(tile);
 			board.clearHighlightedTiles();
+			tile.addUnit(this);
+			board.getLastTile().removeUnit();
 			hasMoved=true;
-			return true;
-		}else return false;
+		}
 
-		// TODO This needs to be updated with the logic for attacking after moving
-		//if(attackMove){
-			// for(Tile vt:board.getHighlightedTiles()){
-			// 	try {
-			// 		if((tile.tilex-1==vt.tilex && tile.tiley==vt.tiley)||
-			//   		 (tile.tilex==vt.tilex && tile.tiley+1==vt.tiley)||
-			//   		 (tile.tilex+1==vt.tilex && tile.tiley==vt.tiley)||
-			// 	     (tile.tilex==vt.tilex && tile.tiley-1==vt.tiley)){
-			// 	  	 attackMoveTile=vt;
-			//    		}
-			// 	} catch (IndexOutOfBoundsException ignored ) {}
-			// }
-			// ALTERNATE
-			// Tile attacker= board.getLastTile();
-			// if(tile.tiley==attacker.tiley){
-			// 	if(attacker.tilex<tile.tilex)
-			// 		attackMoveTile=board.getTile(attacker.tilex+1,tile.tiley);
-			// 	else	
-			// 		attackMoveTile=board.getTile(attacker.tilex-1,tile.tiley);
-			// }else if(tile.tilex==attacker.tilex){
-			// 	if(attacker.tiley<tile.tiley)
-			// 		attackMoveTile=board.getTile(attacker.tilex,tile.tiley+1);
-			// 	else	
-			// 		attackMoveTile=board.getTile(attacker.tilex,tile.tiley-1);
-			// }
-			// BasicCommands.moveUnitToTile(out,this,attackMoveTile);
-			// try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
-			// this.setPositionByTile(attackMoveTile);
-			// board.clearHighlightedTiles();
-			// hasMoved=true;
-			// return true;
+		// TODO: Handle the movement and attack of a unit if a enemy unit was clicked (this is a prototype, needs to be updated) Does not handle edge cases
+		if(attackMove){
+			
+			Tile attacker= board.getLastTile();
+			if(tile.tiley==attacker.tiley || tile.tiley-attacker.tiley==1 || attacker.tiley-tile.tiley==1){
+				if(tile.tilex-attacker.tilex==2)
+					attackMoveTile=board.getTile(attacker.tilex+1,tile.tiley);
+				else if(attacker.tilex-tile.tilex==2)	
+					attackMoveTile=board.getTile(attacker.tilex-1,tile.tiley);
+			}else if(tile.tilex==attacker.tilex|| tile.tilex-attacker.tilex==1 || attacker.tilex-tile.tilex==1){
+				if(attacker.tiley-tile.tiley==2)
+					attackMoveTile=board.getTile(attacker.tilex,tile.tiley+1);
+				else if(tile.tiley-attacker.tiley==2)	
+					attackMoveTile=board.getTile(attacker.tilex,tile.tiley-1);
+			}
+			if(attackMoveTile !=null){
+				BasicCommands.moveUnitToTile(out,this,attackMoveTile);
+				try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
+				this.setPositionByTile(attackMoveTile);
+				attackMoveTile.addUnit(this);
+				attacker.removeUnit();
+			}	
+			board.clearHighlightedTiles();
+			hasMoved=true;
+			// Call the Attack Method here
+			BasicCommands.addPlayer1Notification(out, "Attack", 2);
+		}
 		 
 	}
 

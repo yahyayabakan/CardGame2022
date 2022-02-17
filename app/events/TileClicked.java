@@ -53,23 +53,23 @@ public class TileClicked implements EventProcessor{
 			}
 
 			/**
-			 * If an empty tile is clicked right after a unit, then the unit is moved to that tile
+			 * If an empty tile is clicked right after a unit, then the unit is moved to that tile.
+			 * If an enemy tile is clicked right after a unit, then the unit is moved in front of the enemy unot as per the validation rules
 			 * if it is a valid tile. It then calls the drawDefaultTilesGrid method to unhighlight all the tiles
 			 */
 
-			if (clickedTile.getUnit() == null &&
-					previouslyClicked != null) {
-				if(previouslyClicked.getUnit() != null) {
-					Boolean movePerformed = false;
-					movePerformed = gameState.getBoard().getLastTile().getUnit().moveUnit(clickedTile, out, gameState.getBoard());
-					// if the move was performed as per the validation rules, the tiles need to be updated
-					if (movePerformed) {
-						clickedTile.addUnit(gameState.getBoard().getLastTile().getUnit());
-						gameState.getBoard().getLastTile().removeUnit();
-						gameState.drawDefaultTilesGrid(out);
-					}
+			if ((clickedTile.getUnit() == null || gameState.getBoard().getPlayer2Units().contains(clickedTile.getUnit())) && previouslyClicked != null) {
+				if(previouslyClicked.getUnit() != null && gameState.getBoard().getPlayer1Units().contains(previouslyClicked.getUnit())) {
+					gameState.getBoard().getLastTile().getUnit().moveUnit(clickedTile, out, gameState.getBoard());
+					gameState.drawDefaultTilesGrid(out);
 				}
 			}
+				
+					
+						
+						
+				
+			
 		}
 	}
 }

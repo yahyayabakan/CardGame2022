@@ -60,7 +60,7 @@ public class TileClicked implements EventProcessor{
 
 			if ((clickedTile.getUnit() == null || gameState.getBoard().getPlayer2Units().contains(clickedTile.getUnit())) && previouslyClicked != null) {
 				if(previouslyClicked.getUnit() != null && gameState.getBoard().getPlayer1Units().contains(previouslyClicked.getUnit())) {
-					gameState.getBoard().getLastTile().getUnit().moveUnit(clickedTile, out, gameState.getBoard());
+					gameState.getBoard().getLastTile().getUnit().moveUnit(clickedTile, out, gameState);
 					gameState.drawDefaultTilesGrid(out);
 				}
 			}

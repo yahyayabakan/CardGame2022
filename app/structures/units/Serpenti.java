@@ -1,12 +1,11 @@
 package structures.units;
 
 import structures.GameState;
-import structures.basic.Board;
 import structures.basic.Tile;
 import structures.basic.Unit;
 import akka.actor.ActorRef;
 
-public class AzuriteLion extends Unit {
+public class Serpenti extends Unit{
 
     final int MAX_ATTACK_TURN = 2;
     int attackTurn = 0;

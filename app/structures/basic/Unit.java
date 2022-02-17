@@ -34,8 +34,8 @@ public class Unit {
 	private ImageCorrection correction;
 	protected int BASE_MOVEMENT = 2;
 	protected int BASE_ATTACK_RANGE = 2;
-	private boolean hasMoved = false;
-	private boolean hasAttacked = false;
+	protected boolean hasMoved = false;
+	protected boolean hasAttacked = false;
 	private int health;
 	private int MAX_HEALTH;
 	private int attack;
@@ -228,6 +228,8 @@ public class Unit {
 		try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
 		unit.takeDamage(attack, gameState, out);
 		unit.counter(this, gameState, out);
+		hasAttacked = true;
+		hasMoved = true;
 	}
 
 	/**
@@ -367,15 +369,15 @@ public class Unit {
 	}
 
 	//Handles the movement of the unit to a tile
-	public void moveUnit(Tile tile, ActorRef out, Board board){
+	public void moveUnit(Tile tile, ActorRef out, GameState gameState){
 		Boolean validMove=false;
 		Boolean attackMove=false;
 		Tile attackMoveTile = null;
 		Unit unit;
-		for(Tile vt:board.getHighlightedTiles()){
+		for(Tile vt:gameState.getBoard().getHighlightedTiles()){
 			if(tile.tilex==vt.tilex && tile.tiley==vt.tiley){
 				unit=tile.getUnit();
-				if(!board.getPlayer2Units().contains(unit)){
+				if(!gameState.getBoard().getPlayer2Units().contains(unit)){
 					validMove=true;
 				}else{
 					attackMove=true;
@@ -386,26 +388,26 @@ public class Unit {
 			BasicCommands.moveUnitToTile(out,this,tile);
 			try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
 			this.setPositionByTile(tile);
-			board.clearHighlightedTiles();
+			gameState.getBoard().clearHighlightedTiles();
 			tile.addUnit(this);
-			board.getLastTile().removeUnit();
+			gameState.getBoard().getLastTile().removeUnit();
 			hasMoved=true;
 		}
 
 		// TODO: Handle the movement and attack of a unit if a enemy unit was clicked (this is a prototype, needs to be updated) Does not handle edge cases
 		if(attackMove){
 			
-			Tile attacker= board.getLastTile();
+			Tile attacker= gameState.getBoard().getLastTile();
 			if(tile.tiley==attacker.tiley || tile.tiley-attacker.tiley==1 || attacker.tiley-tile.tiley==1){
 				if(tile.tilex-attacker.tilex==2)
-					attackMoveTile=board.getTile(attacker.tilex+1,tile.tiley);
+					attackMoveTile=gameState.getBoard().getTile(attacker.tilex+1,tile.tiley);
 				else if(attacker.tilex-tile.tilex==2)	
-					attackMoveTile=board.getTile(attacker.tilex-1,tile.tiley);
+					attackMoveTile=gameState.getBoard().getTile(attacker.tilex-1,tile.tiley);
 			}else if(tile.tilex==attacker.tilex|| tile.tilex-attacker.tilex==1 || attacker.tilex-tile.tilex==1){
 				if(attacker.tiley-tile.tiley==2)
-					attackMoveTile=board.getTile(attacker.tilex,tile.tiley+1);
+					attackMoveTile=gameState.getBoard().getTile(attacker.tilex,tile.tiley+1);
 				else if(tile.tiley-attacker.tiley==2)	
-					attackMoveTile=board.getTile(attacker.tilex,tile.tiley-1);
+					attackMoveTile=gameState.getBoard().getTile(attacker.tilex,tile.tiley-1);
 			}
 			if(attackMoveTile !=null){
 				BasicCommands.moveUnitToTile(out,this,attackMoveTile);
@@ -413,11 +415,11 @@ public class Unit {
 				this.setPositionByTile(attackMoveTile);
 				attackMoveTile.addUnit(this);
 				attacker.removeUnit();
-			}	
-			board.clearHighlightedTiles();
+			}
+			gameState.getBoard().clearHighlightedTiles();
 			hasMoved=true;
 			// Call the Attack Method here
-			BasicCommands.addPlayer1Notification(out, "Attack", 2);
+			this.attack(tile.getUnit(), gameState, out);
 		}
 		 
 	}

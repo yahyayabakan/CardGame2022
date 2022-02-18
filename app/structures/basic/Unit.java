@@ -279,6 +279,7 @@ public class Unit {
 										Tile highlightedTile = board.getTile(x,y);
 										BasicCommands.drawTile(out, highlightedTile, 2);
 										board.getHighlightedTiles().add(highlightedTile);
+
 									}catch (IndexOutOfBoundsException ignored){}
 								}
 							}
@@ -347,6 +348,7 @@ public class Unit {
 					if(!hasAttacked){
 						Tile highlightedTile = board.getTile(x,y);
 						BasicCommands.drawTile(out, highlightedTile, 2);
+						try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
 						board.getHighlightedTiles().add(highlightedTile);
 					}
 					//else leave default colour.
@@ -356,12 +358,14 @@ public class Unit {
 				Tile highlightedTile = board.getTile(x,y);
 				board.getHighlightedTiles().add(highlightedTile);
 				BasicCommands.drawTile(out, highlightedTile, 1);
+				try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
 			}
 		}
 		//if a unit hasn't attacked check the border cases.
 		try {
-			if (!hasAttacked) {
+			if (!hasAttacked && board.getTile(x,y).getUnit() == null) {
 				displayInRangeAttackTiles(out, board.getTile(x, y), board);
+				try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
 			}
 		}
 		catch (IndexOutOfBoundsException ignored){}

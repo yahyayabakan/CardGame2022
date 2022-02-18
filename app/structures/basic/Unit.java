@@ -368,60 +368,76 @@ public class Unit {
 		catch (IndexOutOfBoundsException ignored){}
 	}
 
-	//Handles the movement of the unit to a tile
+	//Handles the movement of the unit to a tile. Will need to update how the unit moves based on the units in its path. Future Update
 	public void moveUnit(Tile tile, ActorRef out, GameState gameState){
-		Boolean validMove=false;
-		Boolean attackMove=false;
-		Tile attackMoveTile = null;
-		Unit unit;
 		for(Tile vt:gameState.getBoard().getHighlightedTiles()){
 			if(tile.tilex==vt.tilex && tile.tiley==vt.tiley){
-				unit=tile.getUnit();
-				if(!gameState.getBoard().getPlayer2Units().contains(unit)){
-					validMove=true;
-				}else{
-					attackMove=true;
-				}
-			}
-		}
-		if(validMove){ // Only moves if it is a valid move
-			BasicCommands.moveUnitToTile(out,this,tile);
-			try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
-			this.setPositionByTile(tile);
-			gameState.getBoard().clearHighlightedTiles();
-			tile.addUnit(this);
-			gameState.getBoard().getLastTile().removeUnit();
+				BasicCommands.moveUnitToTile(out,this,tile);
+				try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
+				this.setPositionByTile(tile);
+				gameState.getBoard().clearHighlightedTiles();
+				tile.addUnit(this);
+				gameState.getBoard().getLastTile().removeUnit();
 			hasMoved=true;
 		}
+	}
+}	
 
-		// TODO: Handle the movement and attack of a unit if a enemy unit was clicked (this is a prototype, needs to be updated) Does not handle edge cases
-		if(attackMove){
-			
+		// Handles the movement and attack of a unit if a enemy unit was clicked.
+	public void attackMoveUnit(Tile tile, ActorRef out, GameState gameState){	
+			Tile attackMoveTile = null;
 			Tile attacker= gameState.getBoard().getLastTile();
-			if(tile.tiley==attacker.tiley || tile.tiley-attacker.tiley==1 || attacker.tiley-tile.tiley==1){
+		
+			if(tile.tiley==attacker.tiley){
 				if(tile.tilex-attacker.tilex==2)
 					attackMoveTile=gameState.getBoard().getTile(attacker.tilex+1,tile.tiley);
 				else if(attacker.tilex-tile.tilex==2)	
 					attackMoveTile=gameState.getBoard().getTile(attacker.tilex-1,tile.tiley);
-			}else if(tile.tilex==attacker.tilex|| tile.tilex-attacker.tilex==1 || attacker.tilex-tile.tilex==1){
+					else if(tile.tilex-attacker.tilex==3)
+						attackMoveTile=gameState.getBoard().getTile(attacker.tilex+2,tile.tiley);
+						else if(attacker.tilex-tile.tilex==3)	
+							attackMoveTile=gameState.getBoard().getTile(attacker.tilex-2,tile.tiley);
+			}else if(tile.tilex==attacker.tilex){
 				if(attacker.tiley-tile.tiley==2)
 					attackMoveTile=gameState.getBoard().getTile(attacker.tilex,tile.tiley+1);
 				else if(tile.tiley-attacker.tiley==2)	
 					attackMoveTile=gameState.getBoard().getTile(attacker.tilex,tile.tiley-1);
-			}
+					else if(attacker.tiley-tile.tiley==3)
+						attackMoveTile=gameState.getBoard().getTile(attacker.tilex,tile.tiley+2);
+						else if(tile.tiley-attacker.tiley==3)	
+							attackMoveTile=gameState.getBoard().getTile(attacker.tilex,tile.tiley-2);
+			}else if(attacker.tilex<tile.tilex){
+					if(attacker.tiley<tile.tiley)
+						attackMoveTile=gameState.getBoard().getTile(attacker.tilex+1,attacker.tiley+1);
+					else attackMoveTile=gameState.getBoard().getTile(attacker.tilex+1,attacker.tiley-1);
+			}else if(attacker.tilex>tile.tilex){
+					if(attacker.tiley>tile.tiley)
+						attackMoveTile=gameState.getBoard().getTile(attacker.tilex-1,attacker.tiley-1);
+					else attackMoveTile=gameState.getBoard().getTile(attacker.tilex-1,attacker.tiley+1);
+			}	 
+			
+
 			if(attackMoveTile !=null){
-				BasicCommands.moveUnitToTile(out,this,attackMoveTile);
-				try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
-				this.setPositionByTile(attackMoveTile);
-				attackMoveTile.addUnit(this);
-				attacker.removeUnit();
+				if(attackMoveTile.getUnit()==null){
+					moveUnit(attackMoveTile, out, gameState);
+				}else{//finds an alternate tile if the tile calcualted from the earlier step had a unit on it
+					List<Tile> tileList = gameState.getNearbyTiles(attackMoveTile);
+						for(int j=0; j< gameState.getBoard().getHighlightedTiles().size();j++){
+								if(tileList.contains(gameState.getBoard().getHighlightedTiles().get(j))){
+									if(gameState.getBoard().getHighlightedTiles().get(j).getUnit()==null){
+										attackMoveTile=gameState.getBoard().getHighlightedTiles().get(j);
+									}
+								}
+						}	
+					moveUnit(attackMoveTile, out, gameState);
+				}
 			}
 			gameState.getBoard().clearHighlightedTiles();
 			hasMoved=true;
-			// Call the Attack Method here
+			//Call the Attack Method here
 			this.attack(tile.getUnit(), gameState, out);
 		}
 		 
-	}
+	
 
 }

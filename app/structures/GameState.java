@@ -3,7 +3,10 @@ package structures;
 import commands.BasicCommands;
 import structures.basic.*;
 import akka.actor.ActorRef;
+
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.stream.IntStream;
 
 /**
@@ -108,5 +111,25 @@ public class GameState {
 	// Generate next unit ID
 	public int getNewUnitID(){
 		return ++unitIdCounter;
+	}
+	
+	//Returns enemy Units
+	public List<Unit> getEnemyUnits(Unit unit){
+		if(getBoard().getPlayer1Units().contains(unit))
+			return getBoard().getPlayer2Units();
+		else if( getBoard().getPlayer2Units().contains(unit))
+			return getBoard().getPlayer1Units();
+			else return null; // Should not reach here as all units on the board are either part of player1's or player2's List
+	}
+
+	//Returns a list of tiles around a specific tile
+	public List<Tile> getNearbyTiles(Tile tile){
+		List<Tile> tileList = new ArrayList<Tile>();
+		for(int i=-1;i<=1;i++)
+			for(int j=-1;j<=1;j++)
+				try{
+					tileList.add(board.getTile(tile.getTilex()+i,tile.getTiley()+j));
+				}catch(IndexOutOfBoundsException ignored){}
+		return tileList;		
 	}
 }

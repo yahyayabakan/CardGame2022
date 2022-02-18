@@ -1,8 +1,10 @@
 package structures.basic;
 
+import commands.BasicCommands;
 import utils.BasicObjectBuilders;
 import java.util.LinkedList;
 import java.util.List;
+import akka.actor.ActorRef;
 
 /**
  * The logical representation of the game board.
@@ -112,4 +114,13 @@ public class Board {
     public void setLastTile(Tile clickedTile) {
         lastTile = clickedTile;
     }
+
+    //helper method to display highlighted tiles for player one only
+    public void displayHighlightedTiles(ActorRef out){
+        for(Tile tile: highlightedTiles){
+            BasicCommands.drawTile(out, tile, 1);
+            try {Thread.sleep(20);} catch (InterruptedException e) {e.printStackTrace();}
+        }
+    }
+
 }

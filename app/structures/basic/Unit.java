@@ -32,6 +32,7 @@ public class Unit {
 	private Position position;
 	private UnitAnimationSet animations;
 	private ImageCorrection correction;
+	protected boolean hasProvoked = false;
 	protected int BASE_MOVEMENT = 2;
 	protected int BASE_ATTACK_RANGE = 2;
 	protected boolean hasMoved = false;
@@ -265,31 +266,44 @@ public class Unit {
 	 * @see Board
 	 */
 	public void displayInRangeAttackTiles(ActorRef out, Tile tile, Board board) {
-		int X = tile.getTilex();
-		int Y = tile.getTiley();
 		if (!hasAttacked) {
-			for (int x = X - (BASE_ATTACK_RANGE - 1); x < X + BASE_ATTACK_RANGE; x++) {
-				for (int y = Y - (BASE_ATTACK_RANGE - 1); y < Y + BASE_ATTACK_RANGE; y++) {
-					if (x < board.getX() &&
-							y < board.getY()
-							&& x >= 0 && y >= 0) {
-							Unit unit = board.getTile(x,y).getUnit();
-							if(unit != null){
-								if(board.getPlayer2Units().contains(unit)){
-									try{
-										Tile highlightedTile = board.getTile(x,y);
-										BasicCommands.drawTile(out, highlightedTile, 2);
-										board.getHighlightedTiles().add(highlightedTile);
+			if(nexToProvokeUnit(tile, board, out)){}
+			else {
+				attackDisplayHelper(out, tile, board);
+			}
+		}
+	}
 
-									}catch (IndexOutOfBoundsException ignored){}
-								}
+	/**
+	 * Helper function to display attack tiles.
+	 * @param out reference to game actor.
+	 * @param tile the tile clicked.
+	 * @param board the current state of the board.
+	 */
+	private void attackDisplayHelper(ActorRef out, Tile tile, Board board){
+		int X = board.getX();
+		int Y = board.getY();
+		for (int x = X - (BASE_ATTACK_RANGE - 1); x < X + BASE_ATTACK_RANGE; x++) {
+			for (int y = Y - (BASE_ATTACK_RANGE - 1); y < Y + BASE_ATTACK_RANGE; y++) {
+				if (x < board.getX() &&
+						y < board.getY()
+						&& x >= 0 && y >= 0) {
+					Unit unit = board.getTile(x, y).getUnit();
+					if (unit != null) {
+						if (board.getPlayer2Units().contains(unit)) {
+							try {
+								Tile highlightedTile = board.getTile(x, y);
+								BasicCommands.drawTile(out, highlightedTile, 2);
+								board.getHighlightedTiles().add(highlightedTile);
+
+							} catch (IndexOutOfBoundsException ignored) {
 							}
+						}
 					}
 				}
 			}
 		}
 	}
-
 	/**
 	 * Reset the has moved variable to default false.
 	 * Can be used after the end of each turn.
@@ -309,8 +323,9 @@ public class Unit {
 		int Y = tile.getTiley();
 		//if a unit has attacked, then it forfeits it's ability to move.
 		if(hasAttacked) hasMoved = true;
+		if(nexToProvokeUnit(tile,board, out)){}
 		//movement base logic
-		if(!hasMoved){
+		else if(!hasMoved){
 			//Creating the default diamond shape highlight using points dinstance from center.
 			for(int x = X - BASE_MOVEMENT; x <= X+BASE_MOVEMENT; x++){
 				for(int y = Y - BASE_MOVEMENT; y <= Y+BASE_MOVEMENT; y++){
@@ -322,6 +337,44 @@ public class Unit {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Checks whether a unit is next to another unit with Provoke ability.
+	 * @param tile tile on which this unit is on.
+	 * @param out reference to game actor
+	 * @param board the current state of the board.
+	 * @return true if next to a unit with provoke. False otherwise.
+	 */
+	private boolean nexToProvokeUnit(Tile tile, Board board, ActorRef out) {
+		int player = 1;
+		if (board.getPlayer2Units().contains(this)) player = 2;
+		for (int x = tile.getTilex() - 1; x <= tile.getTilex() + 1; x++) {
+			for (int y = tile.getTiley() - 1; y <= tile.getTiley() + 1; y++) {
+				if (x < board.getX() &&
+						y < board.getY()
+						&& x >= 0 && y >= 0) {
+					Tile tileToCheck = board.getTile(x, y);
+					if (tileToCheck.getUnit() != null) {
+						Unit unit = tileToCheck.getUnit();
+						if (player == 1) {
+							if (board.getPlayer2Units().contains(unit)) {
+								board.getHighlightedTiles().add(tileToCheck);
+								BasicCommands.drawTile(out, tileToCheck, 2);
+								return true;
+							}
+						} else {
+							if (board.getPlayer1Units().contains(unit)) {
+								board.getHighlightedTiles().add(tileToCheck);
+								BasicCommands.drawTile(out, tileToCheck, 2);
+								return true;
+							}
+						}
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -365,7 +418,7 @@ public class Unit {
 		//if a unit hasn't attacked check the border cases.
 		try {
 			if (!hasAttacked && board.getTile(x,y).getUnit() == null) {
-				displayInRangeAttackTiles(out, board.getTile(x, y), board);
+				attackDisplayHelper(out, board.getTile(x, y), board);
 				try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
 			}
 		}

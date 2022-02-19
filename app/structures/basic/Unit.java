@@ -452,36 +452,6 @@ public class Unit {
 		// Handles the movement and attack of a unit if a enemy unit was clicked.
 	public void attackMoveUnit(Tile tile, ActorRef out, GameState gameState){	
 			Tile attackMoveTile = null;
-			Tile attacker= gameState.getBoard().getLastTile();
-		
-			// if(tile.tiley==attacker.tiley){
-			// 	if(tile.tilex-attacker.tilex==2)
-			// 		attackMoveTile=gameState.getBoard().getTile(attacker.tilex+1,tile.tiley);
-			// 	else if(attacker.tilex-tile.tilex==2)	
-			// 		attackMoveTile=gameState.getBoard().getTile(attacker.tilex-1,tile.tiley);
-			// 		else if(tile.tilex-attacker.tilex==3)
-			// 			attackMoveTile=gameState.getBoard().getTile(attacker.tilex+2,tile.tiley);
-			// 			else if(attacker.tilex-tile.tilex==3)	
-			// 				attackMoveTile=gameState.getBoard().getTile(attacker.tilex-2,tile.tiley);
-			// }else if(tile.tilex==attacker.tilex){
-			// 	if(attacker.tiley-tile.tiley==2)
-			// 		attackMoveTile=gameState.getBoard().getTile(attacker.tilex,tile.tiley+1);
-			// 	else if(tile.tiley-attacker.tiley==2)	
-			// 		attackMoveTile=gameState.getBoard().getTile(attacker.tilex,tile.tiley-1);
-			// 		else if(attacker.tiley-tile.tiley==3)
-			// 			attackMoveTile=gameState.getBoard().getTile(attacker.tilex,tile.tiley+2);
-			// 			else if(tile.tiley-attacker.tiley==3)	
-			// 				attackMoveTile=gameState.getBoard().getTile(attacker.tilex,tile.tiley-2);
-			// }else if(attacker.tilex<tile.tilex){
-			// 		if(attacker.tiley<tile.tiley)
-			// 			attackMoveTile=gameState.getBoard().getTile(attacker.tilex+1,attacker.tiley+1);
-			// 		else attackMoveTile=gameState.getBoard().getTile(attacker.tilex+1,attacker.tiley-1);
-			// }else if(attacker.tilex>tile.tilex){
-			// 		if(attacker.tiley>tile.tiley)
-			// 			attackMoveTile=gameState.getBoard().getTile(attacker.tilex-1,attacker.tiley-1);
-			// 		else attackMoveTile=gameState.getBoard().getTile(attacker.tilex-1,attacker.tiley+1);
-			// }	 
-			
 //finds an alternate tile if the tile calcualted from the earlier step had a unit on it
 					List<Tile> tileList = gameState.getNearbyTiles(tile);
 						for(int j=0; j< gameState.getBoard().getHighlightedTiles().size();j++){

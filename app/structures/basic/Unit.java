@@ -280,8 +280,8 @@ public class Unit {
 	 * @param board the current state of the board.
 	 */
 	private void attackDisplayHelper(ActorRef out, Tile tile, Board board){
-		int X = board.getX();
-		int Y = board.getY();
+		int X = tile.getTilex();
+		int Y = tile.getTiley();
 		for (int x = X - (BASE_ATTACK_RANGE - 1); x < X + BASE_ATTACK_RANGE; x++) {
 			for (int y = Y - (BASE_ATTACK_RANGE - 1); y < Y + BASE_ATTACK_RANGE; y++) {
 				if (x < board.getX() &&

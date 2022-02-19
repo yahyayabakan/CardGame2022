@@ -135,6 +135,15 @@ public class Unit {
 		this.attack = attack;
 	}
 
+	public boolean getHasMoved(){
+		return hasMoved;
+	}
+
+	public boolean getHasAttacked(){
+		return hasAttacked;
+	}
+
+
 	/**
 	 * This command sets the position of the Unit to a specified
 	 * tile.
@@ -355,7 +364,7 @@ public class Unit {
 						y < board.getY()
 						&& x >= 0 && y >= 0) {
 					Tile tileToCheck = board.getTile(x, y);
-					if (tileToCheck.getUnit() != null) {
+					if (tileToCheck.getUnit() != null && tileToCheck.getUnit().hasProvoked) {
 						Unit unit = tileToCheck.getUnit();
 						if (player == 1) {
 							if (board.getPlayer2Units().contains(unit)) {
@@ -435,7 +444,7 @@ public class Unit {
 				gameState.getBoard().clearHighlightedTiles();
 				tile.addUnit(this);
 				gameState.getBoard().getLastTile().removeUnit();
-			hasMoved=true;
+				hasMoved=true;
 		}
 	}
 }	
@@ -445,50 +454,47 @@ public class Unit {
 			Tile attackMoveTile = null;
 			Tile attacker= gameState.getBoard().getLastTile();
 		
-			if(tile.tiley==attacker.tiley){
-				if(tile.tilex-attacker.tilex==2)
-					attackMoveTile=gameState.getBoard().getTile(attacker.tilex+1,tile.tiley);
-				else if(attacker.tilex-tile.tilex==2)	
-					attackMoveTile=gameState.getBoard().getTile(attacker.tilex-1,tile.tiley);
-					else if(tile.tilex-attacker.tilex==3)
-						attackMoveTile=gameState.getBoard().getTile(attacker.tilex+2,tile.tiley);
-						else if(attacker.tilex-tile.tilex==3)	
-							attackMoveTile=gameState.getBoard().getTile(attacker.tilex-2,tile.tiley);
-			}else if(tile.tilex==attacker.tilex){
-				if(attacker.tiley-tile.tiley==2)
-					attackMoveTile=gameState.getBoard().getTile(attacker.tilex,tile.tiley+1);
-				else if(tile.tiley-attacker.tiley==2)	
-					attackMoveTile=gameState.getBoard().getTile(attacker.tilex,tile.tiley-1);
-					else if(attacker.tiley-tile.tiley==3)
-						attackMoveTile=gameState.getBoard().getTile(attacker.tilex,tile.tiley+2);
-						else if(tile.tiley-attacker.tiley==3)	
-							attackMoveTile=gameState.getBoard().getTile(attacker.tilex,tile.tiley-2);
-			}else if(attacker.tilex<tile.tilex){
-					if(attacker.tiley<tile.tiley)
-						attackMoveTile=gameState.getBoard().getTile(attacker.tilex+1,attacker.tiley+1);
-					else attackMoveTile=gameState.getBoard().getTile(attacker.tilex+1,attacker.tiley-1);
-			}else if(attacker.tilex>tile.tilex){
-					if(attacker.tiley>tile.tiley)
-						attackMoveTile=gameState.getBoard().getTile(attacker.tilex-1,attacker.tiley-1);
-					else attackMoveTile=gameState.getBoard().getTile(attacker.tilex-1,attacker.tiley+1);
-			}	 
+			// if(tile.tiley==attacker.tiley){
+			// 	if(tile.tilex-attacker.tilex==2)
+			// 		attackMoveTile=gameState.getBoard().getTile(attacker.tilex+1,tile.tiley);
+			// 	else if(attacker.tilex-tile.tilex==2)	
+			// 		attackMoveTile=gameState.getBoard().getTile(attacker.tilex-1,tile.tiley);
+			// 		else if(tile.tilex-attacker.tilex==3)
+			// 			attackMoveTile=gameState.getBoard().getTile(attacker.tilex+2,tile.tiley);
+			// 			else if(attacker.tilex-tile.tilex==3)	
+			// 				attackMoveTile=gameState.getBoard().getTile(attacker.tilex-2,tile.tiley);
+			// }else if(tile.tilex==attacker.tilex){
+			// 	if(attacker.tiley-tile.tiley==2)
+			// 		attackMoveTile=gameState.getBoard().getTile(attacker.tilex,tile.tiley+1);
+			// 	else if(tile.tiley-attacker.tiley==2)	
+			// 		attackMoveTile=gameState.getBoard().getTile(attacker.tilex,tile.tiley-1);
+			// 		else if(attacker.tiley-tile.tiley==3)
+			// 			attackMoveTile=gameState.getBoard().getTile(attacker.tilex,tile.tiley+2);
+			// 			else if(tile.tiley-attacker.tiley==3)	
+			// 				attackMoveTile=gameState.getBoard().getTile(attacker.tilex,tile.tiley-2);
+			// }else if(attacker.tilex<tile.tilex){
+			// 		if(attacker.tiley<tile.tiley)
+			// 			attackMoveTile=gameState.getBoard().getTile(attacker.tilex+1,attacker.tiley+1);
+			// 		else attackMoveTile=gameState.getBoard().getTile(attacker.tilex+1,attacker.tiley-1);
+			// }else if(attacker.tilex>tile.tilex){
+			// 		if(attacker.tiley>tile.tiley)
+			// 			attackMoveTile=gameState.getBoard().getTile(attacker.tilex-1,attacker.tiley-1);
+			// 		else attackMoveTile=gameState.getBoard().getTile(attacker.tilex-1,attacker.tiley+1);
+			// }	 
 			
-
-			if(attackMoveTile !=null){
-				if(attackMoveTile.getUnit()==null){
-					moveUnit(attackMoveTile, out, gameState);
-				}else{//finds an alternate tile if the tile calcualted from the earlier step had a unit on it
-					List<Tile> tileList = gameState.getNearbyTiles(attackMoveTile);
+//finds an alternate tile if the tile calcualted from the earlier step had a unit on it
+					List<Tile> tileList = gameState.getNearbyTiles(tile);
 						for(int j=0; j< gameState.getBoard().getHighlightedTiles().size();j++){
 								if(tileList.contains(gameState.getBoard().getHighlightedTiles().get(j))){
 									if(gameState.getBoard().getHighlightedTiles().get(j).getUnit()==null){
-										attackMoveTile=gameState.getBoard().getHighlightedTiles().get(j);
+										if(gameState.getBoard().getHighlightedTiles().get(j).getUnit()==null)
+											attackMoveTile=gameState.getBoard().getHighlightedTiles().get(j);
 									}
 								}
 						}	
 					moveUnit(attackMoveTile, out, gameState);
-				}
-			}
+				
+			
 			gameState.getBoard().clearHighlightedTiles();
 			hasMoved=true;
 			//Call the Attack Method here

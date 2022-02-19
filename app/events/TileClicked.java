@@ -7,6 +7,7 @@ import akka.actor.ActorRef;
 import commands.BasicCommands;
 import structures.GameState;
 import structures.basic.Tile;
+import structures.basic.Unit;
 
 /**
  * Indicates that the user has clicked an object on the game canvas, in this case a tile.
@@ -48,7 +49,14 @@ public class TileClicked implements EventProcessor{
 							.contains(clickedTile.getUnit())) {
 				gameState.getBoard().clearHighlightedTiles();
 				gameState.drawDefaultTilesGrid(out);
-				clickedTile.getUnit().displayMovementTiles(out, clickedTile, gameState.getBoard());
+				Unit unit = clickedTile.getUnit();
+				System.out.println(unit.getHasAttacked() + " "+  unit.getHasMoved());
+
+                if(unit.getHasMoved() && !unit.getHasAttacked())
+					unit.displayInRangeAttackTiles(out,clickedTile, gameState.getBoard());
+				else	
+                	unit.displayMovementTiles(out, clickedTile, gameState.getBoard());
+
 				//Lets the board know which tile was clicked last
 				gameState.getBoard().setLastTile(clickedTile);
 			}

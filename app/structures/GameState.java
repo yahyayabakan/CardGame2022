@@ -132,4 +132,14 @@ public class GameState {
 				}catch(IndexOutOfBoundsException ignored){}
 		return tileList;		
 	}
+
+	public void resetHighlight(ActorRef out) {
+	for(int i = 0; i < getPlayerOne().getHand().size(); i++) {
+
+		Card cardOnScreen = getPlayerOne().getHand().get(i);
+
+		BasicCommands.drawCard(out, cardOnScreen, i + 1, 0);
+	try {Thread.sleep(10);} catch (InterruptedException e) {e.printStackTrace(); }
+	}
+}
 }

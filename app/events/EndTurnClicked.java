@@ -27,6 +27,18 @@ public class EndTurnClicked implements EventProcessor{
 			//don't allow the user to click while the end turn process performs.
 			gameState.clickable = false;
 
+
+			for(int i = 0; i < gameState.getBoard().getPlayer1Units().size(); i++) {
+				gameState.getBoard().getPlayer1Units().get(i).resetMovement();
+				gameState.getBoard().getPlayer1Units().get(i).resetAttack();
+		}
+			for(int i = 0; i < gameState.getBoard().getPlayer2Units().size(); i++) {
+				gameState.getBoard().getPlayer2Units().get(i).resetMovement();
+				gameState.getBoard().getPlayer2Units().get(i).resetAttack();
+				
+		}
+
+
 			//draw the new cards for both players on the backend, then display the player one's cards on front-end.
 			gameState.getPlayerOne().draw(out);
 			gameState.getPlayerTwo().draw(out);

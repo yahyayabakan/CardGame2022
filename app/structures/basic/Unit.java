@@ -234,13 +234,24 @@ public class Unit {
 	 * @param out reference to the game actor.
 	 */
 	public void attack(Unit unit, GameState gameState, ActorRef out){
-		BasicCommands.playUnitAnimation(out, this, UnitAnimationType.attack);
-		try {Thread.sleep(250);} catch (InterruptedException e) {e.printStackTrace();}
-		unit.takeDamage(attack, gameState, out);
-		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
-		unit.counter(this, gameState, out);
-		hasAttacked = true;
-		hasMoved = true;
+		if(!this.hasAttacked) {
+			BasicCommands.playUnitAnimation(out, this, UnitAnimationType.attack);
+			try {
+				Thread.sleep(250);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			unit.takeDamage(attack, gameState, out);
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			unit.counter(this, gameState, out);
+			hasAttacked = true;
+			hasMoved = true;
+		}
+		else System.out.println("Unit already attacked!");
 	}
 
 	/**

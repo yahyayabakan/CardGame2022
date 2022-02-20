@@ -23,6 +23,7 @@ public class OtherClicked implements EventProcessor{
 		if(gameState.gameInitalised && gameState.clickable) {
 			//Draw default tiles.
 			gameState.drawDefaultTilesGrid(out);
+			gameState.getBoard().clearHighlightedTiles();
 		}
 	}
 

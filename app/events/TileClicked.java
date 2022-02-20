@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import akka.actor.ActorRef;
 import commands.BasicCommands;
 import structures.GameState;
+import structures.basic.Card;
 import structures.basic.Tile;
 import structures.basic.Unit;
 
@@ -36,6 +37,15 @@ public class TileClicked implements EventProcessor{
 			Tile clickedTile = gameState.getBoard().getTile(tilex, tiley);
 			//previously clicked tile.
 			Tile previouslyClicked = gameState.getBoard().getLastTile();
+
+			// Reset clicked card when player clicked on tile without highlighting
+			if(clickedTile.getUnit() != null &&
+					!gameState.getBoard().getHighlightedTiles().contains(clickedTile)){
+				gameState.setClickedHandPosition(-1);
+			}
+
+			// If no card is clicked, perform move actions
+			if(gameState.getClickedHandPosition() == -1) {
 			/**
 			 * If a friendly unit is clicked, then display the potential movement tiles.
 			 * It first runs the drawDefaultTilesGrid() to refresh the board tiles.
@@ -54,7 +64,7 @@ public class TileClicked implements EventProcessor{
 
                 if(unit.getHasMoved() && !unit.getHasAttacked())
 					unit.displayInRangeAttackTiles(out,clickedTile, gameState.getBoard());
-				else	
+				else
                 	unit.displayMovementTiles(out, clickedTile, gameState.getBoard());
 
 				//Lets the board know which tile was clicked last
@@ -66,27 +76,30 @@ public class TileClicked implements EventProcessor{
 			 * If an enemy tile is clicked right after a unit, then the unit is moved in front of the enemy unit as per the validation rules.
 			 * if it is a valid tile. It then calls the drawDefaultTilesGrid method to unhighlight all the tiles
 			 */
-			
+
 			 // Runs when an Empty tile is clicked
 			if (clickedTile.getUnit() == null && previouslyClicked != null) {
 				if(previouslyClicked.getUnit() != null && gameState.getBoard().getPlayer1Units().contains(previouslyClicked.getUnit())) {
 					gameState.getBoard().getLastTile().getUnit().moveUnit(clickedTile, out, gameState);
 					gameState.drawDefaultTilesGrid(out);
 				} // Runs when a Tile right next to the unit is clicked
-			}else if(previouslyClicked != null && gameState.getNearbyTiles(previouslyClicked).contains(clickedTile)){	
+			}else if(previouslyClicked != null && gameState.getNearbyTiles(previouslyClicked).contains(clickedTile)){
 					if(gameState.getBoard().getPlayer2Units().contains(clickedTile.getUnit()))
 						previouslyClicked.getUnit().attack(clickedTile.getUnit(), gameState, out);
-				// Runs when a Tile at the edge of the highlightedtiles is clicked		
+				// Runs when a Tile at the edge of the highlightedtiles is clicked
 			}else if(gameState.getBoard().getPlayer2Units().contains(clickedTile.getUnit()) && gameState.getBoard().getHighlightedTiles().contains(clickedTile)){
 					gameState.getBoard().getLastTile().getUnit().attackMoveUnit(clickedTile, out, gameState);
-					gameState.drawDefaultTilesGrid(out);	
+					gameState.drawDefaultTilesGrid(out);
 			}
-		
-					
-						
-						
-				
-			
+		} else {
+				// Execute the card if a card is selected before clicking the tile
+				if (gameState.getBoard().getHighlightedTiles().contains(clickedTile)) {
+					Card clickedCard = gameState.getPlayerOne().getHand().get(gameState.getClickedHandPosition() - 1);
+					clickedCard.execute(out, gameState, clickedTile);
+				}
+			}
 		}
 	}
+
+
 }

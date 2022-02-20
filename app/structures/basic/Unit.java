@@ -260,7 +260,7 @@ public class Unit {
 	 * @param gameState the current state of the game
 	 * @param out actor reference.
 	 */
-	private void counter(Unit unit, GameState gameState, ActorRef out) {
+	public void counter(Unit unit, GameState gameState, ActorRef out) {
 		if (health > 1) {
 			int X = position.tilex;
 			int Y = position.tiley;
@@ -367,7 +367,7 @@ public class Unit {
 	 * @param board the current state of the board.
 	 * @return true if next to a unit with provoke. False otherwise.
 	 */
-	private boolean nexToProvokeUnit(Tile tile, Board board, ActorRef out) {
+	protected boolean nexToProvokeUnit(Tile tile, Board board, ActorRef out) {
 		int player = 1;
 		if (board.getPlayer2Units().contains(this)) player = 2;
 		for (int x = tile.getTilex() - 1; x <= tile.getTilex() + 1; x++) {
@@ -464,7 +464,30 @@ public class Unit {
 		// Handles the movement and attack of a unit if a enemy unit was clicked.
 	public void attackMoveUnit(Tile tile, ActorRef out, GameState gameState){	
 			Tile attackMoveTile = null;
+			Tile attacker= gameState.getBoard().getLastTile();
+		// This checks the primary pathways before checking alternate ones
+			if(tile.tiley==attacker.tiley){
+				if(tile.tilex-attacker.tilex==2)
+					attackMoveTile=gameState.getBoard().getTile(attacker.tilex+1,tile.tiley);
+				else if(attacker.tilex-tile.tilex==2)	
+					attackMoveTile=gameState.getBoard().getTile(attacker.tilex-1,tile.tiley);
+					else if(tile.tilex-attacker.tilex==3)
+						attackMoveTile=gameState.getBoard().getTile(attacker.tilex+2,tile.tiley);
+						else if(attacker.tilex-tile.tilex==3)	
+							attackMoveTile=gameState.getBoard().getTile(attacker.tilex-2,tile.tiley);
+			}else if(tile.tilex==attacker.tilex){
+				if(attacker.tiley-tile.tiley==2)
+					attackMoveTile=gameState.getBoard().getTile(attacker.tilex,tile.tiley+1);
+				else if(tile.tiley-attacker.tiley==2)	
+					attackMoveTile=gameState.getBoard().getTile(attacker.tilex,tile.tiley-1);
+					else if(attacker.tiley-tile.tiley==3)
+						attackMoveTile=gameState.getBoard().getTile(attacker.tilex,tile.tiley+2);
+						else if(tile.tiley-attacker.tiley==3)	
+							attackMoveTile=gameState.getBoard().getTile(attacker.tilex,tile.tiley-2);
+			}	 
+
 //finds an alternate tile if the tile calcualted from the earlier step had a unit on it
+				if(attackMoveTile==null){
 					List<Tile> tileList = gameState.getNearbyTiles(tile);
 						for(int j=0; j< gameState.getBoard().getHighlightedTiles().size();j++){
 								if(tileList.contains(gameState.getBoard().getHighlightedTiles().get(j))){
@@ -473,10 +496,21 @@ public class Unit {
 											attackMoveTile=gameState.getBoard().getHighlightedTiles().get(j);
 									}
 								}
-						}	
-					moveUnit(attackMoveTile, out, gameState);
+						}
+					}else if(attackMoveTile.getUnit()!=null){
+						List<Tile> tileList = gameState.getNearbyTiles(tile);
+						for(int j=0; j< gameState.getBoard().getHighlightedTiles().size();j++){
+								if(tileList.contains(gameState.getBoard().getHighlightedTiles().get(j))){
+									if(gameState.getBoard().getHighlightedTiles().get(j).getUnit()==null){
+										if(gameState.getBoard().getHighlightedTiles().get(j).getUnit()==null)
+											attackMoveTile=gameState.getBoard().getHighlightedTiles().get(j);
+									}
+								}
+						}
+					}	
+					
+			moveUnit(attackMoveTile, out, gameState);
 				
-			
 			gameState.getBoard().clearHighlightedTiles();
 			hasMoved=true;
 			//Call the Attack Method here

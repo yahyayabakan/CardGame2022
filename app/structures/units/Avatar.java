@@ -25,6 +25,9 @@ public class Avatar extends Unit {
         this.player = player;
     }
 
+    public Player getPlayer(){
+        return player;
+    }
     /**
      * Whenever the avatar is healed, the player should be healed too.
      * @param amount the amount by which to increase health

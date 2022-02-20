@@ -48,7 +48,7 @@ public class CustomizedBuilders {
 
         // player 2 summon a reflected Hailstone Golem
         if(cardName.equals("hailstone_golem") && gameState.clickable == false){
-            unitField = obj.getClass().getDeclaredField("u_" + cardName + "2");
+            unitField = obj.getClass().getDeclaredField("u_" + cardName + "R");
         } else {
             unitField = obj.getClass().getDeclaredField("u_" + cardName);
         }

@@ -211,11 +211,11 @@ public class Unit {
 			board.getPlayer2Units().add(this);
 		}
 		BasicCommands.drawUnit(out, this, tile);
-		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+		try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
 		BasicCommands.setUnitAttack(out, this, attack);
-		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+		try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
 		BasicCommands.setUnitHealth(out, this, health);
-		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+		try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
 	}
 
 	/**
@@ -235,8 +235,9 @@ public class Unit {
 	 */
 	public void attack(Unit unit, GameState gameState, ActorRef out){
 		BasicCommands.playUnitAnimation(out, this, UnitAnimationType.attack);
-		try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
+		try {Thread.sleep(250);} catch (InterruptedException e) {e.printStackTrace();}
 		unit.takeDamage(attack, gameState, out);
+		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 		unit.counter(this, gameState, out);
 		hasAttacked = true;
 		hasMoved = true;
@@ -256,7 +257,7 @@ public class Unit {
 				for (int y = Y - (BASE_ATTACK_RANGE - 1); y < Y + BASE_ATTACK_RANGE; y++) {
 					if(gameState.getBoard().getTile(x,y).getUnit() == unit){
 						BasicCommands.playUnitAnimation(out, this, UnitAnimationType.attack);
-						try {Thread.sleep(3000);} catch (InterruptedException e) {e.printStackTrace();}
+						try {Thread.sleep(250);} catch (InterruptedException e) {e.printStackTrace();}
 						unit.takeDamage(attack, gameState, out);
 						break;
 					}
@@ -411,7 +412,7 @@ public class Unit {
 					if(!hasAttacked){
 						Tile highlightedTile = board.getTile(x,y);
 						BasicCommands.drawTile(out, highlightedTile, 2);
-						try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
+						try {Thread.sleep(20);} catch (InterruptedException e) {e.printStackTrace();}
 						board.getHighlightedTiles().add(highlightedTile);
 					}
 					//else leave default colour.
@@ -421,14 +422,14 @@ public class Unit {
 				Tile highlightedTile = board.getTile(x,y);
 				board.getHighlightedTiles().add(highlightedTile);
 				BasicCommands.drawTile(out, highlightedTile, 1);
-				try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
+				try {Thread.sleep(20);} catch (InterruptedException e) {e.printStackTrace();}
 			}
 		}
 		//if a unit hasn't attacked check the border cases.
 		try {
 			if (!hasAttacked && board.getTile(x,y).getUnit() == null) {
 				attackDisplayHelper(out, board.getTile(x, y), board);
-				try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
+				try {Thread.sleep(20);} catch (InterruptedException e) {e.printStackTrace();}
 			}
 		}
 		catch (IndexOutOfBoundsException ignored){}
@@ -468,6 +469,7 @@ public class Unit {
 			gameState.getBoard().clearHighlightedTiles();
 			hasMoved=true;
 			//Call the Attack Method here
+			try {Thread.sleep(250);} catch (InterruptedException e) {e.printStackTrace();}
 			this.attack(tile.getUnit(), gameState, out);
 		}
 		 

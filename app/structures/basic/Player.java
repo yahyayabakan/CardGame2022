@@ -72,7 +72,7 @@ public class Player {
 			hand.add(deck.draw());
 		else{
 			deck.draw();
-			BasicCommands.addPlayer1Notification(out, "Hand Full, Card Lost", 5);
+			if(playerNumber == 1)BasicCommands.addPlayer1Notification(out, "Hand Full, Card Lost", 5);
 		}
 	}
 	

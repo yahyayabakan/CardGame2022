@@ -1,6 +1,7 @@
 package structures.basic;
 
 
+import commands.BasicCommands;
 import structures.GameState;
 
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import akka.actor.ActorRef;
 import structures.units.Avatar;
+import utils.CustomizedBuilders;
 
 /**
  * This is the base representation of a Card which is rendered in the player's hand.
@@ -97,6 +99,52 @@ public class Card {
 			displayNormalSummonTiles(out, gameState);
 		}
 		if(gameState.clickable == true) gameState.getBoard().displayHighlightedTiles(out);
+	}
+
+
+	/**
+	 * Method to execute the card when clicking on a valid tile
+	 * @param out game actor reference
+	 * @param gameState the current state of the game.
+	 * @param tile tile clicked
+	 */
+	public void execute(ActorRef out, GameState gameState, Tile tile){
+		// If the player has enough mana
+		if((gameState.clickable && gameState.getPlayerOne().getMana() >= manacost) ||
+				(!gameState.clickable && gameState.getPlayerTwo().getMana() >= manacost)){
+			// If it is not a spell card, summon a new unit
+			if(bigCard.getHealth() != -1){
+				Unit newUnit;
+				try {
+					newUnit = CustomizedBuilders.loadSummonByName(cardname, gameState);
+					// If it is player one
+					if(gameState.clickable){
+						newUnit.summon(out,tile, gameState.getPlayerOne(), gameState.getBoard());
+						gameState.getPlayerOne().setMana(gameState.getPlayerOne().getMana() - manacost);
+						BasicCommands.setPlayer1Mana(out, gameState.getPlayerOne());
+						BasicCommands.deleteCard(out, gameState.getClickedHandPosition());
+						gameState.clearCurrentHandCards(out,gameState.getPlayerOne());
+						gameState.getPlayerOne().getHand().removeFirstOccurrence(this);
+						gameState.displayCurrentHandCards(out,gameState.getPlayerOne());
+					} else {
+						newUnit.summon(out,tile, gameState.getPlayerTwo(), gameState.getBoard());
+						gameState.getPlayerTwo().setMana(gameState.getPlayerTwo().getMana() - manacost);
+						BasicCommands.setPlayer2Mana(out, gameState.getPlayerTwo());
+						gameState.getPlayerTwo().getHand().removeFirstOccurrence(this);
+					}
+				} catch (Exception e){
+					e.printStackTrace();
+				}
+			} else {
+				// TODO Spell Execution
+
+			}
+			// Reset clicked card
+			gameState.setClickedHandPosition(-1);
+			// Refresh the board
+			gameState.getBoard().clearHighlightedTiles();
+			gameState.drawDefaultTilesGrid(out);
+		}
 	}
 
 

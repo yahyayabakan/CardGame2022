@@ -24,6 +24,7 @@ public class GameState {
 	private Player playerOne;
 	private Player playerTwo;
 	private int unitIdCounter = 0;
+	private int clickedHandPosition; // indicate clicked card position (-1 = no card is clicked)
 
 	public boolean gameInitalised = false;
 	public boolean clickable = false;
@@ -108,6 +109,15 @@ public class GameState {
 				});
 	}
 
+	// Clear all cards in the hand at frontend
+	public void clearCurrentHandCards(ActorRef out, Player player){
+		LinkedList<Card> hand = player.getHand();
+		IntStream.range(0, hand.size())
+				.forEach(index ->{
+					BasicCommands.deleteCard(out, index+1);
+				});
+	}
+
 	// Generate next unit ID
 	public int getNewUnitID(){
 		return ++unitIdCounter;
@@ -133,13 +143,22 @@ public class GameState {
 		return tileList;		
 	}
 
+	// Reset highlighting of cards in hand
 	public void resetHighlight(ActorRef out) {
 	for(int i = 0; i < getPlayerOne().getHand().size(); i++) {
-
 		Card cardOnScreen = getPlayerOne().getHand().get(i);
-
 		BasicCommands.drawCard(out, cardOnScreen, i + 1, 0);
-	try {Thread.sleep(10);} catch (InterruptedException e) {e.printStackTrace(); }
+		try {Thread.sleep(10);} catch (InterruptedException e) {e.printStackTrace();}
+		}
 	}
-}
+
+	public int getClickedHandPosition() {
+		return clickedHandPosition;
+	}
+
+	public void setClickedHandPosition(int clickedHandPosition) {
+		this.clickedHandPosition = clickedHandPosition;
+	}
+
+
 }

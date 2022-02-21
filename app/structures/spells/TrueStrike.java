@@ -7,14 +7,14 @@ import structures.basic.Spell;
 import structures.basic.Tile;
 import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;
+import structures.basic.Unit;
 
 public class TrueStrike extends Spell{
     public void spell(ActorRef out, GameState gameState, Tile tile){
         //Deals 2 damage to enemy unit
-        tile.getUnit().setHealth((tile.getUnit().getHealth()-2));
+        tile.getUnit().takeDamage(2, gameState, out);
 
-        //Setting front end unit health
-        BasicCommands.setUnitHealth(out, tile.getUnit(), tile.getUnit().getHealth());
+        //Setting front end unit health will be handled by takeDamage()
         
         //if unit is an avatar then player health will be updated and mana front end will change
         if(gameState.clickable){

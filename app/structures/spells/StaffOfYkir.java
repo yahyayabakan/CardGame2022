@@ -1,4 +1,5 @@
 import akka.actor.ActorRef;
+import commands.BasicCommands;
 import structures.GameState;
 import structures.basic.Spell;
 import structures.basic.Tile;
@@ -10,8 +11,11 @@ public class StaffOfYkir extends Spell{
         //Then it increases the attacak attribute +2
         if(tile.getUnit() instanceof Avatar){
             tile.getUnit().setAttack((tile.getUnit().getAttack()) + 2);
+
+            //Update front end avatar attack
+            BasicCommands.setUnitAttack(out, tile.getUnit(), tile.getUnit().getHealth());
         }
 
-        
+
     }
 }

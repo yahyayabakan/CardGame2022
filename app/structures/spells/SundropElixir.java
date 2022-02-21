@@ -27,3 +27,7 @@ public class SundropElixir extends Spell{
         BasicCommands.setPlayer2Health(out, gameState.getPlayerTwo());
         BasicCommands.setPlayer1Mana(out, gameState.getPlayerTwo());
     }
+
+    //Card delete and mana operations are handled by other methods
+    //Tested and working properly
+    }

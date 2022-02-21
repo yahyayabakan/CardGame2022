@@ -16,16 +16,13 @@ public class EntropicDecay{
         if(!(tile.getUnit() instanceof Avatar)){
             tile.getUnit().takeDamage(tile.getUnit().getHealth, gamestate, out);
             
-            //Modifiying front end
-            BasicCommands.setUnitHealth(out, tile.getUnit(), tile.getUnit().getHealth());
+            //Modifiying front end will be handled by takeDamage()            
             
             //Entropic Decay animation
             BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_martyrdom), tile);
             try {Thread.sleep(250);} catch (InterruptedException e) {e.printStackTrace();}
 
-            //Delete unit from tile
-            //I am not sure whether it is necessary or not
-            BasicCommands.deleteUnit(out, tile.getUnit());
+            //Delete unit from tile will be handled by takeDamage()         
         }
     }
 }

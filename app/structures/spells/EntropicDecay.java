@@ -21,6 +21,10 @@ public class EntropicDecay{
             //Entropic Decay animation
             BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_martyrdom), tile);
             try {Thread.sleep(250);} catch (InterruptedException e) {e.printStackTrace();}
+
+            //Delete unit from tile
+            //I am not sure whether it is necessary or not
+            BasicCommands.deleteUnit(out, tile.getUnit());
         }
     }
 }

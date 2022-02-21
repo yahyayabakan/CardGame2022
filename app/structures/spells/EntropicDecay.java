@@ -13,7 +13,10 @@ public class EntropicDecay{
         //First check whethet it is not an avatar
         //Then set the health to 0
         if(!(tile.getUnit() instanceof Avatar)){
-            tile.getUnit().setHealth(0);     
+            tile.getUnit().setHealth(0); 
+            
+            //Modifiying front end
+            BasicCommands.setUnitHealth(out, tile.getUnit(), tile.getUnit().getHealth());
             
             //Entropic Decay animation
             BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_martyrdom), tile);

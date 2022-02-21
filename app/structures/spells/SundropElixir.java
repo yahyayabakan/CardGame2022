@@ -18,3 +18,12 @@ public class SundropElixir extends Spell{
 
     //Sets unit health in front end
     BasicCommands.setUnitHealth(out, tile.getUnit(), tile.getUnit().getHealth());
+
+    //if unit is an avatar then player health will be updated and mana front end will change
+    if(gameState.getPlayerOne().getPlayerNumber() == 1){
+        BasicCommands.setPlayer1Health(out, gameState.getPlayerOne());
+        BasicCommands.setPlayer1Mana(out, gameState.getPlayerOne());
+    }else{
+        BasicCommands.setPlayer2Health(out, gameState.getPlayerTwo());
+        BasicCommands.setPlayer1Mana(out, gameState.getPlayerTwo());
+    }

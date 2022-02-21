@@ -14,4 +14,7 @@ import structures.basic.Unit;
 public class SundropElixir extends Spell{
     public void spell(ActorRef out, GameState gameState, Tile tile){
 
-        tile.getUnit().heal(5);
+    tile.getUnit().heal(5);
+
+    //Sets unit health in front end
+    BasicCommands.setUnitHealth(out, tile.getUnit(), tile.getUnit().getHealth());

@@ -122,5 +122,12 @@ public class Board {
             try {Thread.sleep(20);} catch (InterruptedException e) {e.printStackTrace();}
         }
     }
-
+	//Returns enemy Units
+	public List<Unit> getEnemyUnits(Unit unit){
+		if(this.getPlayer1Units().contains(unit))
+			return this.getPlayer2Units();
+		else if( this.getPlayer2Units().contains(unit))
+			return this.getPlayer1Units();
+			else return null; // Should not reach here as all units on the board are either part of player1's or player2's List
+	}
 }

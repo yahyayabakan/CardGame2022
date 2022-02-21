@@ -7,13 +7,14 @@ import structures.basic.Tile;
 import structures.units.Avatar;
 import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;
+import structures.basic.Unit;
 
 public class EntropicDecay{
     public void spell(ActorRef out, GameState gameState, Tile tile){
         //First check whethet it is not an avatar
-        //Then set the health to 0
+        //Then use damage method
         if(!(tile.getUnit() instanceof Avatar)){
-            tile.getUnit().setHealth(0); 
+            tile.getUnit().takeDamage(tile.getUnit().getHealth, gamestate, out);
             
             //Modifiying front end
             BasicCommands.setUnitHealth(out, tile.getUnit(), tile.getUnit().getHealth());

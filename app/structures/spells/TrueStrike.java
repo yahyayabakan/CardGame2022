@@ -29,11 +29,7 @@ public class TrueStrike extends Spell{
         BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_inmolation), tile);
         try {Thread.sleep(250);} catch (InterruptedException e) {e.printStackTrace();}
 
-        if(tile.getUnit().getHealth() <= 0){
-            //Delete unit from tile
-            //I am not sure whether it is necessary or not
-            BasicCommands.deleteUnit(out, tile.getUnit());
-        }
+        //delete unit logic will be handled by Unit.takaDamage()
 
 
     }

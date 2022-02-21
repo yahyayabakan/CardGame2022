@@ -13,8 +13,11 @@ public class EntropicDecay{
     public void spell(ActorRef out, GameState gameState, Tile tile){
         //First check whethet it is not an avatar
         //Then use damage method
-        if(!(tile.getUnit() instanceof Avatar)){
-            tile.getUnit().takeDamage(tile.getUnit().getHealth, gamestate, out);
+        int healthToBeDeleted = tile.getUnit().getHealth();
+        GameState gs = new GameState();
+        gs = gameState;
+            if(!(tile.getUnit() instanceof Avatar)){            
+            tile.getUnit().takeDamage(healthToBeDeleted, gs, out);
             
             //Modifiying front end will be handled by takeDamage()            
             

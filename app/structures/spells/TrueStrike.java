@@ -17,13 +17,8 @@ public class TrueStrike extends Spell{
         //Setting front end unit health will be handled by takeDamage()
         
         //if unit is an avatar then player health will be updated and mana front end will change
-        if(gameState.clickable){
-            BasicCommands.setPlayer1Health(out, gameState.getPlayerOne());
-            BasicCommands.setPlayer1Mana(out, gameState.getPlayerOne());
-        }else{
-            BasicCommands.setPlayer2Health(out, gameState.getPlayerTwo());
-            BasicCommands.setPlayer2Mana(out, gameState.getPlayerTwo());
-        }
+        //according to the Avatar.takeDamage()
+
 
         //Truestrike animation
         BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_inmolation), tile);

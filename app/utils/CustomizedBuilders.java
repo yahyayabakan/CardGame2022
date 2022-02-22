@@ -2,7 +2,9 @@ package utils;
 
 import structures.GameState;
 import structures.basic.Card;
+import structures.basic.Spell;
 import structures.basic.Unit;
+import structures.spells.*;
 
 import java.lang.reflect.Field;
 
@@ -68,6 +70,33 @@ public class CustomizedBuilders {
         unit.setAttack(card.getBigCard().getAttack());
 
         return unit;
+    }
+
+
+    /**
+     * A spell builder using the card name.
+     * @param cardName card name
+     * @param gameState State of Game
+     * @return spell
+     */
+    public static Spell loadSpellByName(String cardName, GameState gameState){
+
+        Spell spell = new Spell();
+
+        if(cardName.equals("Entropic Decay")){
+            spell = new EntropicDecay();
+        }
+        if(cardName.equals("Staff of Y'Kir'")){
+            spell = new StaffOfYkir();
+        }
+        if(cardName.equals("Sundrop Elixir")){
+            spell = new SundropElixir();
+        }
+        if(cardName.equals("Truestrike")){
+            spell = new TrueStrike();
+        }
+
+        return spell;
     }
 
 }

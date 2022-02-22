@@ -3,13 +3,14 @@ package structures.spells;
 import akka.actor.ActorRef;
 import commands.BasicCommands;
 import structures.GameState;
+import structures.basic.Spell;
 import structures.basic.Tile;
 import structures.units.Avatar;
 import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;
 import structures.basic.Unit;
 
-public class EntropicDecay{
+public class EntropicDecay extends Spell {
     public void spell(ActorRef out, GameState gameState, Tile tile){
         //First check whether it is not an avatar
         //Then use damage method

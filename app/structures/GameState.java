@@ -93,6 +93,9 @@ public class GameState {
 		if(player.getMana() != 9){
 			player.setMana(turn + 1);
 		}
+		if(player.getMana() > 9){
+			player.setMana(9);
+		}
 	}
 
 	/**

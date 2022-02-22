@@ -116,9 +116,9 @@ public class Board {
     }
 
     //helper method to display highlighted tiles for player one only
-    public void displayHighlightedTiles(ActorRef out){
+    public void displayHighlightedTiles(ActorRef out, int mode){
         for(Tile tile: highlightedTiles){
-            BasicCommands.drawTile(out, tile, 1);
+            BasicCommands.drawTile(out, tile, mode);
             try {Thread.sleep(20);} catch (InterruptedException e) {e.printStackTrace();}
         }
     }

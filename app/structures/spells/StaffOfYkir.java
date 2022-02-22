@@ -1,3 +1,5 @@
+package structures.spells;
+
 import akka.actor.ActorRef;
 import commands.BasicCommands;
 import structures.GameState;

@@ -72,34 +72,6 @@ public class Card {
 		this.bigCard = bigCard;
 	}
 
-	/**
-	 * Method to highlight all the tiles where the clicked card can execute on.
-	 * @param out game actor reference
-	 * @param gameState the current state of the game.
-	 */
-	public void displayCardValidTiles(ActorRef out, GameState gameState){
-
-		// refresh the board
-		gameState.getBoard().clearHighlightedTiles();
-		gameState.drawDefaultTilesGrid(out);
-
-		String[] airdrops = {"Ironcliff Guardian", "Planar Scout"};
-
-		if(Arrays.asList(airdrops).contains(cardname)){
-			displayAirDropTiles(out, gameState);
-		} else if (cardname.equals("Truestrike")) {
-			displayTruestrikeTiles(out, gameState);
-		} else if (cardname.equals(("Sundrop Elixir"))){
-			displaySundropElixirTiles(out, gameState);
-		} else if (cardname.equals("Entropic Decay")){
-			displayEntropicDecayTiles(out, gameState);
-		} else if (cardname.equals("Staff of Y'Kir'")){
-			displayStaffOfYKirTiles(out, gameState);
-		} else {
-			displayNormalSummonTiles(out, gameState);
-		}
-		if(gameState.clickable == true) gameState.getBoard().displayHighlightedTiles(out);
-	}
 
 
 	/**
@@ -148,8 +120,35 @@ public class Card {
 	}
 
 
+	/**
+	 * Method to highlight all the tiles where the clicked card can execute on.
+	 * @param out game actor reference
+	 * @param gameState the current state of the game.
+	 */
+	public void displayCardValidTiles(ActorRef out, GameState gameState){
+
+		// refresh the board
+		gameState.getBoard().clearHighlightedTiles();
+		gameState.drawDefaultTilesGrid(out);
+
+		if(cardname.equals("Ironcliff Guardian") || cardname.equals("Planar Scout")){
+			displayAirDropTiles(out, gameState);
+		} else if (cardname.equals("Truestrike")) {
+			displayTruestrikeTiles(out, gameState);
+		} else if (cardname.equals(("Sundrop Elixir"))){
+			displaySundropElixirTiles(out, gameState);
+		} else if (cardname.equals("Entropic Decay")){
+			displayEntropicDecayTiles(out, gameState);
+		} else if (cardname.equals("Staff of Y'Kir'")){
+			displayStaffOfYKirTiles(out, gameState);
+		} else {
+			displayNormalSummonTiles(out, gameState);
+		}
+	}
+
+
 	// Highlight normal summon tiles
-	public void displayNormalSummonTiles(ActorRef out, GameState gameState){
+	private void displayNormalSummonTiles(ActorRef out, GameState gameState){
 
 		int[][] directions = new int[][]{{-1,-1}, {-1,0}, {-1,1}, {0,1}, {1,1}, {1,0}, {1,-1}, {0,-1}};
 
@@ -179,11 +178,12 @@ public class Card {
 				}
 			}
 		}
+		if(gameState.clickable == true) gameState.getBoard().displayHighlightedTiles(out, 1);
 	}
 
 
 	//Highlight airdrop (all tiles on the board) summon tiles
-	public void displayAirDropTiles(ActorRef out, GameState gameState){
+	private void displayAirDropTiles(ActorRef out, GameState gameState){
 
 		for(int x = 0; x < gameState.getBoard().getX(); x++) {
 			for (int y = 0; y < gameState.getBoard().getY(); y++) {
@@ -192,11 +192,12 @@ public class Card {
 				}
 			}
 		}
+		if(gameState.clickable == true) gameState.getBoard().displayHighlightedTiles(out, 1);
 	}
 
 
 	//Highlight Truestrike (all enemy) tiles
-	public void displayTruestrikeTiles(ActorRef out, GameState gameState){
+	private void displayTruestrikeTiles(ActorRef out, GameState gameState){
 
 		List<Unit> enemyUnits;
 		if(gameState.clickable == true){
@@ -212,11 +213,12 @@ public class Card {
 				}
 			}
 		}
+		if(gameState.clickable == true) gameState.getBoard().displayHighlightedTiles(out, 2);
 	}
 
 
 	//Highlight Entropic Decay (enemy besides avatar) tiles
-	public void displayEntropicDecayTiles(ActorRef out, GameState gameState){
+	private void displayEntropicDecayTiles(ActorRef out, GameState gameState){
 
 		List<Unit> enemyUnits;
 		if(gameState.clickable == true){
@@ -235,10 +237,11 @@ public class Card {
 				}
 			}
 		}
+		if(gameState.clickable == true) gameState.getBoard().displayHighlightedTiles(out, 2);
 	}
 
 	//highlight Sundrop Elixir (all friendly units)  tiles
-	public void displaySundropElixirTiles(ActorRef out, GameState gameState){
+	private void displaySundropElixirTiles(ActorRef out, GameState gameState){
 
 		List<Unit> friendlyUnits;
 		if(gameState.clickable == true){
@@ -254,11 +257,12 @@ public class Card {
 				}
 			}
 		}
+		if(gameState.clickable == true) gameState.getBoard().displayHighlightedTiles(out, 1);
 	}
 
 
 	//highlight Staff of Y’Kir (friendly Avatar only) tiles
-	public void displayStaffOfYKirTiles(ActorRef out, GameState gameState){
+	private void displayStaffOfYKirTiles(ActorRef out, GameState gameState){
 
 		List<Unit> friendlyUnits;
 		if(gameState.clickable == true){
@@ -276,6 +280,7 @@ public class Card {
 				}
 			}
 		}
+		if(gameState.clickable == true) gameState.getBoard().displayHighlightedTiles(out, 1);
 	}
 
 

@@ -9,7 +9,7 @@ import structures.units.Avatar;
 import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;
 
-public class StaffOfYkir extends Spell{
+public class StaffofYKir extends Spell{
     public void spell(ActorRef out, GameState gameState, Tile tile){
         
         //Checks first whether unit is an avatar or not

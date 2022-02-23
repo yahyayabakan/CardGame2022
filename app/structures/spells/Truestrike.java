@@ -9,7 +9,7 @@ import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;
 import structures.basic.Unit;
 
-public class TrueStrike extends Spell{
+public class Truestrike extends Spell{
     public void spell(ActorRef out, GameState gameState, Tile tile){
         //Deals 2 damage to enemy unit
         tile.getUnit().takeDamage(2, gameState, out);

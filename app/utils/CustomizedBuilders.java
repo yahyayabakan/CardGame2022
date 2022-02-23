@@ -1,5 +1,10 @@
 package utils;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import scala.util.parsing.json.JSON;
+import scala.util.parsing.json.JSONObject;
 import structures.GameState;
 import structures.basic.Card;
 import structures.basic.Spell;
@@ -44,25 +49,29 @@ public class CustomizedBuilders {
 
         String className = "structures.units." + cardName.replace(" ", "");
         cardName = cardName.replace(" ", "_").toLowerCase();
-        Object obj = new StaticConfFiles();
+        Class<StaticConfFiles> configFiles = StaticConfFiles.class;
         Field unitField;
         Field cardField;
 
         // player 2 summon a reflected Hailstone Golem
-        if(cardName.equals("hailstone_golem") && gameState.clickable == false){
-            unitField = obj.getClass().getDeclaredField("u_" + cardName + "R");
+        if(cardName.equals("hailstone_golem") && !gameState.clickable){
+            unitField = configFiles.getDeclaredField("u_" + cardName + "R");
         } else {
-            unitField = obj.getClass().getDeclaredField("u_" + cardName);
+            unitField = configFiles.getDeclaredField("u_" + cardName);
         }
-        cardField = obj.getClass().getDeclaredField("c_" + cardName);
+        cardField = configFiles.getDeclaredField("c_" + cardName);
 
-        String unitConfig = (String)unitField.get(obj);
-        String cardConfig = (String)cardField.get(obj);
+        String unitConfig = unitField.get(configFiles).toString();
+        String cardConfig = cardField.get(configFiles).toString();
 
-        Class<? extends Unit> unitClass = (Class<? extends Unit>) Class.forName(className).asSubclass(Unit.class);
-
-        Unit unit = BasicObjectBuilders.loadUnit(unitConfig, gameState.getNewUnitID(), unitClass);
+        Unit unit;
         Card card = BasicObjectBuilders.loadCard(cardConfig, 0, Card.class);
+        try {
+            unit = BasicObjectBuilders.loadUnit(unitConfig, gameState.getNewUnitID(),
+                    Class.forName(className).asSubclass(Unit.class));
+        } catch (ClassNotFoundException e) {
+            unit = BasicObjectBuilders.loadUnit(unitConfig, gameState.getNewUnitID(), Unit.class);
+        }
 
         assert unit != null;
         assert card != null;
@@ -76,26 +85,17 @@ public class CustomizedBuilders {
     /**
      * A spell builder using the card name.
      * @param cardName card name
-     * @param gameState State of Game
      * @return spell
      */
-    public static Spell loadSpellByName(String cardName, GameState gameState){
+    public static Spell loadSpellByName(String cardName){
+        String className = "structures.spells.%s".formatted(cardName.replaceAll("[ ']", ""));
+        Spell spell = null;
+        try {
+            spell = new ObjectMapper().readValue("{}", Class.forName(className).asSubclass(Spell.class));
 
-        Spell spell = new Spell();
-
-        if(cardName.equals("Entropic Decay")){
-            spell = new EntropicDecay();
+        } catch (ClassNotFoundException | JsonProcessingException e) {
+            e.printStackTrace();
         }
-        if(cardName.equals("Staff of Y'Kir'")){
-            spell = new StaffOfYkir();
-        }
-        if(cardName.equals("Sundrop Elixir")){
-            spell = new SundropElixir();
-        }
-        if(cardName.equals("Truestrike")){
-            spell = new TrueStrike();
-        }
-
         return spell;
     }
 

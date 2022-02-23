@@ -106,7 +106,7 @@ public class Card {
 				}
 			} else {
 				// Execute spell
-				Spell spellToCast = CustomizedBuilders.loadSpellByName(cardname, gameState);
+				Spell spellToCast = CustomizedBuilders.loadSpellByName(cardname);
 				spellToCast.spell(out, gameState, tile);
 			}
 			// Deduct mana, and delete the executed card in hand

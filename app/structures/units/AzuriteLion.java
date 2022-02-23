@@ -24,23 +24,8 @@ public class AzuriteLion extends Unit {
         //if the attack turn is less than 2, reset hasAttack
         if(attackTurn < MAX_ATTACK_TURN){
             hasAttacked = false;
-            hasMoved = false;
+            hasMoved = true;
         }
     }
 
-    /**
-     * Can move twice per turn
-     * @param unit the unit to attack.
-     * @param gameState current state of the game.
-     * @param out reference to the game actor.
-     */
-    @Override
-    public void moveUnit(Tile tile, ActorRef out, GameState gameState) {
-        super.moveUnit(tile, out, gameState);
-        attackTurn++;
-        if(attackTurn < MAX_ATTACK_TURN){
-            hasAttacked = false;
-            hasMoved = false;
-        }
-    }
 }

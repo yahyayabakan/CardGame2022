@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import akka.actor.ActorRef;
 import commands.BasicCommands;
+import structures.AI;
 import structures.GameState;
 import structures.basic.Player;
 
@@ -38,6 +39,7 @@ public class EndTurnClicked implements EventProcessor{
 				
 		}
 
+			AI.makeMove(out, gameState);
 
 			//draw the new cards for both players on the backend, then display the player one's cards on front-end.
 			gameState.getPlayerOne().draw(out);

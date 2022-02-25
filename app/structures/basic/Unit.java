@@ -304,6 +304,7 @@ public class Unit {
 	private void attackDisplayHelper(ActorRef out, Tile tile, Board board){
 		int X = tile.getTilex();
 		int Y = tile.getTiley();
+		List<Unit> enemyList = board.getEnemyUnits(this);
 		for (int x = X - (BASE_ATTACK_RANGE - 1); x < X + BASE_ATTACK_RANGE; x++) {
 			for (int y = Y - (BASE_ATTACK_RANGE - 1); y < Y + BASE_ATTACK_RANGE; y++) {
 				if (x < board.getX() &&
@@ -311,7 +312,7 @@ public class Unit {
 						&& x >= 0 && y >= 0) {
 					Unit unit = board.getTile(x, y).getUnit();
 					if (unit != null) {
-						if (board.getPlayer2Units().contains(unit)) {
+						if (enemyList.contains(unit)) {
 							try {
 								Tile highlightedTile = board.getTile(x, y);
 								BasicCommands.drawTile(out, highlightedTile, 2);
@@ -412,6 +413,7 @@ public class Unit {
 	private void drawValidTilesForMovement(int x, int y, Tile tile, Board board, ActorRef out){
 		int X = tile.getTilex();
 		int Y = tile.getTiley();
+		List<Unit> enemyList = board.getEnemyUnits(this);
 		if(!(x == X && y == Y) &&
 				x < board.getX() &&
 				y < board.getY()
@@ -419,7 +421,7 @@ public class Unit {
 			if(board.getTile(x,y).unit != null){
 				Unit unit = board.getTile(x,y).getUnit();
 				//if there is an enemy unit and this unit can attack it, highlight it in red.
-				if(board.getPlayer2Units().contains(unit)){
+				if(enemyList.contains(unit)){
 					if(!hasAttacked){
 						Tile highlightedTile = board.getTile(x,y);
 						BasicCommands.drawTile(out, highlightedTile, 2);

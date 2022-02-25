@@ -114,6 +114,10 @@ public class Unit {
 		return health;
 	}
 
+	public int getMAX_HEALTH(){
+		return MAX_HEALTH;
+	}
+
 	/**
 	 * Should only be used the first time the unit is set. Do not use when decrementing health.
 	 * @param health card's health.
@@ -142,7 +146,6 @@ public class Unit {
 	public boolean getHasAttacked(){
 		return hasAttacked;
 	}
-
 
 	/**
 	 * This command sets the position of the Unit to a specified

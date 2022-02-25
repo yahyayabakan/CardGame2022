@@ -1,10 +1,5 @@
 package structures.units;
 
-
-
-package structures.units;
-
-
 import akka.actor.ActorRef;
 import commands.BasicCommands;
 import structures.GameState;
@@ -18,18 +13,14 @@ import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;
 
 public class Pyromancer extends Unit {
-    
 
     public Pyromancer(){
         super.BASE_ATTACK_RANGE = 15;
     }
 
-
-
     @Override
     public void attack(Unit unit, GameState gameState, ActorRef out) {
         if(!this.hasAttacked) {
-			
             EffectAnimation projectile = BasicObjectBuilders.loadEffect(StaticConfFiles.f1_projectiles);
             Position attacker, enemy;
             attacker = this.getPosition();
@@ -71,10 +62,6 @@ public class Pyromancer extends Unit {
         this.attack(tile.getUnit(), gameState, out);
         System.out.println("AttackMove");
     }
-
-    
-
-
 
 
 }

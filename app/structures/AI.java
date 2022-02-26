@@ -2,6 +2,8 @@ package structures;
 
 import akka.actor.ActorRef;
 import structures.basic.Board;
+import structures.basic.Card;
+import structures.basic.Position;
 import structures.basic.Tile;
 import structures.basic.Unit;
 import structures.units.Avatar;
@@ -84,5 +86,77 @@ public class AI {
             }
         }
         return score;
+    }
+
+    /**
+	 * Prototype for placing the unit on a tile.
+     * */
+
+    public Tile placeUnit(GameState gameState, Card card){
+        List<Tile> range = new ArrayList<Tile>();
+        List<Unit> enemyUnits = new ArrayList<Unit>();
+        List<Unit> friendlyUnits = new ArrayList<Unit>();
+        Position avatarPos = null;
+        enemyUnits = gameState.getBoard().getPlayer1Units();
+        friendlyUnits = gameState.getBoard().getPlayer2Units();
+
+        Tile refTile = null;
+
+        //Places the airdrop unit near the enemy avatar
+        if(card.getCardname().equals("Planar Scout")){
+            for(int i=0;i<enemyUnits.size();i++){
+                if(enemyUnits.get(i) instanceof Avatar){
+                    avatarPos= enemyUnits.get(i).getPosition();
+                    refTile = gameState.getBoard().getTile(avatarPos.getTilex(), avatarPos.getTiley());
+                }
+            }
+
+            range = gameState.getNearbyTiles(refTile);
+
+            for(int i=0;i<range.size();i++){
+                if(range.get(i).getUnit()==null)
+                    return range.get(i);
+            }
+        }
+        
+        // Places the provoke unit near the AI avatar
+        if(card.getCardname().equals("Rock Pulveriser")){
+            for(int i=0;i<friendlyUnits.size();i++){
+                if(friendlyUnits.get(i) instanceof Avatar){
+                    avatarPos= friendlyUnits.get(i).getPosition();
+                    refTile = gameState.getBoard().getTile(avatarPos.getTilex(), avatarPos.getTiley());
+                }
+            }
+
+            range = gameState.getNearbyTiles(refTile);
+
+            for(int i=0;i<range.size();i++){
+                if(range.get(i).getUnit()==null)
+                    return range.get(i);
+            }
+        }
+
+        // places the ranged attack unit on the board
+        if(card.getCardname().equals("Pyromancer")){
+            //call Paul's Method
+        }
+        // places the remaining units toward the left end of the board 
+        for(int x = 0; x < gameState.getBoard().getX(); x++) {
+			for (int y = 0; y < gameState.getBoard().getY(); y++) {
+                Unit unit = gameState.getBoard().getTile(x, y).getUnit();
+                if(friendlyUnits.contains(unit)){
+                    range=gameState.getNearbyTiles(gameState.getBoard().getTile(x, y));
+                }
+
+                for(int i=0;i<range.size();i++){
+                    if(range.get(i).getUnit()==null)
+                        return range.get(i);
+                }
+            }
+        }    
+
+        return null;
+
+
     }
 }

@@ -138,11 +138,13 @@ public class GameState {
 	//Returns a list of tiles around a specific tile
 	public List<Tile> getNearbyTiles(Tile tile){
 		List<Tile> tileList = new ArrayList<Tile>();
-		for(int i=-1;i<=1;i++)
-			for(int j=-1;j<=1;j++)
+		for(int i=-1;i<=1;i++){
+			for(int j=-1;j<=1;j++){
 				try{
 					tileList.add(board.getTile(tile.getTilex()+i,tile.getTiley()+j));
 				}catch(IndexOutOfBoundsException ignored){}
+			}
+		}
 		return tileList;		
 	}
 

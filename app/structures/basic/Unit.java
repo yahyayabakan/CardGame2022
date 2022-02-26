@@ -267,14 +267,20 @@ public class Unit {
 		if (health > 1) {
 			int X = position.tilex;
 			int Y = position.tiley;
+			Board board= gameState.getBoard();
+
 			for (int x = X - (BASE_ATTACK_RANGE - 1); x < X + BASE_ATTACK_RANGE; x++) {
 				for (int y = Y - (BASE_ATTACK_RANGE - 1); y < Y + BASE_ATTACK_RANGE; y++) {
-					if(gameState.getBoard().getTile(x,y).getUnit() == unit){
+					if (x < board.getX() &&
+						y < board.getY()
+						&& x >= 0 && y >= 0) {
+					if(board.getTile(x,y).getUnit() == unit){
 						BasicCommands.playUnitAnimation(out, this, UnitAnimationType.attack);
 						try {Thread.sleep(250);} catch (InterruptedException e) {e.printStackTrace();}
 						unit.takeDamage(attack, gameState, out);
 						break;
 					}
+				}
 				}
 			}
 		}
@@ -471,7 +477,8 @@ public class Unit {
 			Tile attackMoveTile = null;
 			Tile attacker= gameState.getBoard().getLastTile();
 		// This checks the primary pathways before checking alternate ones
-			if(tile.tiley==attacker.tiley){
+		try{
+		if(tile.tiley==attacker.tiley){
 				if(tile.tilex-attacker.tilex==2)
 					attackMoveTile=gameState.getBoard().getTile(attacker.tilex+1,tile.tiley);
 				else if(attacker.tilex-tile.tilex==2)	
@@ -489,7 +496,8 @@ public class Unit {
 						attackMoveTile=gameState.getBoard().getTile(attacker.tilex,tile.tiley+2);
 						else if(tile.tiley-attacker.tiley==3)	
 							attackMoveTile=gameState.getBoard().getTile(attacker.tilex,tile.tiley-2);
-			}	 
+			}
+		}catch(IndexOutOfBoundsException ingored){}	 
 
 //finds an alternate tile if the tile calcualted from the earlier step had a unit on it
 				if(attackMoveTile==null){
@@ -514,13 +522,16 @@ public class Unit {
 						}
 					}	
 					
+			System.out.println(attackMoveTile + "ArrackMove");
 			moveUnit(attackMoveTile, out, gameState);
 				
 			gameState.getBoard().clearHighlightedTiles();
 			hasMoved=true;
 			//Call the Attack Method here
 			try {Thread.sleep(250);} catch (InterruptedException e) {e.printStackTrace();}
+			System.out.println(tile + "Attack");
 			this.attack(tile.getUnit(), gameState, out);
+			
 		}
 		 
 	

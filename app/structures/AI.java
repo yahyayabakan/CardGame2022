@@ -91,6 +91,11 @@ public class AI {
     public static Tile spellEntropicDecay(GameState gameState, Card card){
         List<Unit> enemyUnits = new ArrayList<Unit>();
         enemyUnits = gameState.getBoard().getPlayer1Units();
+
+        if(card.getCardname().equals("Entropic Decay")){
+            for(int i=0;i<enemyUnits.size();i++){
+                if(!(enemyUnits.get(i) instanceof Avatar) && enemyUnits.get(i).getHealth()>8){
+        }
     }
 
     /**

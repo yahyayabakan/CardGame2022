@@ -3,6 +3,7 @@ package structures;
 import commands.BasicCommands;
 import structures.basic.*;
 import akka.actor.ActorRef;
+import structures.units.PurebladeEnforcer;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -165,5 +166,10 @@ public class GameState {
 		this.clickedHandPosition = clickedHandPosition;
 	}
 
-
+	public void PurebladeEnforcerEffect(ActorRef out) {
+		List<Unit> units = getBoard().getPlayer1Units();
+		units.addAll(getBoard().getPlayer2Units());
+		units.stream().filter(unit -> unit instanceof PurebladeEnforcer)
+				.forEach(unit -> ((PurebladeEnforcer) unit).spellEffect(out));
+	}
 }

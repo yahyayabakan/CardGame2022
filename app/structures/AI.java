@@ -42,7 +42,7 @@ public class AI {
                 double score = calculateScore(unit, move);
                 actions.add(new Action(move, score));
             }
-            Action action = actions.parallelStream()
+            Action action = actions.stream()
                     .max(Comparator.comparing(a -> a.score))
                     .orElse(null);
 

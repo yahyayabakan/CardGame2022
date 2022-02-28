@@ -92,7 +92,7 @@ public class AI {
 	 * Prototype for placing the unit on a tile.
      * */
 
-    public Tile placeUnit(GameState gameState, Card card){
+    public static Tile placeUnit(GameState gameState, Card card){
         List<Tile> range = new ArrayList<Tile>();
         List<Unit> enemyUnits = new ArrayList<Unit>();
         List<Unit> friendlyUnits = new ArrayList<Unit>();
@@ -159,4 +159,60 @@ public class AI {
 
 
     }
+
+
+    // Find the optimal combination of cards to be executed based on mana and score using algorithm for 0-1 Knapsack Problem
+    public static int[] findOptimalCardCombo(GameState gameState){
+
+        int currentMana = gameState.getPlayerTwo().getMana();
+        List<Card> currentHand = gameState.getPlayerTwo().getHand();
+
+        // Matrix to store card combination scores
+        double[][] cardComboScores = new double[gameState.getPlayerTwo().getHand().size() + 1][gameState.getPlayerTwo().getMana() + 1];
+        // Matrix to store card combination indexes
+        int[][][] cardComboIndexes = new int[gameState.getPlayerTwo().getHand().size() + 1][gameState.getPlayerTwo().getMana() + 1][];
+
+        // Iterate the cards in the hand
+        for(int i = 0; i <= currentHand.size(); i++){
+            // Iterate the current mana
+            for(int j = 0; j <= currentMana; j++){
+                if(i == 0 || j == 0){
+                    cardComboScores[i][j] = 0;
+                } else if(currentHand.get(i-1).getManacost() <= j){
+                    // Option 1: use the previous score
+                    double option1Score = cardComboScores[i-1][j];
+                    // Option 2: use the current score + the max score of reminding mana
+                    double option2Score = currentHand.get(i-1).getScore() +
+                            cardComboScores[i-1][j-currentHand.get(i-1).getManacost()];
+                    // Their max is the current score
+                    cardComboScores[i][j] = Math.max(option1Score, option2Score);
+                    // Save the combo indexes
+                    if(option1Score > option2Score){
+                        cardComboIndexes[i][j] = cardComboIndexes[i-1][j];
+                    } else {
+                        int[] previousMaxIndexes = cardComboIndexes[i-1][j-currentHand.get(i-1).getManacost()];
+                        int[] currentIndexes;
+                        if(previousMaxIndexes != null){
+                            currentIndexes = new int[previousMaxIndexes.length + 1];
+                            for(int k = 0; k < previousMaxIndexes.length; k++){
+                                currentIndexes[k] = previousMaxIndexes[k];
+                            }
+                            currentIndexes[previousMaxIndexes.length] = i-1;
+                        } else {
+                            currentIndexes = new int[]{i-1};
+                        }
+                        cardComboIndexes[i][j] = currentIndexes;
+                    }
+                } else {
+                    // If mana is not enough for current card, use the previous max score
+                    cardComboScores[i][j] = cardComboScores[i-1][j];
+                    cardComboIndexes[i][j] = cardComboIndexes[i-1][j];
+                }
+            }
+        }
+        // Return the indexes with maximum score
+        return cardComboIndexes[gameState.getPlayerTwo().getHand().size()][gameState.getPlayerTwo().getMana()];
+    }
+
+
 }

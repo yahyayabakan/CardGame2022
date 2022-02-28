@@ -88,6 +88,10 @@ public class AI {
         return score;
     }
 
+    public static Tile spellEntropicDecay(GameState gameState, Card card){
+        
+    }
+
     /**
 	 * Prototype for placing the unit on a tile.
      * */

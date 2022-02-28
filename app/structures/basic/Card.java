@@ -108,6 +108,7 @@ public class Card {
 				// Execute spell
 				Spell spellToCast = CustomizedBuilders.loadSpellByName(cardname);
 				spellToCast.spell(out, gameState, tile);
+				gameState.PurebladeEnforcerEffect(out);
 			}
 			// Deduct mana, and delete the executed card in hand
 			if(gameState.clickable){

@@ -5,9 +5,9 @@ import structures.GameState;
 import structures.basic.Player;
 import structures.basic.Unit;
 
-public class Windshrike extends Unit {
+public class WindShrike extends Unit {
     //constructor adds the BASE_MOVEMENT.
-    public Windshrike(){
+    public WindShrike(){
         super.BASE_MOVEMENT = 15;
     }
 

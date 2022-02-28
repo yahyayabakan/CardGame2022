@@ -6,7 +6,10 @@ import akka.actor.ActorRef;
 import commands.BasicCommands;
 import structures.AI;
 import structures.GameState;
+import structures.basic.Card;
 import structures.basic.Player;
+
+import java.util.Arrays;
 
 /**
  * Indicates that the user has clicked an object on the game canvas, in this case
@@ -40,6 +43,15 @@ public class EndTurnClicked implements EventProcessor{
 		}
 
 			AI.makeMove(out, gameState);
+
+			// AI executing cards
+			int[] cardComboIndex = AI.findOptimalCardCombo(gameState);
+			if(cardComboIndex != null) {
+				for (int index : cardComboIndex) {
+					Card theCard = gameState.getPlayerTwo().getHand().get(index);
+					theCard.execute(out, gameState, AI.placeUnit(gameState, theCard));
+				}
+			}
 
 			//draw the new cards for both players on the backend, then display the player one's cards on front-end.
 			gameState.getPlayerOne().draw(out);

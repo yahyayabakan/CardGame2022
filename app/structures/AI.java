@@ -98,7 +98,9 @@ public class AI {
             for(int i=0;i<enemyUnits.size();i++){
                 if(!(enemyUnits.get(i) instanceof Avatar) && enemyUnits.get(i).getHealth()>8){
                     card.execute(out, gameState, enemyUnits.get(i).getPosition());
-        }
+                }
+            }
+        }   
     }
 
     /**

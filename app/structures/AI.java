@@ -97,10 +97,10 @@ public class AI {
         if(card.getCardname().equals("Entropic Decay")){
             for(int i=0;i<enemyUnits.size();i++){
                 if(!(enemyUnits.get(i) instanceof Avatar) && enemyUnits.get(i).getHealth()>8){
-                    card.execute(out, gameState, enemyUnits.get(i).getPosition());
+                    return gameState.getBoard().getTile(enemyUnits.get(i).getPosition().getTilex(), enemyUnits.get(i).getPosition().getTiley());    
                 }
             }
-        }   
+        }return null;
     }
 
     /**

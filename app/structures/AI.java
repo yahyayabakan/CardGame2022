@@ -4,9 +4,11 @@ import akka.actor.ActorRef;
 import structures.basic.Board;
 import structures.basic.Card;
 import structures.basic.Position;
+import structures.basic.Spell;
 import structures.basic.Tile;
 import structures.basic.Unit;
 import structures.units.Avatar;
+import utils.CustomizedBuilders;
 
 import java.util.*;
 
@@ -95,6 +97,7 @@ public class AI {
         if(card.getCardname().equals("Entropic Decay")){
             for(int i=0;i<enemyUnits.size();i++){
                 if(!(enemyUnits.get(i) instanceof Avatar) && enemyUnits.get(i).getHealth()>8){
+                    card.execute(out, gameState, enemyUnits.get(i).getPosition());
         }
     }
 

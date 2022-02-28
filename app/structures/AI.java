@@ -89,7 +89,8 @@ public class AI {
     }
 
     public static Tile spellEntropicDecay(GameState gameState, Card card){
-        
+        List<Unit> enemyUnits = new ArrayList<Unit>();
+        enemyUnits = gameState.getBoard().getPlayer1Units();
     }
 
     /**

@@ -51,4 +51,8 @@ public class Deck {
         }
         return null;
     }
+
+    public Deque<Card> getCards() {
+        return cards;
+    }
 }

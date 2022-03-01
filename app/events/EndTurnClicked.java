@@ -42,16 +42,9 @@ public class EndTurnClicked implements EventProcessor{
 				
 		}
 
+			// Perform AI actions
 			AI.makeMove(out, gameState);
-
-			// AI executing cards
-			int[] cardComboIndex = AI.findOptimalCardCombo(gameState);
-			if(cardComboIndex != null) {
-				for (int index : cardComboIndex) {
-					Card theCard = gameState.getPlayerTwo().getHand().get(index);
-					theCard.execute(out, gameState, AI.placeUnit(gameState, theCard));
-				}
-			}
+			AI.executeCard(out, gameState);
 
 			//draw the new cards for both players on the backend, then display the player one's cards on front-end.
 			gameState.getPlayerOne().draw(out);
@@ -67,8 +60,12 @@ public class EndTurnClicked implements EventProcessor{
 			BasicCommands.setPlayer1Mana(out, playerOne);
 			BasicCommands.setPlayer2Mana(out, playerTwo);
 
+			// Buffer to allow AI actions displaying before player actions
+			try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+
 			//allow the user to click once the process ends.
 			gameState.clickable = true;
+			BasicCommands.addPlayer1Notification(out, "Your turn", 2);
 		}
 	}
 

@@ -75,6 +75,8 @@ public class Player {
 			if(playerNumber == 1)BasicCommands.addPlayer1Notification(out, "Hand Full, Card Lost", 5);
 		}
 	}
-	
-	
+
+	public Deck getDeck() {
+		return deck;
+	}
 }

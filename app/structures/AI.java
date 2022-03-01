@@ -123,6 +123,10 @@ public class AI {
         return null;
     }
 
+    private static Tile findStaffOfYkirTile(GameState gameState){
+        
+    }
+
     /**
 	 * Prototype for placing the unit on a tile.
      * */

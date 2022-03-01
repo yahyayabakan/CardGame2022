@@ -303,9 +303,4 @@ public class Card {
 		if(gameState.clickable == true) gameState.getBoard().displayHighlightedTiles(out, 1);
 	}
 
-
-	public double getScore(){
-		return bigCard.getHealth() + bigCard.getAttack();
-	}
-
 }

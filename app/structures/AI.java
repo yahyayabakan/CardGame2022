@@ -4,12 +4,9 @@ import akka.actor.ActorRef;
 import structures.basic.Board;
 import structures.basic.Card;
 import structures.basic.Position;
-import structures.basic.Spell;
 import structures.basic.Tile;
 import structures.basic.Unit;
 import structures.units.Avatar;
-import utils.CustomizedBuilders;
-
 import java.util.*;
 
 /**
@@ -90,24 +87,47 @@ public class AI {
         return score;
     }
 
-    public static Tile spellEntropicDecay(GameState gameState, Card card){
-        List<Unit> enemyUnits = new ArrayList<Unit>();
-        enemyUnits = gameState.getBoard().getPlayer1Units();
-
-        if(card.getCardname().equals("Entropic Decay")){
-            for(int i=0;i<enemyUnits.size();i++){
-                if(!(enemyUnits.get(i) instanceof Avatar) && enemyUnits.get(i).getHealth()>8){
-                    return gameState.getBoard().getTile(enemyUnits.get(i).getPosition().getTilex(), enemyUnits.get(i).getPosition().getTiley());    
+    public static void executeCard(ActorRef out, GameState gameState){
+        int[] cardComboIndex = AI.findOptimalCardCombo(gameState);
+        Tile executionTile;
+        if(cardComboIndex != null) {
+            for (int index : cardComboIndex) {
+                Card theCard = gameState.getPlayerTwo().getHand().get(index);
+                if(theCard.getBigCard().getHealth() != -1){
+                    // If it is a unit
+                    executionTile = AI.findUnitSummoningTile(gameState, theCard);
+                    if(executionTile != null) theCard.execute(out, gameState, executionTile);
+                } else {
+                    // If it is a spell
+                    if(theCard.getCardname().equals("Entropic Decay")){
+                        executionTile = AI.findEntropicDecayTile(gameState);
+                        if(executionTile != null) theCard.execute(out, gameState, executionTile);
+                    }
+                    if(theCard.getCardname().equals("Staff of Y'Kir'")){
+                        // TODO
+                    }
                 }
             }
-        }return null;
+        }
+    }
+
+    private static Tile findEntropicDecayTile(GameState gameState){
+        List<Unit> enemyUnits;
+        enemyUnits = gameState.getBoard().getPlayer1Units();
+
+        for(int i=0;i<enemyUnits.size();i++){
+            if(!(enemyUnits.get(i) instanceof Avatar) && enemyUnits.get(i).getHealth()>=8){
+                return gameState.getBoard().getTile(enemyUnits.get(i).getPosition().getTilex(), enemyUnits.get(i).getPosition().getTiley());
+            }
+        }
+        return null;
     }
 
     /**
 	 * Prototype for placing the unit on a tile.
      * */
 
-    public static Tile placeUnit(GameState gameState, Card card){
+    private static Tile findUnitSummoningTile(GameState gameState, Card card){
         List<Tile> range = new ArrayList<Tile>();
         List<Unit> enemyUnits = new ArrayList<Unit>();
         List<Unit> friendlyUnits = new ArrayList<Unit>();
@@ -175,9 +195,27 @@ public class AI {
 
     }
 
+    // Calculate the card score
+    private static double calculateCardScore(GameState gameState, Card card){
+        double score;
+        // Prioritize Entropic Decay if there is an enemy with health greater than or equal to 8
+        if(card.getCardname().equals("Entropic Decay")){
+            for(Unit unit: gameState.getBoard().getPlayer1Units()){
+                if(unit.getHealth() >= 8) return 99;
+            }
+        }
+        // Prioritize Staff of Y'Kir' if there is less than or equal to 4 cards in the deck
+        if(card.getCardname().equals("Staff of Y'Kir'")){
+            if(gameState.getPlayerTwo().getDeck().getCards().size() >= 4){
+                return 99;
+            }
+        }
+        // Unit score is the sum of health and attack point
+        return card.getBigCard().getHealth() + card.getBigCard().getAttack();
+    }
 
     // Find the optimal combination of cards to be executed based on mana and score using algorithm for 0-1 Knapsack Problem
-    public static int[] findOptimalCardCombo(GameState gameState){
+    private static int[] findOptimalCardCombo(GameState gameState){
 
         int currentMana = gameState.getPlayerTwo().getMana();
         List<Card> currentHand = gameState.getPlayerTwo().getHand();
@@ -197,7 +235,7 @@ public class AI {
                     // Option 1: use the previous score
                     double option1Score = cardComboScores[i-1][j];
                     // Option 2: use the current score + the max score of reminding mana
-                    double option2Score = currentHand.get(i-1).getScore() +
+                    double option2Score = calculateCardScore(gameState, currentHand.get(i-1)) +
                             cardComboScores[i-1][j-currentHand.get(i-1).getManacost()];
                     // Their max is the current score
                     cardComboScores[i][j] = Math.max(option1Score, option2Score);

@@ -4,9 +4,11 @@ import akka.actor.ActorRef;
 import structures.basic.Board;
 import structures.basic.Card;
 import structures.basic.Position;
+import structures.basic.Spell;
 import structures.basic.Tile;
 import structures.basic.Unit;
 import structures.units.Avatar;
+import utils.CustomizedBuilders;
 
 import java.util.*;
 
@@ -86,6 +88,19 @@ public class AI {
             }
         }
         return score;
+    }
+
+    public static Tile spellEntropicDecay(GameState gameState, Card card){
+        List<Unit> enemyUnits = new ArrayList<Unit>();
+        enemyUnits = gameState.getBoard().getPlayer1Units();
+
+        if(card.getCardname().equals("Entropic Decay")){
+            for(int i=0;i<enemyUnits.size();i++){
+                if(!(enemyUnits.get(i) instanceof Avatar) && enemyUnits.get(i).getHealth()>8){
+                    return gameState.getBoard().getTile(enemyUnits.get(i).getPosition().getTilex(), enemyUnits.get(i).getPosition().getTiley());    
+                }
+            }
+        }return null;
     }
 
     /**

@@ -271,11 +271,10 @@ public class Unit {
 	 * @param out actor reference.
 	 */
 	public void counter(Unit unit, GameState gameState, ActorRef out) {
-		if (health > 1) {
+		if (health >= 1) {
 			int X = position.tilex;
 			int Y = position.tiley;
 			Board board= gameState.getBoard();
-
 			for (int x = X - (BASE_ATTACK_RANGE - 1); x < X + BASE_ATTACK_RANGE; x++) {
 				for (int y = Y - (BASE_ATTACK_RANGE - 1); y < Y + BASE_ATTACK_RANGE; y++) {
 					if (x < board.getX() &&

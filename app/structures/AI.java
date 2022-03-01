@@ -104,7 +104,8 @@ public class AI {
                         if(executionTile != null) theCard.execute(out, gameState, executionTile);
                     }
                     if(theCard.getCardname().equals("Staff of Y'Kir'")){
-                        // TODO
+                        executionTile = AI.findStaffOfYkirTile(gameState);
+                        if(executionTile != null) theCard.execute(out, gameState, executionTile);
                     }
                 }
             }

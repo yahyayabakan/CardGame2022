@@ -129,6 +129,9 @@ public class AI {
 
         List<Unit> friendlyUnits = new ArrayList<Unit>();
         friendlyUnits = gameState.getBoard().getPlayer2Units();
+
+        for(int i=0;i<friendlyUnits.size();i++){
+            if(friendlyUnits.get(i) instanceof Avatar) {
     }
 
     /**

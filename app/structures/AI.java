@@ -126,6 +126,9 @@ public class AI {
     private static Tile findStaffOfYkirTile(GameState gameState){
         List<Unit> enemyUnits = new ArrayList<Unit>();
         enemyUnits = gameState.getBoard().getPlayer1Units();
+
+        List<Unit> friendlyUnits = new ArrayList<Unit>();
+        friendlyUnits = gameState.getBoard().getPlayer2Units();
     }
 
     /**

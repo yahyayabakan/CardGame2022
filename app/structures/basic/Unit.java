@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import akka.actor.ActorRef;
 import commands.BasicCommands;
 import structures.GameState;
+import structures.units.Avatar;
 import utils.BasicObjectBuilders;
 
 import java.util.LinkedList;
@@ -219,6 +220,12 @@ public class Unit {
 		try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
 		BasicCommands.setUnitHealth(out, this, health);
 		try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
+		
+		if(!(this instanceof Avatar)){
+			hasMoved = true;
+			hasAttacked = true;
+		}
+		
 	}
 
 	/**
@@ -459,10 +466,16 @@ public class Unit {
 
 	//Handles the movement of the unit to a tile. Will need to update how the unit moves based on the units in its path. Future Update
 	public void moveUnit(Tile tile, ActorRef out, GameState gameState){
-		for(Tile vt:gameState.getBoard().getHighlightedTiles()){
-			if(tile.tilex==vt.tilex && tile.tiley==vt.tiley){
+		if(gameState.getBoard().getHighlightedTiles().contains(tile)){
+			Tile tilePath = gameState.getBoard().getTile(tile.getTilex(), gameState.getBoard().getLastTile().getTiley());
+			if(tilePath.getUnit()==null){
 				BasicCommands.moveUnitToTile(out,this,tile);
 				try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
+			}else{
+				Boolean yfirst=true;
+				BasicCommands.moveUnitToTile(out,this,tile,yfirst);
+				try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
+			}
 				this.setPositionByTile(tile);
 				gameState.getBoard().clearHighlightedTiles();
 				tile.addUnit(this);
@@ -470,7 +483,7 @@ public class Unit {
 				hasMoved=true;
 		}
 	}
-}	
+	
 
 		// Handles the movement and attack of a unit if a enemy unit was clicked.
 	public void attackMoveUnit(Tile tile, ActorRef out, GameState gameState){	
@@ -522,14 +535,14 @@ public class Unit {
 						}
 					}	
 					
-			System.out.println(attackMoveTile + "ArrackMove");
+			
 			moveUnit(attackMoveTile, out, gameState);
 				
 			gameState.getBoard().clearHighlightedTiles();
 			hasMoved=true;
 			//Call the Attack Method here
 			try {Thread.sleep(250);} catch (InterruptedException e) {e.printStackTrace();}
-			System.out.println(tile + "Attack");
+			
 			this.attack(tile.getUnit(), gameState, out);
 			
 		}

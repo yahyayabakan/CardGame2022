@@ -139,7 +139,7 @@ public class AI {
             }
         }return null; 
     }
-    }
+    
 
     /**
 	 * Prototype for placing the unit on a tile.

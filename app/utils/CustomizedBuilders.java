@@ -88,7 +88,8 @@ public class CustomizedBuilders {
      * @return spell
      */
     public static Spell loadSpellByName(String cardName){
-        String className = "structures.spells.%s".formatted(cardName.replaceAll("[ ']", ""));
+        cardName = cardName.replace(" ","").replace("'", "");
+        String className = "structures.spells." + cardName;
         Spell spell = null;
         try {
             spell = new ObjectMapper().readValue("{}", Class.forName(className).asSubclass(Spell.class));

@@ -105,6 +105,8 @@ public class AI {
                     }
                     if(theCard.getCardname().equals("Staff of Y'Kir'")){
                         // TODO
+                        executionTile = AI.findStaffOfYkirTile(gameState);
+                        if(executionTile != null) theCard.execute(out, gameState, executionTile);
                     }
                 }
             }
@@ -122,6 +124,23 @@ public class AI {
         }
         return null;
     }
+
+    private static Tile findStaffOfYkirTile(GameState gameState){
+        List<Unit> enemyUnits = new ArrayList<Unit>();
+        enemyUnits = gameState.getBoard().getPlayer1Units();
+
+        List<Unit> friendlyUnits = new ArrayList<Unit>();
+        friendlyUnits = gameState.getBoard().getPlayer2Units();
+
+        for(int i=0;i<friendlyUnits.size();i++){
+            if(friendlyUnits.get(i) instanceof Avatar) {
+                if(enemyUnits.size()<4){
+                    return gameState.getBoard().getTile(friendlyUnits.get(i).getPosition().getTilex(), friendlyUnits.get(i).getPosition().getTiley());        
+                }      
+            }
+        }return null; 
+    }
+    
 
     /**
 	 * Prototype for placing the unit on a tile.

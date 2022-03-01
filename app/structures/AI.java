@@ -132,6 +132,12 @@ public class AI {
 
         for(int i=0;i<friendlyUnits.size();i++){
             if(friendlyUnits.get(i) instanceof Avatar) {
+                if(enemyUnits.size()<4){
+                    return gameState.getBoard().getTile(friendlyUnits.get(i).getPosition().getTilex(), friendlyUnits.get(i).getPosition().getTiley());        
+                }      
+            }
+        }return null; 
+    }
     }
 
     /**

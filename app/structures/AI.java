@@ -192,7 +192,29 @@ public class AI {
 
         // places the ranged attack unit on the board
         if(card.getCardname().equals("Pyromancer")){
-            //call Paul's Method
+            List<Tile> tileList = new ArrayList<Tile>();
+            for(int i=0;i<friendlyUnits.size();i++){
+                    Position friendlyPos= friendlyUnits.get(i).getPosition();
+                    refTile = gameState.getBoard().getTile(friendlyPos.getTilex(), friendlyPos.getTiley());
+                    //tileList = gameState.getNearbyTiles(refTile);
+                    tileList.addAll(gameState.getNearbyTiles(refTile));
+                    
+                }
+                Tile maxTile = null;
+                for(int i=0;i<tileList.size(); i++){
+                    if(maxTile == null){
+                        if(tileList.get(i).getUnit() == null){
+                            maxTile = tileList.get(i);
+                        }
+                    }
+                    if(tileList.get(i).getUnit() == null){
+                        if(tileList.get(i).getTilex() > maxTile.getTilex()) {
+                            maxTile = tileList.get(i);
+                            
+                        }
+                    }
+                }
+                return maxTile;
         }
         // places the remaining units toward the left end of the board 
         for(int x = 0; x < gameState.getBoard().getX(); x++) {

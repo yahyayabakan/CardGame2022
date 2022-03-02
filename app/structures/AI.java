@@ -1,6 +1,7 @@
 package structures;
 
 import akka.actor.ActorRef;
+import commands.BasicCommands;
 import structures.basic.Board;
 import structures.basic.Card;
 import structures.basic.Position;
@@ -90,6 +91,7 @@ public class AI {
     public static void executeCard(ActorRef out, GameState gameState){
         int[] cardComboIndex = AI.findOptimalCardCombo(gameState);
         Tile executionTile;
+
         if(cardComboIndex != null) {
             for (int index : cardComboIndex) {
                 Card theCard = gameState.getPlayerTwo().getHand().get(index);
@@ -104,10 +106,22 @@ public class AI {
                         if(executionTile != null) theCard.execute(out, gameState, executionTile);
                     }
                     if(theCard.getCardname().equals("Staff of Y'Kir'")){
-                        // TODO
                         executionTile = AI.findStaffOfYkirTile(gameState);
                         if(executionTile != null) theCard.execute(out, gameState, executionTile);
                     }
+                }
+                // Deduct mana
+                gameState.getPlayerTwo().setMana(gameState.getPlayerTwo().getMana() - theCard.getManacost());
+                BasicCommands.setPlayer2Mana(out, gameState.getPlayerTwo());
+            }
+            for(Card card: gameState.getPlayerTwo().getHand()){
+                System.out.println(card.getCardname());
+            }
+            // Remove all executed cards in hand
+            for(int i = 0; i < cardComboIndex.length; i++){
+                gameState.getPlayerTwo().getHand().remove(cardComboIndex[i]);
+                for(int j = i + 1; j < cardComboIndex.length; j++){
+                    cardComboIndex[j]--;
                 }
             }
         }

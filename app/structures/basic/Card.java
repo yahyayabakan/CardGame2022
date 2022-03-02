@@ -112,7 +112,8 @@ public class Card {
 				spellToCast.spell(out, gameState, tile);
 				gameState.PurebladeEnforcerEffect(out);
 			}
-			// Deduct mana, and delete the executed card in hand
+			// Deduct mana, and delete the executed card in hand for player 1
+			// For player 2, it is implemented in executeCard() in AI class
 			if(gameState.clickable){
 				gameState.getPlayerOne().setMana(gameState.getPlayerOne().getMana() - manacost);
 				BasicCommands.setPlayer1Mana(out, gameState.getPlayerOne());
@@ -120,10 +121,6 @@ public class Card {
 				gameState.clearCurrentHandCards(out,gameState.getPlayerOne());
 				gameState.getPlayerOne().getHand().removeFirstOccurrence(this);
 				gameState.displayCurrentHandCards(out,gameState.getPlayerOne());
-			} else {
-				gameState.getPlayerTwo().setMana(gameState.getPlayerTwo().getMana() - manacost);
-				BasicCommands.setPlayer2Mana(out, gameState.getPlayerTwo());
-				gameState.getPlayerTwo().getHand().removeFirstOccurrence(this);
 			}
 			// Reset clicked card
 			gameState.setClickedHandPosition(-1);

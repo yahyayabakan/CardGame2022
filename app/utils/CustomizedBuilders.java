@@ -66,11 +66,12 @@ public class CustomizedBuilders {
 
         Unit unit;
         Card card = BasicObjectBuilders.loadCard(cardConfig, 0, Card.class);
+        int newUnitID = gameState.getNewUnitID();
         try {
-            unit = BasicObjectBuilders.loadUnit(unitConfig, gameState.getNewUnitID(),
+            unit = BasicObjectBuilders.loadUnit(unitConfig, newUnitID,
                     Class.forName(className).asSubclass(Unit.class));
         } catch (ClassNotFoundException e) {
-            unit = BasicObjectBuilders.loadUnit(unitConfig, gameState.getNewUnitID(), Unit.class);
+            unit = BasicObjectBuilders.loadUnit(unitConfig, newUnitID, Unit.class);
         }
 
         assert unit != null;

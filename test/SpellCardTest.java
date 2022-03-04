@@ -39,6 +39,10 @@ public class SpellCardTest {
         //Take damaged first; and will have 4 health after damage;
         testUnit.takeDamage(6, gameState, null);
 
+        //Use SundropElixir card on testUnit;
+        SundropElixir card = new SundropElixir();        
+        card.spell(null, gameState, tile);
+
     }
 
 }

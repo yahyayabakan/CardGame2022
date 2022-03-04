@@ -10,6 +10,7 @@ import structures.GameState;
 import structures.basic.Tile;
 import structures.basic.Unit;
 import structures.spells.SundropElixir;
+import structures.spells.Truestrike;
 import akka.actor.ActorRef;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -46,5 +47,11 @@ public class SpellCardTest {
         assertTrue(testUnit.getHealth()==9);
 
     }
+
+    @Test
+    public void TrueStrikeTest(){   
+       
+    }
+
 
 }

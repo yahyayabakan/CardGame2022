@@ -10,6 +10,7 @@ import structures.GameState;
 import structures.basic.Tile;
 import structures.basic.Unit;
 import structures.spells.SundropElixir;
+import structures.spells.Truestrike;
 import akka.actor.ActorRef;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -47,4 +48,26 @@ public class SpellCardTest {
 
     }
 
+    @Test
+    public void TrueStrikeTest(){   
+        GameState gameState = new GameState(); // create state storage
+
+        //Created a test unit;
+        Unit enemyUnit = new Unit();
+
+        //Create a tile for putting the enemy unit in it;
+        Tile tile = new Tile();
+        tile.setTilex(3);
+        tile.setTiley(3);
+        tile.addUnit(enemyUnit);
+
+        //Set the max health attribute to 10;
+        enemyUnit.setHealthWithMax(10);
+
+        //Use Truestrike card on testiUnt;
+        Truestrike card = new Truestrike();        
+        card.spell(null, gameState, tile);
+
+        assertTrue(enemyUnit.getHealth()==8);
+    }
 }

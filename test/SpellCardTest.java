@@ -26,11 +26,14 @@ public class SpellCardTest {
         //Created a test unit;
         Unit testUnit = new Unit();
         
-         //Create a tile for putting the unit in it;
-         Tile tile = new Tile();
-         tile.setTilex(3);
-         tile.setTiley(3);
-         tile.addUnit(testUnit);
+        //Create a tile for putting the unit in it;
+        Tile tile = new Tile();
+        tile.setTilex(3);
+        tile.setTiley(3);
+        tile.addUnit(testUnit);
+
+        //Set the max health attribute to 10;
+        testUnit.setHealthWithMax(10);
 
     }
 

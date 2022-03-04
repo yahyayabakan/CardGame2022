@@ -60,6 +60,9 @@ public class SpellCardTest {
         tile.setTilex(3);
         tile.setTiley(3);
         tile.addUnit(enemyUnit);
+
+        //Set the max health attribute to 10;
+        enemyUnit.setHealthWithMax(10);
     }
 
 

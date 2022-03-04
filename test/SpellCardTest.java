@@ -23,6 +23,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 public class SpellCardTest {
     @Test
     public void SundropElixirTest(){    
+        //Created a test unit;
+        Unit testUnit = new Unit();
         
 
     }

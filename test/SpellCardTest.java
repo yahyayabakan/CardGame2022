@@ -63,6 +63,10 @@ public class SpellCardTest {
 
         //Set the max health attribute to 10;
         enemyUnit.setHealthWithMax(10);
+
+        //Use Truestrike card on testiUnt;
+        Truestrike card = new Truestrike();        
+        card.spell(null, gameState, tile);
     }
 
 

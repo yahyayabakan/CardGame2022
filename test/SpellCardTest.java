@@ -50,7 +50,10 @@ public class SpellCardTest {
 
     @Test
     public void TrueStrikeTest(){   
-       
+        GameState gameState = new GameState(); // create state storage
+
+        //Created a test unit;
+        Unit enemyUnit = new Unit();
     }
 
 

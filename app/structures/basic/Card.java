@@ -110,7 +110,9 @@ public class Card {
 				// Execute spell
 				Spell spellToCast = CustomizedBuilders.loadSpellByName(cardname);
 				spellToCast.spell(out, gameState, tile);
-				gameState.PurebladeEnforcerEffect(out);
+
+				// If player 2 cast a spell, trigger the ability of PureBlade Enforcer
+				if(!gameState.clickable) gameState.PurebladeEnforcerEffect(out);
 			}
 			// Deduct mana, and delete the executed card in hand for player 1
 			// For player 2, it is implemented in executeCard() in AI class

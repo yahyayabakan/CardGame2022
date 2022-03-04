@@ -168,7 +168,6 @@ public class GameState {
 
 	public void PurebladeEnforcerEffect(ActorRef out) {
 		List<Unit> units = getBoard().getPlayer1Units();
-		units.addAll(getBoard().getPlayer2Units());
 		units.stream().filter(unit -> unit instanceof PurebladeEnforcer)
 				.forEach(unit -> ((PurebladeEnforcer) unit).spellEffect(out));
 	}

@@ -22,7 +22,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class SpellCardTest {
     @Test
-    public void SundropElixirTest(){    
+    public void SundropElixirTest(){   
+        GameState gameState = new GameState(); // create state storage 
         //Created a test unit;
         Unit testUnit = new Unit();
         
@@ -34,6 +35,9 @@ public class SpellCardTest {
 
         //Set the max health attribute to 10;
         testUnit.setHealthWithMax(10);
+
+        //Take damaged first; and will have 4 health after damage;
+        testUnit.takeDamage(6, gameState, null);
 
     }
 

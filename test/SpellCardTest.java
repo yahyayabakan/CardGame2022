@@ -67,7 +67,7 @@ public class SpellCardTest {
         //Use Truestrike card on testiUnt;
         Truestrike card = new Truestrike();        
         card.spell(null, gameState, tile);
+
+        assertTrue(enemyUnit.getHealth()==8);
     }
-
-
 }

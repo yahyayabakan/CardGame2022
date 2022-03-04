@@ -39,9 +39,11 @@ public class SpellCardTest {
         //Take damaged first; and will have 4 health after damage;
         testUnit.takeDamage(6, gameState, null);
 
-        //Use SundropElixir card on testUnit;
+        //Use SundropElixir card on testiUnt;
         SundropElixir card = new SundropElixir();        
         card.spell(null, gameState, tile);
+
+        assertTrue(testUnit.getHealth()==9);
 
     }
 

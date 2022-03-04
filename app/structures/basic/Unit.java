@@ -2,14 +2,20 @@ package structures.basic;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.checkerframework.checker.units.qual.K;
+
 import akka.actor.ActorRef;
 import commands.BasicCommands;
 import structures.GameState;
 import structures.units.Avatar;
 import utils.BasicObjectBuilders;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 
 /**
  * This is a representation of a Unit on the game board.
@@ -373,6 +379,92 @@ public class Unit {
 					}
 				}
 			}
+
+			// checks whether there are any units in the path to the highlighted tile and unhighlights the tiles if the path is blocked 
+			List<Tile> pathToTile = new ArrayList<>();
+			for(int i=0;i<board.getHighlightedTiles().size();i++){
+				try{
+					int distx = tile.getTilex()-board.getHighlightedTiles().get(i).getTilex();
+					int disty = tile.getTiley()-board.getHighlightedTiles().get(i).getTiley();
+					int count = 0;
+
+							if(distx==-2){	
+								for(int k=-1;k<=1;k++){
+									try{
+										pathToTile.add(board.getTile(tile.getTilex()+1,tile.getTiley()+k));
+										if(k==0){
+											if(board.getHighlightedTiles().get(i).getUnit()==null){
+												if(board.getTile(tile.getTilex()+1,tile.getTiley()+k).getUnit()!=null){
+													BasicCommands.drawTile(out,board.getHighlightedTiles().get(i), 0);
+													board.getHighlightedTiles().remove(board.getHighlightedTiles().get(i));
+												}
+											}
+													
+										}
+									}catch(IndexOutOfBoundsException ignored){}
+								}
+							}else if(distx==2){
+								for(int k=-1;k<=1;k++){
+									try{
+										pathToTile.add(board.getTile(tile.getTilex()-1,tile.getTiley()+k));
+										if(k==0){
+											if(board.getHighlightedTiles().get(i).getUnit()==null){
+												if(board.getTile(tile.getTilex()-1,tile.getTiley()).getUnit()!=null){
+													BasicCommands.drawTile(out,board.getHighlightedTiles().get(i), 0);
+													board.getHighlightedTiles().remove(board.getHighlightedTiles().get(i));
+												}
+											}
+													
+										}
+									}catch(IndexOutOfBoundsException ignored){}
+								}
+							}else if(disty==-2){
+								for(int k=-1;k<=1;k++){
+									try{
+										pathToTile.add(board.getTile(tile.getTilex()+k,tile.getTiley()+1));
+										if(k==0){
+											if(board.getHighlightedTiles().get(i).getUnit()==null){
+												if(board.getTile(tile.getTilex(),tile.getTiley()+1).getUnit()!=null){
+													BasicCommands.drawTile(out,board.getHighlightedTiles().get(i), 0);
+													board.getHighlightedTiles().remove(board.getHighlightedTiles().get(i));
+												}
+											}
+													
+										}
+									}catch(IndexOutOfBoundsException ignored){}
+								}
+							}else if(disty==2){
+								for(int k=-1;k<=1;k++){
+									try{
+										pathToTile.add(board.getTile(tile.getTilex()+k,tile.getTiley()-1));
+										if(k==0){
+											if(board.getHighlightedTiles().get(i).getUnit()==null){
+												if(board.getTile(tile.getTilex(),tile.getTiley()-1).getUnit()!=null){
+													BasicCommands.drawTile(out,board.getHighlightedTiles().get(i), 0);
+													board.getHighlightedTiles().remove(board.getHighlightedTiles().get(i));
+												}
+											}
+													
+										}
+									}catch(IndexOutOfBoundsException ignored){}
+								}
+							}
+						
+
+						for(int j=0;j<pathToTile.size();j++){
+							if(pathToTile.get(j).getUnit()!=null){
+								count++;
+							}
+						}
+
+						if(count!=0 && count==pathToTile.size()){
+							BasicCommands.drawTile(out,board.getHighlightedTiles().get(i), 0);
+							board.getHighlightedTiles().remove(board.getHighlightedTiles().get(i));
+						}
+						
+					}catch(IndexOutOfBoundsException ignored){}
+					pathToTile.clear();
+			}
 		}
 	}
 
@@ -461,6 +553,8 @@ public class Unit {
 			}
 		}
 		catch (IndexOutOfBoundsException ignored){}
+
+		
 	}
 
 	//Handles the movement of the unit to a tile. Will need to update how the unit moves based on the units in its path. Future Update

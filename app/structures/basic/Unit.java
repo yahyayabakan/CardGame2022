@@ -3,19 +3,13 @@ package structures.basic;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.checkerframework.checker.units.qual.K;
-
 import akka.actor.ActorRef;
 import commands.BasicCommands;
 import structures.GameState;
 import structures.units.Avatar;
-import utils.BasicObjectBuilders;
-
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.plaf.synth.SynthOptionPaneUI;
 
 /**
  * This is a representation of a Unit on the game board.
@@ -173,6 +167,7 @@ public class Unit {
 		if(health + amount > MAX_HEALTH) health = MAX_HEALTH;
 		else health+=amount;
 	}
+
 	/**
 	 * Method to call whenever a unit takes damage. It decreases the health according to damage.
 	 * If the unit health reaches below 1, then the unit is destroyed and removed from the board.
@@ -297,6 +292,7 @@ public class Unit {
 			}
 		}
 	}
+
 	/**
 	 * Afterwards, it will check whether this unit has attacked. If not, it will start the search.
 	 * It searches through a square of size BASE_ATTACK_RANGE which defines how far it can reach.
@@ -337,6 +333,7 @@ public class Unit {
 							try {
 								Tile highlightedTile = board.getTile(x, y);
 								BasicCommands.drawTile(out, highlightedTile, 2);
+								try {Thread.sleep(20);} catch (InterruptedException e) {e.printStackTrace(); }
 								board.getHighlightedTiles().add(highlightedTile);
 
 							} catch (IndexOutOfBoundsException ignored) {
@@ -347,6 +344,7 @@ public class Unit {
 			}
 		}
 	}
+
 	/**
 	 * Reset the has moved variable to default false.
 	 * Can be used after the end of each turn.
@@ -354,6 +352,7 @@ public class Unit {
 	public void resetMovement(){
 		hasMoved = false;
 	}
+
 
 	/**
 	 * Displays a unit's movement tiles. If the unit has not yet attacked, it will display the enemy's that it can target.
@@ -369,13 +368,13 @@ public class Unit {
 		if(nexToProvokeUnit(tile,board, out)){}
 		//movement base logic
 		else if(!hasMoved){
-			//Creating the default diamond shape highlight using points dinstance from center.
+			//Creating the default diamond shape highlight using points distance from center.
 			for(int x = X - BASE_MOVEMENT; x <= X+BASE_MOVEMENT; x++){
 				for(int y = Y - BASE_MOVEMENT; y <= Y+BASE_MOVEMENT; y++){
 					int a = Math.abs(x-X);
 					int b = Math.abs(y-Y);
 					if(a+b <= BASE_MOVEMENT){
-						drawValidTilesForMovement(x, y, tile, board, out);
+						findActionableTiles(x, y, tile, board, out);
 					}
 				}
 			}
@@ -395,7 +394,6 @@ public class Unit {
 										if(k==0){
 											if(board.getHighlightedTiles().get(i).getUnit()==null){
 												if(board.getTile(tile.getTilex()+1,tile.getTiley()+k).getUnit()!=null){
-													BasicCommands.drawTile(out,board.getHighlightedTiles().get(i), 0);
 													board.getHighlightedTiles().remove(board.getHighlightedTiles().get(i));
 												}
 											}
@@ -410,7 +408,6 @@ public class Unit {
 										if(k==0){
 											if(board.getHighlightedTiles().get(i).getUnit()==null){
 												if(board.getTile(tile.getTilex()-1,tile.getTiley()).getUnit()!=null){
-													BasicCommands.drawTile(out,board.getHighlightedTiles().get(i), 0);
 													board.getHighlightedTiles().remove(board.getHighlightedTiles().get(i));
 												}
 											}
@@ -425,7 +422,6 @@ public class Unit {
 										if(k==0){
 											if(board.getHighlightedTiles().get(i).getUnit()==null){
 												if(board.getTile(tile.getTilex(),tile.getTiley()+1).getUnit()!=null){
-													BasicCommands.drawTile(out,board.getHighlightedTiles().get(i), 0);
 													board.getHighlightedTiles().remove(board.getHighlightedTiles().get(i));
 												}
 											}
@@ -440,7 +436,6 @@ public class Unit {
 										if(k==0){
 											if(board.getHighlightedTiles().get(i).getUnit()==null){
 												if(board.getTile(tile.getTilex(),tile.getTiley()-1).getUnit()!=null){
-													BasicCommands.drawTile(out,board.getHighlightedTiles().get(i), 0);
 													board.getHighlightedTiles().remove(board.getHighlightedTiles().get(i));
 												}
 											}
@@ -458,7 +453,6 @@ public class Unit {
 						}
 
 						if(count!=0 && count==pathToTile.size()){
-							BasicCommands.drawTile(out,board.getHighlightedTiles().get(i), 0);
 							board.getHighlightedTiles().remove(board.getHighlightedTiles().get(i));
 						}
 						
@@ -466,6 +460,18 @@ public class Unit {
 					pathToTile.clear();
 			}
 		}
+
+		// Display highlighted tiles
+		for(Tile t: board.getHighlightedTiles()){
+			if(board.getEnemyUnits(tile.getUnit()).contains(t.getUnit())){
+				BasicCommands.drawTile(out,t, 2);
+				try {Thread.sleep(20);} catch (InterruptedException e) {e.printStackTrace();}
+			} else {
+				BasicCommands.drawTile(out,t, 1);
+				try {Thread.sleep(20);} catch (InterruptedException e) {e.printStackTrace();}
+			}
+		}
+
 	}
 
 	/**
@@ -517,7 +523,7 @@ public class Unit {
 	 * @param board - current state of the board.
 	 * @param out - game actor reference
 	 */
-	private void drawValidTilesForMovement(int x, int y, Tile tile, Board board, ActorRef out){
+	private void findActionableTiles(int x, int y, Tile tile, Board board, ActorRef out){
 		int X = tile.getTilex();
 		int Y = tile.getTiley();
 		List<Unit> enemyList = board.getEnemyUnits(this);
@@ -527,34 +533,28 @@ public class Unit {
 				&& x >= 0 && y >= 0){
 			if(board.getTile(x,y).unit != null){
 				Unit unit = board.getTile(x,y).getUnit();
-				//if there is an enemy unit and this unit can attack it, highlight it in red.
+				//if there is an enemy unit and this unit can attack it, add to highlighted tiles
 				if(enemyList.contains(unit)){
 					if(!hasAttacked){
 						Tile highlightedTile = board.getTile(x,y);
-						BasicCommands.drawTile(out, highlightedTile, 2);
-						try {Thread.sleep(20);} catch (InterruptedException e) {e.printStackTrace();}
 						board.getHighlightedTiles().add(highlightedTile);
 					}
-					//else leave default colour.
 				}
 			}
-			else { //if no unit is present then draw the move tile.
+			else {
+				//also add the movable tiles to highlighted tiles
 				Tile highlightedTile = board.getTile(x,y);
 				board.getHighlightedTiles().add(highlightedTile);
-				BasicCommands.drawTile(out, highlightedTile, 1);
-				try {Thread.sleep(20);} catch (InterruptedException e) {e.printStackTrace();}
 			}
 		}
 		//if a unit hasn't attacked check the border cases.
 		try {
 			if (!hasAttacked && board.getTile(x,y).getUnit() == null) {
 				attackDisplayHelper(out, board.getTile(x, y), board);
-				try {Thread.sleep(20);} catch (InterruptedException e) {e.printStackTrace();}
 			}
 		}
 		catch (IndexOutOfBoundsException ignored){}
 
-		
 	}
 
 	//Handles the movement of the unit to a tile. Will need to update how the unit moves based on the units in its path. Future Update
@@ -576,9 +576,8 @@ public class Unit {
 				hasMoved=true;
 		}
 	}
-	
 
-		// Handles the movement and attack of a unit if a enemy unit was clicked.
+	// Handles the movement and attack of a unit if a enemy unit was clicked.
 	public void attackMoveUnit(Tile tile, ActorRef out, GameState gameState){	
 			Tile attackMoveTile = null;
 			Tile attacker= gameState.getBoard().getLastTile();
@@ -605,40 +604,40 @@ public class Unit {
 			}
 		}catch(IndexOutOfBoundsException ingored){}	 
 
-//finds an alternate tile if the tile calcualted from the earlier step had a unit on it
-				if(attackMoveTile==null){
+		//finds an alternate tile if the tile calcualted from the earlier step had a unit on it
+			if(attackMoveTile==null){
+				List<Tile> tileList = gameState.getNearbyTiles(tile);
+					for(int j=0; j< gameState.getBoard().getHighlightedTiles().size();j++){
+							if(tileList.contains(gameState.getBoard().getHighlightedTiles().get(j))){
+								if(gameState.getBoard().getHighlightedTiles().get(j).getUnit()==null){
+									if(gameState.getBoard().getHighlightedTiles().get(j).getUnit()==null)
+										attackMoveTile=gameState.getBoard().getHighlightedTiles().get(j);
+								}
+							}
+					}
+				}else if(attackMoveTile.getUnit()!=null){
 					List<Tile> tileList = gameState.getNearbyTiles(tile);
-						for(int j=0; j< gameState.getBoard().getHighlightedTiles().size();j++){
-								if(tileList.contains(gameState.getBoard().getHighlightedTiles().get(j))){
-									if(gameState.getBoard().getHighlightedTiles().get(j).getUnit()==null){
-										if(gameState.getBoard().getHighlightedTiles().get(j).getUnit()==null)
-											attackMoveTile=gameState.getBoard().getHighlightedTiles().get(j);
-									}
+					for(int j=0; j< gameState.getBoard().getHighlightedTiles().size();j++){
+							if(tileList.contains(gameState.getBoard().getHighlightedTiles().get(j))){
+								if(gameState.getBoard().getHighlightedTiles().get(j).getUnit()==null){
+									if(gameState.getBoard().getHighlightedTiles().get(j).getUnit()==null)
+										attackMoveTile=gameState.getBoard().getHighlightedTiles().get(j);
 								}
-						}
-					}else if(attackMoveTile.getUnit()!=null){
-						List<Tile> tileList = gameState.getNearbyTiles(tile);
-						for(int j=0; j< gameState.getBoard().getHighlightedTiles().size();j++){
-								if(tileList.contains(gameState.getBoard().getHighlightedTiles().get(j))){
-									if(gameState.getBoard().getHighlightedTiles().get(j).getUnit()==null){
-										if(gameState.getBoard().getHighlightedTiles().get(j).getUnit()==null)
-											attackMoveTile=gameState.getBoard().getHighlightedTiles().get(j);
-									}
-								}
-						}
-					}	
-					
-			
-			moveUnit(attackMoveTile, out, gameState);
-				
-			gameState.getBoard().clearHighlightedTiles();
-			hasMoved=true;
-			//Call the Attack Method here
-			try {Thread.sleep(250);} catch (InterruptedException e) {e.printStackTrace();}
-			
-			this.attack(tile.getUnit(), gameState, out);
-			
-		}
+							}
+					}
+				}
+
+
+		moveUnit(attackMoveTile, out, gameState);
+
+		gameState.getBoard().clearHighlightedTiles();
+		hasMoved=true;
+		//Call the Attack Method here
+		try {Thread.sleep(250);} catch (InterruptedException e) {e.printStackTrace();}
+
+		this.attack(tile.getUnit(), gameState, out);
+
+}
 		 
 	
 

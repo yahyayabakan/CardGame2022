@@ -30,16 +30,16 @@ public class AI {
         List<Unit> AIunits = board.getPlayer2Units();
         List<Action> actions = new ArrayList<>();;
 
-        for(Unit unit : AIunits){
+        for(int i = 0; i < AIunits.size(); i++){
             actions.clear();
             gameState.drawDefaultTilesGrid(out);
             board.getHighlightedTiles().clear();
-            Tile unitTile = board.getTile(unit.getPosition().getTilex(), unit.getPosition().getTiley());
+            Tile unitTile = board.getTile(AIunits.get(i).getPosition().getTilex(), AIunits.get(i).getPosition().getTiley());
             board.setLastTile(unitTile);
-            unit.displayMovementTiles(out, unitTile, board);
+            AIunits.get(i).displayMovementTiles(out, unitTile, board);
             List<Tile> highlightedTiles = board.getHighlightedTiles();
             for(Tile move : highlightedTiles){
-                double score = calculateScore(unit, move);
+                double score = calculateScore(AIunits.get(i), move);
                 actions.add(new Action(move, score));
             }
             Action action = actions.stream()
@@ -50,11 +50,11 @@ public class AI {
                 if(action.move.getUnit() != null){
                     if(gameState.getNearbyTiles(unitTile).contains(action.move)){
                         if(gameState.getBoard().getPlayer1Units().contains(action.move.getUnit()))
-                            unit.attack(action.move.getUnit(), gameState, out);
-                    }else       
-                        unit.attackMoveUnit(action.move, out, gameState);
+                            AIunits.get(i).attack(action.move.getUnit(), gameState, out);
+                    }else
+                        AIunits.get(i).attackMoveUnit(action.move, out, gameState);
                 }
-                else unit.moveUnit(action.move, out, gameState);
+                else AIunits.get(i).moveUnit(action.move, out, gameState);
             }
         }
         gameState.drawDefaultTilesGrid(out);

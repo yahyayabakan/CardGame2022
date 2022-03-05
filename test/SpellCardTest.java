@@ -108,6 +108,12 @@ public class SpellCardTest {
         Unit unit = new Avatar();
         unit.setHealth(5);
 
+        //Created a tile and put the avatar in it
+        Tile tile = new Tile();
+        tile.setTilex(3);
+        tile.setTiley(3);
+        tile.addUnit(unit);
+
     
 
    

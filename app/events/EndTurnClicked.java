@@ -8,6 +8,9 @@ import structures.AI;
 import structures.GameState;
 import structures.basic.Card;
 import structures.basic.Player;
+import structures.basic.Unit;
+import structures.units.AzuriteLion;
+import structures.units.Serpenti;
 
 import java.util.Arrays;
 
@@ -35,12 +38,23 @@ public class EndTurnClicked implements EventProcessor{
 			for(int i = 0; i < gameState.getBoard().getPlayer1Units().size(); i++) {
 				gameState.getBoard().getPlayer1Units().get(i).resetMovement();
 				gameState.getBoard().getPlayer1Units().get(i).resetAttack();
-		}
+			}
 			for(int i = 0; i < gameState.getBoard().getPlayer2Units().size(); i++) {
 				gameState.getBoard().getPlayer2Units().get(i).resetMovement();
 				gameState.getBoard().getPlayer2Units().get(i).resetAttack();
-				
-		}
+			}
+
+			// Reset attack turn of Azurite Lion and Serpenti
+			for(Unit unit: gameState.getBoard().getPlayer1Units()){
+				if(unit instanceof AzuriteLion){
+					((AzuriteLion) unit).resetAttackTurn();
+				}
+			}
+			for(Unit unit: gameState.getBoard().getPlayer2Units()){
+				if(unit instanceof Serpenti){
+					((Serpenti) unit).resetAttackTurn();
+				}
+			}
 
 			// Perform AI actions
 			AI.makeMove(out, gameState);

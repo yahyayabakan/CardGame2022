@@ -2,6 +2,7 @@ package structures.units;
 
 import structures.GameState;
 import structures.basic.Board;
+import structures.basic.Player;
 import structures.basic.Tile;
 import structures.basic.Unit;
 import akka.actor.ActorRef;
@@ -26,6 +27,16 @@ public class AzuriteLion extends Unit {
             hasAttacked = false;
             hasMoved = true;
         }
+    }
+
+    @Override
+    public void summon(ActorRef out, Tile tile, Player player, Board board) {
+        super.summon(out, tile, player, board);
+        attackTurn = MAX_ATTACK_TURN;
+    }
+
+    public void resetAttackTurn(){
+        attackTurn = 0;
     }
 
 }

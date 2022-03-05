@@ -266,7 +266,9 @@ public class Unit {
 			hasAttacked = true;
 			hasMoved = true;
 		}
-		else System.out.println("Unit already attacked!");
+		// Clear all highlighted tiles
+		gameState.drawDefaultTilesGrid(out);
+		gameState.getBoard().clearHighlightedTiles();
 	}
 
 	/**

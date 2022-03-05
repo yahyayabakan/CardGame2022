@@ -191,6 +191,10 @@ public class Unit {
 			BasicCommands.playUnitAnimation(out, this, UnitAnimationType.death);
 			try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
 			BasicCommands.deleteUnit(out,this);
+			try {Thread.sleep(20);} catch (InterruptedException e) {e.printStackTrace();}
+			//clear highlighted tiles
+			gameState.drawDefaultTilesGrid(out);
+			gameState.getBoard().clearHighlightedTiles();
 		}
 		else{
 			BasicCommands.setUnitHealth(out, this, health);

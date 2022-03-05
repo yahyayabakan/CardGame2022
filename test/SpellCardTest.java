@@ -92,6 +92,8 @@ public class SpellCardTest {
         //Use StaffOfYkir card on test Avatar;
         StaffofYKir card = new StaffofYKir();        
         card.spell(null, gameState, tile);
+
+        assertTrue(myAvatar.getAttack()==4);
         
    }
 

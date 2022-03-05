@@ -88,6 +88,10 @@ public class SpellCardTest {
         tile.setTilex(3);
         tile.setTiley(3);
         tile.addUnit(myAvatar);
+
+        //Use StaffOfYkir card on test Avatar;
+        StaffofYKir card = new StaffofYKir();        
+        card.spell(null, gameState, tile);
         
    }
 

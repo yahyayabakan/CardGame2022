@@ -78,23 +78,11 @@ public class SpellCardTest {
     @Test
     public void StaffOfYkirTest(){
         GameState gameState = new GameState(); // create state storage
-        //Created a test avatar;
+
+        //Created a test avatar and set its attack power 2;
         Avatar myAvatar = new Avatar();
         myAvatar.setAttack(2);
-
-        //Create a tile for putting the enemy unit in it;
-        Tile tile = new Tile();
-        tile.setTilex(3);
-        tile.setTiley(3);
-        tile.addUnit(myAvatar);
-
         
-
-        //Use StaffOfYkir card on test Avatar;
-        StaffofYKir card = new StaffofYKir();        
-        card.spell(null, gameState, tile);
-
-        assertTrue(myAvatar.getAttack()==4);
    }
 
  

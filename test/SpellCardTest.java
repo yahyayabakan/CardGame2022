@@ -113,6 +113,10 @@ public class SpellCardTest {
         tile.setTilex(3);
         tile.setTiley(3);
         tile.addUnit(unit);
+        
+        //Created Entropic Card and applied to avatar
+        EntropicDecay card = new EntropicDecay();
+        card.spell(null, gameState, tile);
 
     
 

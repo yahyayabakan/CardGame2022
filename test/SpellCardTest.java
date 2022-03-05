@@ -8,14 +8,18 @@ import akka.actor.ActorRef;
 import events.Initalize;
 import structures.GameState;
 import structures.basic.Tile;
+import structures.basic.Player;
+import structures.basic.Board;
 import structures.basic.Unit;
 import structures.spells.SundropElixir;
 import structures.spells.Truestrike;
 import structures.spells.StaffofYKir;
 import structures.spells.EntropicDecay;
 import structures.units.Avatar;
+import structures.units.AzureHerald;
 import akka.actor.ActorRef;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -97,5 +101,25 @@ public class SpellCardTest {
         
    }
 
- 
+    @Test
+    public void EntropicDecayTest(){
+        GameState gameState = new GameState();
+        //Created an avatar ant set its health to 5
+        Unit unit = new Avatar();
+        unit.setHealth(5);
+
+        //Created a tile and put the avatar in it
+        Tile tile = new Tile();
+        tile.setTilex(3);
+        tile.setTiley(3);
+        tile.addUnit(unit);
+        
+        //Created Entropic Card and applied to avatar
+        EntropicDecay card = new EntropicDecay();
+        card.spell(null, gameState, tile);
+
+        //Assert true if avatar is not affected by the card
+        assertNotNull(tile.getUnit());   
+
+    }
 }

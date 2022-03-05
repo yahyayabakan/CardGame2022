@@ -8,14 +8,18 @@ import akka.actor.ActorRef;
 import events.Initalize;
 import structures.GameState;
 import structures.basic.Tile;
+import structures.basic.Player;
+import structures.basic.Board;
 import structures.basic.Unit;
 import structures.spells.SundropElixir;
 import structures.spells.Truestrike;
 import structures.spells.StaffofYKir;
 import structures.spells.EntropicDecay;
 import structures.units.Avatar;
+import structures.units.AzureHerald;
 import akka.actor.ActorRef;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -97,5 +101,11 @@ public class SpellCardTest {
         
    }
 
- 
+    @Test
+    public void EntropicDecayTest(){
+        GameState gameState = new GameState();
+
+    
+
+   
 }

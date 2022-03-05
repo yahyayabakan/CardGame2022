@@ -104,6 +104,9 @@ public class SpellCardTest {
     @Test
     public void EntropicDecayTest(){
         GameState gameState = new GameState();
+        //Created an avatar ant set its health to 5
+        Unit unit = new Avatar();
+        unit.setHealth(5);
 
     
 

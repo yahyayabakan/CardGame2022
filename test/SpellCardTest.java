@@ -118,7 +118,8 @@ public class SpellCardTest {
         EntropicDecay card = new EntropicDecay();
         card.spell(null, gameState, tile);
 
-    
+        //Assert true if avatar is not affected by the card
+        assertNotNull(tile.getUnit());   
 
-   
+    }
 }

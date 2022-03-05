@@ -11,8 +11,12 @@ import structures.basic.Tile;
 import structures.basic.Unit;
 import structures.spells.SundropElixir;
 import structures.spells.Truestrike;
+import structures.spells.StaffofYKir;
+import structures.spells.EntropicDecay;
+import structures.units.Avatar;
 import akka.actor.ActorRef;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import javax.validation.constraints.AssertTrue;
@@ -70,4 +74,28 @@ public class SpellCardTest {
 
         assertTrue(enemyUnit.getHealth()==8);
     }
+
+    @Test
+    public void StaffOfYkirTest(){
+        GameState gameState = new GameState(); // create state storage
+
+        //Created a test avatar and set its attack power 2;
+        Avatar myAvatar = new Avatar();
+        myAvatar.setAttack(2);
+
+        //Create a tile for putting the test avatar in it;
+        Tile tile = new Tile();
+        tile.setTilex(3);
+        tile.setTiley(3);
+        tile.addUnit(myAvatar);
+
+        //Use StaffOfYkir card on test Avatar;
+        StaffofYKir card = new StaffofYKir();        
+        card.spell(null, gameState, tile);
+
+        assertTrue(myAvatar.getAttack()==4);
+        
+   }
+
+ 
 }

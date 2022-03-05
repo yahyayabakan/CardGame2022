@@ -82,6 +82,12 @@ public class SpellCardTest {
         //Created a test avatar and set its attack power 2;
         Avatar myAvatar = new Avatar();
         myAvatar.setAttack(2);
+
+        //Create a tile for putting the test avatar in it;
+        Tile tile = new Tile();
+        tile.setTilex(3);
+        tile.setTiley(3);
+        tile.addUnit(myAvatar);
         
    }
 

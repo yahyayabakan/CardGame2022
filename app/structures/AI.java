@@ -25,6 +25,12 @@ public class AI {
         }
     }
 
+    /**
+     * Method to initiate move/attack actions from the AI of each unit on board
+     *
+     * @param out - game actor reference
+     * @param gameState - current state of the game
+     */
     public static void makeMove(ActorRef out, GameState gameState){
         Board board = gameState.getBoard();
         List<Unit> AIunits = board.getPlayer2Units();
@@ -51,11 +57,9 @@ public class AI {
                     if(gameState.getNearbyTiles(unitTile).contains(action.move)){
                         if(gameState.getBoard().getPlayer1Units().contains(action.move.getUnit())){
                             AIunits.get(i).attack(action.move.getUnit(), gameState, out);
-                            System.out.println("Here1");
                         }
                     }else{
                         AIunits.get(i).attackMoveUnit(action.move, out, gameState);
-                        System.out.println("Here 2");
                     }    
                 }
                 else AIunits.get(i).moveUnit(action.move, out, gameState);
@@ -64,6 +68,12 @@ public class AI {
         gameState.drawDefaultTilesGrid(out);
     }
 
+    /**
+     * Helper method to calculate the score of each move/attack action
+     *
+     * @param unit - current AI unit to make action
+     * @param tile - valid tile for the action
+     */
     private static double calculateScore(Unit unit, Tile tile) {
         double score = 0.0;
         if (unit instanceof Avatar) {
@@ -96,6 +106,12 @@ public class AI {
         return score;
     }
 
+    /**
+     * Method to play cards based on their scores and player's mana.
+     *
+     * @param out - game actor reference
+     * @param gameState - current state of the game
+     */
     public static void executeCard(ActorRef out, GameState gameState){
         int[] cardComboIndex = AI.findOptimalCardCombo(gameState);
         Tile executionTile;
@@ -137,18 +153,28 @@ public class AI {
         }
     }
 
+    /**
+     * Helper method to find the tile to cast Entropic Decay
+     *
+     * @param gameState - current state of the game
+     */
     private static Tile findEntropicDecayTile(GameState gameState){
         List<Unit> enemyUnits;
         enemyUnits = gameState.getBoard().getPlayer1Units();
 
         for(int i=0;i<enemyUnits.size();i++){
-            if(!(enemyUnits.get(i) instanceof Avatar) && enemyUnits.get(i).getHealth()>=8){
+            if(!(enemyUnits.get(i) instanceof Avatar) && enemyUnits.get(i).getHealth() > 6){
                 return gameState.getBoard().getTile(enemyUnits.get(i).getPosition().getTilex(), enemyUnits.get(i).getPosition().getTiley());
             }
         }
         return null;
     }
 
+    /**
+     * Helper method to find the tile to cast Staff Of Ykir
+     *
+     * @param gameState - current state of the game
+     */
     private static Tile findStaffOfYkirTile(GameState gameState){
         List<Unit> enemyUnits = new ArrayList<Unit>();
         enemyUnits = gameState.getBoard().getPlayer1Units();
@@ -164,12 +190,12 @@ public class AI {
             }
         }return null; 
     }
-    
 
     /**
-	 * Prototype for placing the unit on a tile.
-     * */
-
+     * Helper method to find the tile to summon units
+     *
+     * @param gameState - current state of the game
+     */
     private static Tile findUnitSummoningTile(GameState gameState, Card card){
         List<Tile> range = new ArrayList<Tile>();
         List<Unit> enemyUnits = new ArrayList<Unit>();
@@ -260,18 +286,26 @@ public class AI {
 
     }
 
-    // Calculate the card score
+    /**
+     * Helper method to calculate scores of cards
+     * Unit score = health + attack
+     * Prioritize Entropic Decay when there is an enemy unit with health greater than 6
+     * Prioritize Staff of Y'Kir' when the deck is less than 4 enemy units on the board
+     *
+     * @param gameState - current state of the game
+     * @param card - card to be executed
+     */
     private static double calculateCardScore(GameState gameState, Card card){
         double score;
-        // Prioritize Entropic Decay if there is an enemy with health greater than or equal to 8
+        // Prioritize Entropic Decay if there is an enemy with health greater than 7
         if(card.getCardname().equals("Entropic Decay")){
             for(Unit unit: gameState.getBoard().getPlayer1Units()){
-                if(unit.getHealth() >= 8) return 99;
+                if(unit.getHealth() > 6) return 99;
             }
         }
-        // Prioritize Staff of Y'Kir' if there is less than or equal to 4 cards in the deck
+        // Prioritize Staff of Y'Kir' if there is less than 4 enemy units on the board
         if(card.getCardname().equals("Staff of Y'Kir'")){
-            if(gameState.getPlayerTwo().getDeck().getCards().size() >= 4){
+            if(gameState.getBoard().getPlayer1Units().size() < 4){
                 return 99;
             }
         }
@@ -279,7 +313,12 @@ public class AI {
         return card.getBigCard().getHealth() + card.getBigCard().getAttack();
     }
 
-    // Find the optimal combination of cards to be executed based on mana and score using algorithm for 0-1 Knapsack Problem
+    /**
+     * Find the optimal combination of cards to be executed based on mana and score
+     * using algorithm for 0-1 Knapsack Problem
+     *
+     * @param gameState - current state of the game
+     */
     private static int[] findOptimalCardCombo(GameState gameState){
 
         int currentMana = gameState.getPlayerTwo().getMana();

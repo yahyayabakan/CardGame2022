@@ -6,6 +6,8 @@ import java.util.Set;
 import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;
 
+//Unused base code. 
+
 public class BetterUnit extends Unit {
 
 	Set<String> keywords;

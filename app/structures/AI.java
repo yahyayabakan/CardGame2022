@@ -8,6 +8,8 @@ import structures.basic.Position;
 import structures.basic.Tile;
 import structures.basic.Unit;
 import structures.units.Avatar;
+import structures.units.Serpenti;
+
 import java.util.*;
 
 /**
@@ -26,46 +28,72 @@ public class AI {
     }
 
     /**
-     * Method to initiate move/attack actions from the AI of each unit on board
+     * Method to iterate move/attack actions from the AI of each unit on board
      *
      * @param out - game actor reference
      * @param gameState - current state of the game
      */
-    public static void makeMove(ActorRef out, GameState gameState){
+    public static void makeMove(ActorRef out, GameState gameState) {
         Board board = gameState.getBoard();
         List<Unit> AIunits = board.getPlayer2Units();
-        List<Action> actions = new ArrayList<>();;
+        List<Action> actions = new ArrayList<>();
+        int initialUnitsSize = AIunits.size();
 
-        for(int i = 0; i < AIunits.size(); i++){
-            actions.clear();
-            gameState.drawDefaultTilesGrid(out);
-            board.getHighlightedTiles().clear();
-            Tile unitTile = board.getTile(AIunits.get(i).getPosition().getTilex(), AIunits.get(i).getPosition().getTiley());
-            board.setLastTile(unitTile);
-            AIunits.get(i).displayMovementTiles(out, unitTile, gameState);
-            List<Tile> highlightedTiles = board.getHighlightedTiles();
-            for(Tile move : highlightedTiles){
-                double score = calculateScore(AIunits.get(i), move);
-                actions.add(new Action(move, score));
+        for (int i = 0; i < AIunits.size(); i++) {
+            startMove(out, AIunits.get(i), gameState);
+            // Serpenti can attack again
+            if(initialUnitsSize == AIunits.size() && AIunits.get(i) instanceof Serpenti){
+                startMove(out, AIunits.get(i), gameState);
             }
-            Action action = actions.stream()
-                    .max(Comparator.comparing(a -> a.score))
-                    .orElse(null);
-
-            if(action != null){
-                if(action.move.getUnit() != null){
-                    if(gameState.getNearbyTiles(unitTile).contains(action.move)){
-                        if(gameState.getBoard().getPlayer1Units().contains(action.move.getUnit())){
-                            AIunits.get(i).attack(action.move.getUnit(), gameState, out);
-                        }
-                    }else{
-                        AIunits.get(i).attackMoveUnit(action.move, out, gameState);
-                    }    
-                }
-                else AIunits.get(i).moveUnit(action.move, out, gameState);
-            }
-            try {Thread.sleep(200);} catch (InterruptedException e) {e.printStackTrace();}
         }
+    }
+
+    /**
+     * Method to initialize a move/attack actions from the AI of each unit on board
+     *
+     * @param out - game actor reference
+     * @param gameState - current state of the game
+     */
+    private static void startMove(ActorRef out, Unit AIunit, GameState gameState){
+        Board board = gameState.getBoard();
+        List<Unit> AIunits = board.getPlayer2Units();
+        List<Action> actions = new ArrayList<>();
+
+        actions.clear();
+        gameState.drawDefaultTilesGrid(out);
+        board.getHighlightedTiles().clear();
+        Tile unitTile = board.getTile(AIunit.getPosition().getTilex(), AIunit.getPosition().getTiley());
+        board.setLastTile(unitTile);
+        if(!AIunit.getHasMoved() && !AIunit.getHasAttacked()){
+            AIunit.displayMovementTiles(out, unitTile, gameState);
+        }
+        if(AIunit.getHasMoved() && !AIunit.getHasAttacked()){
+            AIunit.displayInRangeAttackTiles(out, unitTile, gameState.getBoard());
+        }
+
+        List<Tile> highlightedTiles = board.getHighlightedTiles();
+        for(Tile move : highlightedTiles){
+            double score = calculateScore(AIunit, move);
+            actions.add(new Action(move, score));
+        }
+        Action action = actions.stream()
+                .max(Comparator.comparing(a -> a.score))
+                .orElse(null);
+
+        if(action != null){
+            if(action.move.getUnit() != null){
+                if(gameState.getNearbyTiles(unitTile).contains(action.move)){
+                    if(gameState.getBoard().getPlayer1Units().contains(action.move.getUnit())){
+                        AIunit.attack(action.move.getUnit(), gameState, out);
+                    }
+                }else{
+                    AIunit.attackMoveUnit(action.move, out, gameState);
+                }
+            }
+            else AIunit.moveUnit(action.move, out, gameState);
+        }
+        try {Thread.sleep(200);} catch (InterruptedException e) {e.printStackTrace();}
+
         gameState.drawDefaultTilesGrid(out);
     }
 

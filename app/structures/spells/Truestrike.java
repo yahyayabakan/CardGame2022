@@ -9,6 +9,9 @@ import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;
 import structures.basic.Unit;
 
+/* This is the Sundrop Elixir Class that will deal 2 damage to an
+enemy unit
+*/
 public class Truestrike extends Spell{
     public void spell(ActorRef out, GameState gameState, Tile tile){
 

@@ -66,7 +66,7 @@ public class Player {
 	public LinkedList<Card> getHand() {
 		return hand;
 	}
-
+	//Adds a card to the players hand. 
 	public void draw(ActorRef out){
 		if(hand.size()<HandMax)
 			hand.add(deck.draw());

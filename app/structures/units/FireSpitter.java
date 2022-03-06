@@ -13,6 +13,10 @@ import structures.basic.UnitAnimationType;
 import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;
 
+
+/*This is the Firespitter Class which is anged and can attack
+any enemy on the board.
+*/
 public class FireSpitter extends Unit {
 
     /**

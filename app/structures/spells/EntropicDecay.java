@@ -10,6 +10,11 @@ import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;
 import structures.basic.Unit;
 
+/* This is the Entropic Decay Class that will reduce a non-avatar
+unit to 0 health.
+*/
+
+
 public class EntropicDecay extends Spell {
     public void spell(ActorRef out, GameState gameState, Tile tile){
 

@@ -7,6 +7,10 @@ import structures.basic.Player;
 import structures.basic.Tile;
 import structures.basic.Unit;
 
+
+/*This is the WindShrike Class Flying: Can move
+anywhere on the board When this unit dies, its owner draws a card
+*/
 public class WindShrike extends Unit {
     //constructor adds the BASE_MOVEMENT.
     public WindShrike(){

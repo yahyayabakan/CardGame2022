@@ -12,12 +12,19 @@ import structures.basic.UnitAnimationType;
 import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;
 
+
+/*This is the Pyromancer Enforcer Class has a ranged: Can
+attack any enemy on the board
+
+*/
 public class Pyromancer extends Unit {
 
     public Pyromancer(){
         super.BASE_ATTACK_RANGE = 15;
     }
 
+
+    //It attacks the ranged enemy and plays the projectile animation. 
     @Override
     public void attack(Unit unit, GameState gameState, ActorRef out) {
         if(!this.hasAttacked) {
@@ -49,14 +56,14 @@ public class Pyromancer extends Unit {
 		}
 		else System.out.println("Unit already attacked!");
     }
-
+    //This overrides the standard diplay movement tiles method to show ranged enemies. 
     @Override
     public void displayMovementTiles(ActorRef out, Tile tile, GameState gameState) {
         super.displayMovementTiles(out, tile, gameState);
         if(!this.getHasAttacked())
             this.displayInRangeAttackTiles(out, tile, gameState.getBoard());
     }
-
+    //Overrides the attack move so that this unit does not move to perform its ranged attack. 
     @Override
     public void attackMoveUnit(Tile tile, ActorRef out, GameState gameState){
         this.attack(tile.getUnit(), gameState, out);

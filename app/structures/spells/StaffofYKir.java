@@ -9,6 +9,9 @@ import structures.units.Avatar;
 import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;
 
+/* This is the Staff of Kir Class that will add +2 attack to
+the players avatar
+*/
 public class StaffofYKir extends Spell{
     public void spell(ActorRef out, GameState gameState, Tile tile){
 

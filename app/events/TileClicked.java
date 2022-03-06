@@ -60,7 +60,6 @@ public class TileClicked implements EventProcessor{
 				gameState.getBoard().clearHighlightedTiles();
 				gameState.drawDefaultTilesGrid(out);
 				Unit unit = clickedTile.getUnit();
-				System.out.println(unit.getHasAttacked() + " "+  unit.getHasMoved());
 
                 if(unit.getHasMoved() && !unit.getHasAttacked())
 					unit.displayInRangeAttackTiles(out,clickedTile, gameState.getBoard());

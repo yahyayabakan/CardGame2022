@@ -56,6 +56,7 @@ public class AI {
                 }
                 else AIunits.get(i).moveUnit(action.move, out, gameState);
             }
+            try {Thread.sleep(200);} catch (InterruptedException e) {e.printStackTrace();}
         }
         gameState.drawDefaultTilesGrid(out);
     }

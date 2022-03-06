@@ -83,9 +83,11 @@ public class TileClicked implements EventProcessor{
 					gameState.getBoard().getLastTile().getUnit().moveUnit(clickedTile, out, gameState);
 					gameState.drawDefaultTilesGrid(out);
 				} // Runs when a Tile right next to the unit is clicked
-			}else if(previouslyClicked != null && gameState.getNearbyTiles(previouslyClicked).contains(clickedTile)){
-					if(gameState.getBoard().getPlayer2Units().contains(clickedTile.getUnit()))
+			}else if((previouslyClicked != null) && gameState.getNearbyTiles(previouslyClicked).contains(clickedTile)){
+					if(gameState.getBoard().getPlayer2Units().contains(clickedTile.getUnit())){
 						previouslyClicked.getUnit().attack(clickedTile.getUnit(), gameState, out);
+						gameState.drawDefaultTilesGrid(out);
+					}
 				// Runs when a Tile at the edge of the highlightedtiles is clicked
 			}else if(gameState.getBoard().getPlayer2Units().contains(clickedTile.getUnit()) && gameState.getBoard().getHighlightedTiles().contains(clickedTile)){
 					gameState.getBoard().getLastTile().getUnit().attackMoveUnit(clickedTile, out, gameState);
@@ -98,6 +100,8 @@ public class TileClicked implements EventProcessor{
 					clickedCard.execute(out, gameState, clickedTile);
 				}
 			}
+
+			gameState.getBoard().setLastTile(clickedTile);
 		}
 	}
 

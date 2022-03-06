@@ -96,36 +96,38 @@ public class AI {
         int[] cardComboIndex = AI.findOptimalCardCombo(gameState);
         Tile executionTile;
 
-        if(cardComboIndex != null) {
-            for (int index : cardComboIndex) {
-                Card theCard = gameState.getPlayerTwo().getHand().get(index);
-                if(theCard.getBigCard().getHealth() != -1){
-                    // If it is a unit
-                    executionTile = AI.findUnitSummoningTile(gameState, theCard);
-                    if(executionTile != null) theCard.execute(out, gameState, executionTile);
-                } else {
-                    // If it is a spell
-                    if(theCard.getCardname().equals("Entropic Decay")){
-                        executionTile = AI.findEntropicDecayTile(gameState);
-                        if(executionTile != null) theCard.execute(out, gameState, executionTile);
+        if(!gameState.gameOver) {
+            if (cardComboIndex != null) {
+                for (int index : cardComboIndex) {
+                    Card theCard = gameState.getPlayerTwo().getHand().get(index);
+                    if (theCard.getBigCard().getHealth() != -1) {
+                        // If it is a unit
+                        executionTile = AI.findUnitSummoningTile(gameState, theCard);
+                        if (executionTile != null) theCard.execute(out, gameState, executionTile);
+                    } else {
+                        // If it is a spell
+                        if (theCard.getCardname().equals("Entropic Decay")) {
+                            executionTile = AI.findEntropicDecayTile(gameState);
+                            if (executionTile != null) theCard.execute(out, gameState, executionTile);
+                        }
+                        if (theCard.getCardname().equals("Staff of Y'Kir'")) {
+                            executionTile = AI.findStaffOfYkirTile(gameState);
+                            if (executionTile != null) theCard.execute(out, gameState, executionTile);
+                        }
                     }
-                    if(theCard.getCardname().equals("Staff of Y'Kir'")){
-                        executionTile = AI.findStaffOfYkirTile(gameState);
-                        if(executionTile != null) theCard.execute(out, gameState, executionTile);
-                    }
+                    // Deduct mana
+                    gameState.getPlayerTwo().setMana(gameState.getPlayerTwo().getMana() - theCard.getManacost());
+                    BasicCommands.setPlayer2Mana(out, gameState.getPlayerTwo());
                 }
-                // Deduct mana
-                gameState.getPlayerTwo().setMana(gameState.getPlayerTwo().getMana() - theCard.getManacost());
-                BasicCommands.setPlayer2Mana(out, gameState.getPlayerTwo());
-            }
-            for(Card card: gameState.getPlayerTwo().getHand()){
-                System.out.println(card.getCardname());
-            }
-            // Remove all executed cards in hand
-            for(int i = 0; i < cardComboIndex.length; i++){
-                gameState.getPlayerTwo().getHand().remove(cardComboIndex[i]);
-                for(int j = i + 1; j < cardComboIndex.length; j++){
-                    cardComboIndex[j]--;
+                for (Card card : gameState.getPlayerTwo().getHand()) {
+                    System.out.println(card.getCardname());
+                }
+                // Remove all executed cards in hand
+                for (int i = 0; i < cardComboIndex.length; i++) {
+                    gameState.getPlayerTwo().getHand().remove(cardComboIndex[i]);
+                    for (int j = i + 1; j < cardComboIndex.length; j++) {
+                        cardComboIndex[j]--;
+                    }
                 }
             }
         }

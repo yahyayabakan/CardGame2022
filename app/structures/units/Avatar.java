@@ -60,7 +60,10 @@ public class Avatar extends Unit {
                 BasicCommands.addPlayer1Notification(out, "YOU WIN!", 10000);
             }
             //game ends and thus should no longer be clickable
+            gameState.gameOver = true;
             gameState.clickable = false;
+            //stop all units on board
+            gameState.stopAllUnit();
         }
         else{
             player.setHealth(this.getHealth());

@@ -29,6 +29,7 @@ public class GameState {
 
 	public boolean gameInitalised = false;
 	public boolean clickable = false;
+	public boolean gameOver = false;
 
 	public GameState() {
 		turn = 0;
@@ -126,15 +127,6 @@ public class GameState {
 	public int getNewUnitID(){
 		return ++unitIdCounter;
 	}
-	
-	//Returns enemy Units
-	public List<Unit> getEnemyUnits(Unit unit){
-		if(getBoard().getPlayer1Units().contains(unit))
-			return getBoard().getPlayer2Units();
-		else if( getBoard().getPlayer2Units().contains(unit))
-			return getBoard().getPlayer1Units();
-			else return null; // Should not reach here as all units on the board are either part of player1's or player2's List
-	}
 
 	//Returns a list of tiles around a specific tile
 	public List<Tile> getNearbyTiles(Tile tile){
@@ -171,4 +163,21 @@ public class GameState {
 		units.stream().filter(unit -> unit instanceof PurebladeEnforcer)
 				.forEach(unit -> ((PurebladeEnforcer) unit).spellEffect(out));
 	}
+
+	/**
+	 * Disable actions all units on board
+	 * This is used when one of the player has won the game.
+	 */
+	public void stopAllUnit(){
+		for(Unit unit: board.getPlayer1Units()){
+			unit.setHasMoved(true);
+			unit.setHasAttacked(true);
+		}
+		for(Unit unit: board.getPlayer2Units()){
+			unit.setHasMoved(true);
+			unit.setHasAttacked(true);
+		}
+	}
+
+
 }

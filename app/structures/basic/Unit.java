@@ -140,8 +140,16 @@ public class Unit {
 		this.attack = attack;
 	}
 
+	public void setHasMoved(boolean hasMoved) {
+		this.hasMoved = hasMoved;
+	}
+
 	public boolean getHasMoved(){
 		return hasMoved;
+	}
+
+	public void setHasAttacked(boolean hasAttacked) {
+		this.hasAttacked = hasAttacked;
 	}
 
 	public boolean getHasAttacked(){

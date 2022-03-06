@@ -266,7 +266,7 @@ public class Unit {
 			}
 			unit.takeDamage(attack, gameState, out);
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(1500);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

@@ -143,7 +143,7 @@ public class GameState {
 			for(int j=-1;j<=1;j++){
 				try{
 					tileList.add(board.getTile(tile.getTilex()+i,tile.getTiley()+j));
-				}catch(IndexOutOfBoundsException ignored){}
+				}catch(Exception ignored){}
 			}
 		}
 		return tileList;		

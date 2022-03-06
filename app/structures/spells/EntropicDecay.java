@@ -12,6 +12,11 @@ import structures.basic.Unit;
 
 public class EntropicDecay extends Spell {
     public void spell(ActorRef out, GameState gameState, Tile tile){
+
+        //Entropic Decay animation
+        BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_martyrdom), tile);
+        try {Thread.sleep(250);} catch (InterruptedException e) {e.printStackTrace();}
+
         //First check whether it is not an avatar
         //Then use damage method
         if(!(tile.getUnit() instanceof Avatar)){
@@ -19,9 +24,6 @@ public class EntropicDecay extends Spell {
             
         //Modifying front end will be handled by takeDamage()
 
-        //Entropic Decay animation
-        BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_martyrdom), tile);
-        try {Thread.sleep(250);} catch (InterruptedException e) {e.printStackTrace();}
 
         //Delete unit from tile will be handled by takeDamage()
         }

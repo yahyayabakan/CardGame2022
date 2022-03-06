@@ -1,14 +1,52 @@
 package structures.units;
 
 import akka.actor.ActorRef;
+import commands.BasicCommands;
 import structures.GameState;
 import structures.basic.Player;
+import structures.basic.Tile;
 import structures.basic.Unit;
 
 public class WindShrike extends Unit {
     //constructor adds the BASE_MOVEMENT.
     public WindShrike(){
         super.BASE_MOVEMENT = 15;
+    }
+
+
+    /**
+     * Highlights all the movable and enemy tiles in the whole board
+     * @param tile clicked tile
+     * @param gameState the current state of the game.
+     * @param out game actor reference
+     */
+    @Override
+    public void displayMovementTiles(ActorRef out, Tile tile, GameState gameState) {
+        if(hasAttacked) hasMoved = true;
+        if(nexToProvokeUnit(tile,gameState.getBoard(), out)){}
+        else if(!hasMoved) {
+            for (int x = 0; x < 9; x++) {
+                for (int y = 0; y < 5; y++) {
+                    Tile theTile = gameState.getBoard().getTile(x, y);
+                    if (theTile.getUnit() == null) {
+                        gameState.getBoard().getHighlightedTiles().add(theTile);
+                    }
+                    if (gameState.getBoard().getEnemyUnits(this).contains(theTile.getUnit())) {
+                        gameState.getBoard().getHighlightedTiles().add(theTile);
+                    }
+                }
+            }
+        }
+        // Display highlighted tiles
+        for(Tile t: gameState.getBoard().getHighlightedTiles()){
+            if(gameState.getBoard().getEnemyUnits(tile.getUnit()).contains(t.getUnit())){
+                BasicCommands.drawTile(out,t, 2);
+                try {Thread.sleep(20);} catch (InterruptedException e) {e.printStackTrace();}
+            } else {
+                BasicCommands.drawTile(out,t, 1);
+                try {Thread.sleep(20);} catch (InterruptedException e) {e.printStackTrace();}
+            }
+        }
     }
 
     /**

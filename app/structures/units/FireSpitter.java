@@ -60,10 +60,10 @@ public class FireSpitter extends Unit {
     }
 
     @Override
-    public void displayMovementTiles(ActorRef out, Tile tile, Board board) {
-        super.displayMovementTiles(out, tile, board);
+    public void displayMovementTiles(ActorRef out, Tile tile, GameState gameState) {
+        super.displayMovementTiles(out, tile, gameState);
         if(!this.getHasAttacked())
-            this.displayInRangeAttackTiles(out, tile, board); 
+            this.displayInRangeAttackTiles(out, tile, gameState.getBoard());
     }
 
     @Override

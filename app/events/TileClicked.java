@@ -65,7 +65,7 @@ public class TileClicked implements EventProcessor{
                 if(unit.getHasMoved() && !unit.getHasAttacked())
 					unit.displayInRangeAttackTiles(out,clickedTile, gameState.getBoard());
 				else
-                	unit.displayMovementTiles(out, clickedTile, gameState.getBoard());
+                	unit.displayMovementTiles(out, clickedTile, gameState);
 
 				//Lets the board know which tile was clicked last
 				gameState.getBoard().setLastTile(clickedTile);

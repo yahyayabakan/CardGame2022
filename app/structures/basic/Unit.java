@@ -576,12 +576,17 @@ public class Unit {
 
 	}
 
-	//Handles the movement of the unit to a tile. Will need to update how the unit moves based on the units in its path. Future Update
+	/**
+	* This method moves the unit to the selected tile. 
+	* @param tile - the original unit's tile.
+	* @param board - current state of the board.
+	* @param out - game actor reference
+	*/
 	public void moveUnit(Tile tile, ActorRef out, GameState gameState){
 		if(gameState.getBoard().getHighlightedTiles().contains(tile)){
 			Tile tilePath = gameState.getBoard().getTile(tile.getTilex(), gameState.getBoard().getLastTile().getTiley());
 			int distance = calculateDistanceToTile(tilePath);
-
+			//Checks wether the path to the unit is blocked. If so it takes an alternate path. 
 			if(tilePath.getUnit()==null){
 				BasicCommands.moveUnitToTile(out,this,tile);
 				try {Thread.sleep(1600 * distance);} catch (InterruptedException e) {e.printStackTrace();}
@@ -607,10 +612,15 @@ public class Unit {
 		return ax + ay;
 	}
 
-	// Handles the movement and attack of a unit if a enemy unit was clicked.
+	/**
+	* If an enemy unit is clicked this method moves the selected unit close to the enemy unit before attacking.  
+	* @param tile - the original unit's tile.
+	* @param gameState - current state of the board.
+	* @param out - game actor reference
+	*/
 	public void attackMoveUnit(Tile tile, ActorRef out, GameState gameState){	
 			Tile attackMoveTile = null;
-			Tile attacker= gameState.getBoard().getLastTile();
+			Tile attacker= gameState.getBoard().getLastTile(); //Attacking unit's tile
 		// This checks the primary pathways before checking alternate ones
 		try{
 		if(tile.tiley==attacker.tiley){
@@ -635,7 +645,7 @@ public class Unit {
 			}
 		}catch(IndexOutOfBoundsException ingored){}	 
 
-		//finds an alternate tile if the tile calcualted from the earlier step had a unit on it
+		//finds an alternate tile if the tile calcualted from the earlier step was null
 			if(attackMoveTile==null){
 				List<Tile> tileList = gameState.getNearbyTiles(tile);
 					for(int j=0; j< gameState.getBoard().getHighlightedTiles().size();j++){
@@ -645,7 +655,7 @@ public class Unit {
 										attackMoveTile=gameState.getBoard().getHighlightedTiles().get(j);
 								}
 							}
-					}
+					} //finds an alternate tile if the tile calcualted from the earlier step had a unit on it
 				}else if(attackMoveTile.getUnit()!=null){
 					List<Tile> tileList = gameState.getNearbyTiles(tile);
 					for(int j=0; j< gameState.getBoard().getHighlightedTiles().size();j++){
@@ -663,7 +673,7 @@ public class Unit {
 
 		gameState.getBoard().clearHighlightedTiles();
 		hasMoved=true;
-		//Call the Attack Method here
+		//The Attack method is called here after the unit has moved. 
 		try {Thread.sleep(250);} catch (InterruptedException e) {e.printStackTrace();}
 
 		this.attack(tile.getUnit(), gameState, out);

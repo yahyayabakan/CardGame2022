@@ -13,6 +13,9 @@ import structures.basic.Unit;
 import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;
 
+/* This is the Sundrop Elixir Class that will add +5 health to a
+Unit. This cannot take a unit over its starting health value.
+*/
 public class SundropElixir extends Spell{
     public void spell(ActorRef out, GameState gameState, Tile tile){
 

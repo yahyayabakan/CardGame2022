@@ -16,6 +16,10 @@ import utils.StaticConfFiles;
 public class SundropElixir extends Spell{
     public void spell(ActorRef out, GameState gameState, Tile tile){
 
+        //Buff animation
+        BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff), tile);
+        try {Thread.sleep(250);} catch (InterruptedException e) {e.printStackTrace();}
+
         tile.getUnit().heal(5);
 
         //Sets unit health in front end
@@ -30,8 +34,5 @@ public class SundropElixir extends Spell{
             BasicCommands.setPlayer2Mana(out, gameState.getPlayerTwo());
         }
 
-        //Buff animation
-        BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff), tile);
-        try {Thread.sleep(250);} catch (InterruptedException e) {e.printStackTrace();}
     }   
 }

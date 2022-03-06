@@ -364,14 +364,26 @@ public class Unit {
 	 * Displays a unit's movement tiles. If the unit has not yet attacked, it will display the enemy's that it can target.
 	 * @param out reference to game actor
 	 * @param tile the unit's tile.
-	 * @param board current state of the game board.
+	 * @param gameState current state of the game.
 	 */
-	public void displayMovementTiles(ActorRef out, Tile tile, Board board){
+	public void displayMovementTiles(ActorRef out, Tile tile, GameState gameState){
 		int X = tile.getTilex();
 		int Y = tile.getTiley();
-		//if a unit has attacked, then it forfeits it's ability to move.
+		Unit tileUnit = null;
+
+		if(tile.getUnit() != null){
+			tileUnit = tile.getUnit();
+		}
+
+		List<Tile> highlightedTiles = gameState.getBoard().getHighlightedTiles();
+		List<Unit> friendlyUnits = gameState.getBoard().getFriendlyUnits(tileUnit);
+		List<Unit> enemyUnits = gameState.getBoard().getEnemyUnits(tileUnit);
+		List<Tile> tilesToClear = new ArrayList<>();
+		List<Tile> tilesToAdd = new ArrayList<>();
+
+		//if a unit has attacked, then it forfeits its ability to move.
 		if(hasAttacked) hasMoved = true;
-		if(nexToProvokeUnit(tile,board, out)){}
+		if(nexToProvokeUnit(tile,gameState.getBoard(), out)){}
 		//movement base logic
 		else if(!hasMoved){
 			//Creating the default diamond shape highlight using points distance from center.
@@ -379,97 +391,90 @@ public class Unit {
 				for(int y = Y - BASE_MOVEMENT; y <= Y+BASE_MOVEMENT; y++){
 					int a = Math.abs(x-X);
 					int b = Math.abs(y-Y);
-					if(a+b <= BASE_MOVEMENT){
-						findActionableTiles(x, y, tile, board, out);
+					if(a + b <= 2) {
+						try {
+							Tile tileToAdd = gameState.getBoard().getTile(x, y);
+							gameState.getBoard().getHighlightedTiles().add(tileToAdd);
+						} catch (Exception ignored) {
+						}
 					}
 				}
 			}
 
-			// checks whether there are any units in the path to the highlighted tile and unhighlights the tiles if the path is blocked 
-			List<Tile> pathToTile = new ArrayList<>();
-			for(int i=0;i<board.getHighlightedTiles().size();i++){
-				try{
-					int distx = tile.getTilex()-board.getHighlightedTiles().get(i).getTilex();
-					int disty = tile.getTiley()-board.getHighlightedTiles().get(i).getTiley();
-					int count = 0;
-
-							if(distx==-2){	
-								for(int k=-1;k<=1;k++){
-									try{
-										pathToTile.add(board.getTile(tile.getTilex()+1,tile.getTiley()+k));
-										if(k==0){
-											if(board.getHighlightedTiles().get(i).getUnit()==null){
-												if(board.getTile(tile.getTilex()+1,tile.getTiley()+k).getUnit()!=null){
-													board.getHighlightedTiles().remove(board.getHighlightedTiles().get(i));
-												}
-											}
-													
-										}
-									}catch(IndexOutOfBoundsException ignored){}
+			// Stage 1: clear tile with no friendly neighbour
+			for(int i = 0; i < highlightedTiles.size(); i++){
+				int htx = highlightedTiles.get(i).getTilex();
+				int hty = highlightedTiles.get(i).getTiley();
+				boolean hasEmptyNeighbour = false;
+				boolean hasFriendlyNeighbour = false;
+				for(int x = htx-1; x <= htx+1; x++){
+					for(int y = hty-1; y <= hty+1; y++){
+						try {
+							Tile t = gameState.getBoard().getTile(x, y);
+							int ax = Math.abs(htx - x);
+							int ay = Math.abs(hty - y);
+							if(ax + ay == 1){
+								if (highlightedTiles.contains(t) && t.getUnit() == null){
+									hasEmptyNeighbour = true;
 								}
-							}else if(distx==2){
-								for(int k=-1;k<=1;k++){
-									try{
-										pathToTile.add(board.getTile(tile.getTilex()-1,tile.getTiley()+k));
-										if(k==0){
-											if(board.getHighlightedTiles().get(i).getUnit()==null){
-												if(board.getTile(tile.getTilex()-1,tile.getTiley()).getUnit()!=null){
-													board.getHighlightedTiles().remove(board.getHighlightedTiles().get(i));
-												}
-											}
-													
-										}
-									}catch(IndexOutOfBoundsException ignored){}
-								}
-							}else if(disty==-2){
-								for(int k=-1;k<=1;k++){
-									try{
-										pathToTile.add(board.getTile(tile.getTilex()+k,tile.getTiley()+1));
-										if(k==0){
-											if(board.getHighlightedTiles().get(i).getUnit()==null){
-												if(board.getTile(tile.getTilex(),tile.getTiley()+1).getUnit()!=null){
-													board.getHighlightedTiles().remove(board.getHighlightedTiles().get(i));
-												}
-											}
-													
-										}
-									}catch(IndexOutOfBoundsException ignored){}
-								}
-							}else if(disty==2){
-								for(int k=-1;k<=1;k++){
-									try{
-										pathToTile.add(board.getTile(tile.getTilex()+k,tile.getTiley()-1));
-										if(k==0){
-											if(board.getHighlightedTiles().get(i).getUnit()==null){
-												if(board.getTile(tile.getTilex(),tile.getTiley()-1).getUnit()!=null){
-													board.getHighlightedTiles().remove(board.getHighlightedTiles().get(i));
-												}
-											}
-													
-										}
-									}catch(IndexOutOfBoundsException ignored){}
+								if (highlightedTiles.contains(t) && friendlyUnits.contains(t.getUnit())) {
+									hasFriendlyNeighbour = true;
 								}
 							}
-						
-
-						for(int j=0;j<pathToTile.size();j++){
-							if(pathToTile.get(j).getUnit()!=null){
-								count++;
-							}
-						}
-
-						if(count!=0 && count==pathToTile.size()){
-							board.getHighlightedTiles().remove(board.getHighlightedTiles().get(i));
-						}
-						
-					}catch(IndexOutOfBoundsException ignored){}
-					pathToTile.clear();
+						} catch (Exception ignored){}
+					}
+				}
+				if(!hasEmptyNeighbour && !hasFriendlyNeighbour){
+					tilesToClear.add(highlightedTiles.get(i));
+				}
 			}
+
+			highlightedTiles.removeAll(tilesToClear);
+			tilesToClear.clear();
+
+			// Stage 2: Clear tile with friendly unit
+			for(int i = 0; i < highlightedTiles.size(); i++){
+				if(tileUnit != null){
+					if(friendlyUnits.contains(highlightedTiles.get(i).getUnit())){
+						tilesToClear.add(highlightedTiles.get(i));
+					}
+				}
+			}
+
+			highlightedTiles.removeAll(tilesToClear);
+			tilesToClear.clear();
+
+			// Stage 3: Highlight enemy around the border
+			for(int i = 0; i < highlightedTiles.size(); i++){
+				int htx = highlightedTiles.get(i).getTilex();
+				int hty = highlightedTiles.get(i).getTiley();
+				int ax = Math.abs(X - htx);
+				int ay = Math.abs(Y - hty);
+				if(highlightedTiles.get(i).getUnit() == null){
+					if(ax+ay == 2){
+						for(int x = htx-1; x <= htx+1; x++){
+							for(int y = hty-1; y <= hty+1; y++){
+								try{
+									Tile t = gameState.getBoard().getTile(x, y);
+									if (!highlightedTiles.contains(t) && enemyUnits.contains(t.getUnit())){
+										tilesToAdd.add(t);
+									}
+								} catch (Exception ignored){}
+							}
+						}
+					}
+				}
+
+			}
+
+			highlightedTiles.addAll(tilesToAdd);
+			tilesToAdd.clear();
+
 		}
 
 		// Display highlighted tiles
-		for(Tile t: board.getHighlightedTiles()){
-			if(board.getEnemyUnits(tile.getUnit()).contains(t.getUnit())){
+		for(Tile t: gameState.getBoard().getHighlightedTiles()){
+			if(gameState.getBoard().getEnemyUnits(tile.getUnit()).contains(t.getUnit())){
 				BasicCommands.drawTile(out,t, 2);
 				try {Thread.sleep(20);} catch (InterruptedException e) {e.printStackTrace();}
 			} else {

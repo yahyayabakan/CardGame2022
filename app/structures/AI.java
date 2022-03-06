@@ -36,7 +36,7 @@ public class AI {
             board.getHighlightedTiles().clear();
             Tile unitTile = board.getTile(AIunits.get(i).getPosition().getTilex(), AIunits.get(i).getPosition().getTiley());
             board.setLastTile(unitTile);
-            AIunits.get(i).displayMovementTiles(out, unitTile, board);
+            AIunits.get(i).displayMovementTiles(out, unitTile, gameState);
             List<Tile> highlightedTiles = board.getHighlightedTiles();
             for(Tile move : highlightedTiles){
                 double score = calculateScore(AIunits.get(i), move);

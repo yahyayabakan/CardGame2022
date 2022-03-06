@@ -580,13 +580,15 @@ public class Unit {
 	public void moveUnit(Tile tile, ActorRef out, GameState gameState){
 		if(gameState.getBoard().getHighlightedTiles().contains(tile)){
 			Tile tilePath = gameState.getBoard().getTile(tile.getTilex(), gameState.getBoard().getLastTile().getTiley());
+			int distance = calculateDistanceToTile(tilePath);
+
 			if(tilePath.getUnit()==null){
 				BasicCommands.moveUnitToTile(out,this,tile);
-				try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
+				try {Thread.sleep(1600 * distance);} catch (InterruptedException e) {e.printStackTrace();}
 			}else{
 				Boolean yfirst=true;
 				BasicCommands.moveUnitToTile(out,this,tile,yfirst);
-				try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
+				try {Thread.sleep(1600 * distance);} catch (InterruptedException e) {e.printStackTrace();}
 			}
 				this.setPositionByTile(tile);
 				gameState.getBoard().clearHighlightedTiles();
@@ -594,6 +596,15 @@ public class Unit {
 				gameState.getBoard().getLastTile().removeUnit();
 				hasMoved=true;
 		}
+	}
+
+	// Helper method to calculate distance between a unit and a tile
+	private int calculateDistanceToTile(Tile tile){
+		int tx = tile.getTilex();
+		int ty = tile.getTiley();
+		int ax = Math.abs(this.getPosition().getTilex() - tx);
+		int ay = Math.abs(this.getPosition().getTiley() - ty);
+		return ax + ay;
 	}
 
 	// Handles the movement and attack of a unit if a enemy unit was clicked.

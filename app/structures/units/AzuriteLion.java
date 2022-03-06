@@ -7,6 +7,10 @@ import structures.basic.Tile;
 import structures.basic.Unit;
 import akka.actor.ActorRef;
 
+
+/* This is the Azurite Lion Class which can attack twice per
+turn
+*/
 public class AzuriteLion extends Unit {
 
     final int MAX_ATTACK_TURN = 2;

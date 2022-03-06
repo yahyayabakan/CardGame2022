@@ -624,13 +624,14 @@ public class Unit {
 							attackMoveTile=gameState.getBoard().getTile(attacker.tilex-2,tile.tiley);
 			}else if(tile.tilex==attacker.tilex){
 				if(attacker.tiley-tile.tiley==2)
-					attackMoveTile=gameState.getBoard().getTile(attacker.tilex,tile.tiley+1);
+					attackMoveTile=gameState.getBoard().getTile(attacker.tilex,attacker.tiley-1);
 				else if(tile.tiley-attacker.tiley==2)	
-					attackMoveTile=gameState.getBoard().getTile(attacker.tilex,tile.tiley-1);
+					attackMoveTile=gameState.getBoard().getTile(attacker.tilex,attacker.tiley+1);
 					else if(attacker.tiley-tile.tiley==3)
-						attackMoveTile=gameState.getBoard().getTile(attacker.tilex,tile.tiley+2);
-						else if(tile.tiley-attacker.tiley==3)	
-							attackMoveTile=gameState.getBoard().getTile(attacker.tilex,tile.tiley-2);
+						attackMoveTile=gameState.getBoard().getTile(attacker.tilex,attacker.tiley-2);
+						else if(tile.tiley-attacker.tiley==3){	
+							attackMoveTile=gameState.getBoard().getTile(attacker.tilex,attacker.tiley+2);
+						}
 			}
 		}catch(IndexOutOfBoundsException ingored){}	 
 

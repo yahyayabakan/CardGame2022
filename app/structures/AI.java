@@ -49,10 +49,14 @@ public class AI {
             if(action != null){
                 if(action.move.getUnit() != null){
                     if(gameState.getNearbyTiles(unitTile).contains(action.move)){
-                        if(gameState.getBoard().getPlayer1Units().contains(action.move.getUnit()))
+                        if(gameState.getBoard().getPlayer1Units().contains(action.move.getUnit())){
                             AIunits.get(i).attack(action.move.getUnit(), gameState, out);
-                    }else
+                            System.out.println("Here1");
+                        }
+                    }else{
                         AIunits.get(i).attackMoveUnit(action.move, out, gameState);
+                        System.out.println("Here 2");
+                    }    
                 }
                 else AIunits.get(i).moveUnit(action.move, out, gameState);
             }

@@ -10,6 +10,9 @@ import structures.basic.Unit;
 import java.util.ArrayList;
 import java.util.List;
 
+/*This is the Blaze Hound Class which When this unit is
+summoned, both players draw a card.
+*/
 public class BlazeHound extends Unit {
 
     /**

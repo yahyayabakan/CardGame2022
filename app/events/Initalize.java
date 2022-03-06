@@ -49,6 +49,8 @@ public class Initalize implements EventProcessor{
 		BasicCommands.setPlayer1Mana(out, playerOne);
 		BasicCommands.setPlayer2Mana(out, playerTwo);
 
+		BasicCommands.addPlayer1Notification(out, "Game Start!", 10);
+
 		try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
 		//draw the initial 3 cards for both players.
 		for(int i = 0; i < STARTING_HAND; i++){
@@ -86,6 +88,8 @@ public class Initalize implements EventProcessor{
 		//game initialised and clickable should be set to true only at the end.
 		gameState.gameInitalised = true;
 		gameState.clickable = true;
+
+		BasicCommands.addPlayer1Notification(out, "Your turn", 2);
 	}
 }
 

@@ -10,6 +10,8 @@ import structures.basic.UnitAnimationType;
 
 import java.util.List;
 
+//This is the Avatar class.
+
 public class Avatar extends Unit {
     private Player player;
 

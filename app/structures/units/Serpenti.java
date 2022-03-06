@@ -7,6 +7,10 @@ import structures.basic.Tile;
 import structures.basic.Unit;
 import akka.actor.ActorRef;
 
+
+/* This is the Serpenti Class that can attack twice per
+turn
+*/
 public class Serpenti extends Unit{
 
     final int MAX_ATTACK_TURN = 2;
@@ -28,7 +32,7 @@ public class Serpenti extends Unit{
             hasMoved = true;
         }
     }
-
+    //this overrides the summon 
     @Override
     public void summon(ActorRef out, Tile tile, Player player, Board board) {
         super.summon(out, tile, player, board);
